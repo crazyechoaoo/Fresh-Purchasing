@@ -1,0 +1,221 @@
+// cover some element-ui styles
+
+.el-breadcrumb__inner,
+.el-breadcrumb__inner a {
+  font-weight: 400 !important;
+}
+
+.el-upload {
+  input[type="file"] {
+    display: none !important;
+  }
+}
+
+.el-upload__input {
+  display: none;
+}
+
+.cell {
+  .el-tag {
+    margin-right: 0px;
+  }
+}
+
+.small-padding {
+  .cell {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}
+
+.fixed-width {
+  .el-button--mini {
+    padding: 7px 10px;
+    min-width: 60px;
+  }
+}
+
+.status-col {
+  .cell {
+    padding: 0 10px;
+    text-align: center;
+
+    .el-tag {
+      margin-right: 0px;
+    }
+  }
+}
+
+// to fixed https://github.com/ElemeFE/element/issues/2461
+.el-dialog {
+  transform: none;
+  left: 0;
+  position: relative;
+  margin: 0 auto;
+}
+
+// refine element ui upload
+.upload-container {
+  .el-upload {
+    width: 100%;
+
+    .el-upload-dragger {
+      width: 100%;
+      height: 200px;
+    }
+  }
+}
+
+// dropdown
+.el-dropdown-menu {
+  a {
+    display: block
+  }
+}
+
+// fix date-picker ui bug in filter-item
+.el-range-editor.el-input__inner {
+  display: inline-flex !important;
+}
+
+// to fix el-date-picker css style
+.el-range-separator {
+  box-sizing: content-box;
+}
+
+.el-submenu__title i {
+  color: #fff;
+}
+
+.el-pagination {
+  text-align: center;
+}
+
+.el-button.daynamic-margin {
+  margin-right: 5px;
+}
+
+.el-card__body {
+  padding: 12px;
+}
+
+@media screen and (max-width: 700px) {
+
+  // .el-dialog {
+  //   margin-top: 0 !important;
+  //   margin-left: 0;
+  //   width: 100%;
+  //   min-height: 100%;
+  //   height: auto;
+  // }
+  .el-message-box {
+    max-width: 90%;
+  }
+
+  .el-dialog .el-form {
+    margin-left: 0px;
+    width: 100%;
+  }
+
+  .el-dialog .el-form .el-input__inner {
+    width: 100%;
+  }
+
+  .el-row.search .el-input {
+    width: 100%;
+  }
+
+  .el-pagination.is-background .btn-prev {
+    margin-left: 0px !important;
+  }
+
+  .el-pagination span {
+    margin-bottom: 10px !important;
+  }
+
+  .el-button.daynamic-margin {
+    margin-right: 0 !important;
+  }
+
+  .el-pagination__jump {
+    margin-left: 0 !important;
+
+  }
+
+  .el-pagination__sizes {
+    display: none !important;
+  }
+
+  .el-pagination span:not([class*=suffix]) {
+    vertical-align: baseline !important;
+  }
+}
+
+.el-input.is-disabled .el-input__inner {
+  color: #909399;
+}
+
+.el-input-group__append {
+  font-size: 10px !important;
+  padding: 0 3px !important;
+  width: 34px !important;
+  text-align: center !important;
+}
+
+.pageForm {
+  .el-input__inner {
+    padding: 0 8px
+  }
+}
+
+.el-table__body-wrapper {
+  .el-input__inner {
+    padding: 0 8px
+  }
+}
+
+.el-checkbox.is-bordered+.el-checkbox.is-bordered {
+  margin-left: 0;
+}
+
+.el-scrollbar__wrap {
+  overflow-x: hidden;
+}
+
+
+.el-drawer__body {
+  overflow: auto;
+  /* overflow-x: auto; */
+}
+
+/*2.隐藏滚动条，太丑了*/
+.el-drawer__container ::-webkit-scrollbar {
+  display: none;
+}
+
+// dropdown 高度修正
+.el-scrollbar {
+  .el-select-dropdown__wrap {
+    margin-bottom: 0px !important;
+  }
+
+  .el-scrollbar__wrap {
+    margin-bottom: 0px !important;
+  }
+}
+
+.search {
+  .el-select {
+    width: 100%;
+  }
+}
+
+.el-date-editor.el-input,
+.el-date-editor.el-input__inner {
+  width: 100%;
+}
+
+.el-autocomplete-suggestion li {
+  padding: 0 10px !important;
+  ;
+}
