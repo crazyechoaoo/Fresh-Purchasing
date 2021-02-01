@@ -356,3 +356,20 @@ input:-webkit-autofill {
   background-image: none;
   transition: background-color 50000s ease-in-out 0s;
 }
+
+.printDialog .el-dialog__body{
+  padding: 0;
+  margin: 0;
+}
+
+.fruit-row {
+  background-color: #FFCCCC !important;
+}
+
+.veg-row {
+  background-color: #CCFFCC !important;
+}
+
+.fresh-row {
+  background-color: #CCFFFF !important;
+}

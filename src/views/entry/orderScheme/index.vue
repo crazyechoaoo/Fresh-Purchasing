@@ -43,8 +43,8 @@
       </el-row>
     </div>
 
+    <!-- 订单列表 -->
     <el-table
-      :key="tableKey"
       v-loading="listLoading"
       :data="list"
       border
@@ -83,6 +83,19 @@
         </template>
       </el-table-column>
       <el-table-column
+        v-if="showSettings['showShopName']"
+        label="方案归属"
+        align="center"
+      >
+        <template slot-scope="{ row }">
+          <span>{{
+            row.shop_id
+              ? "[" + row.shop_id + "]" + (row.shop_name || "")
+              : "采购经理方案"
+          }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
         v-if="showSettings['showAction']"
         label="操作"
         align="center"
@@ -108,6 +121,7 @@
       </el-table-column>
     </el-table>
 
+    <!-- 分页 -->
     <pagination
       v-show="total > 0"
       :total="total"
@@ -117,6 +131,7 @@
       @pagination="getList"
     />
 
+    <!-- 订购单 -->
     <el-drawer
       v-if="device === 'mobile'"
       ref="drawer"
@@ -153,10 +168,15 @@
               <span> {{ temp.id || "无" }} </span>
             </el-form-item>
             <el-form-item label="方案名称" prop="plan_name">
-              <el-input v-model.trim="temp.plan_name" />
+              <el-input v-if="canModidyPlan" v-model.trim="temp.plan_name" />
+              <span v-else>{{ temp.plan_name }}</span>
             </el-form-item>
-            <el-form-item label="描述" prop="description">
-              <el-input v-model="temp.description" />
+            <el-form-item label="方案描述" prop="description">
+              <el-input v-if="canModidyPlan" v-model.trim="temp.description" />
+              <span v-else>{{ temp.description }}</span>
+            </el-form-item>
+            <el-form-item v-if="temp.notice" label="系统提示" prop="notice">
+              <span>{{ temp.notice }}</span>
             </el-form-item>
             <el-form-item label="方案详情" prop="order_goods">
               <el-table
@@ -177,17 +197,28 @@
                     <span>{{ row.goods_id }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column align="center" label="品名" min-width="115">
+                <el-table-column
+                  align="center"
+                  label="品名"
+                  :min-width="dialogStatus === 'create' ? 130 : 100"
+                >
                   <template slot-scope="{ row, $index }">
                     <el-row type="flex" justify="center">
+                      <el-tag
+                        v-if="row.goods_id"
+                        :type="row.goods_type_id | typeCssFilter"
+                      >
+                        <span>{{ row.goods_name }}</span>
+                      </el-tag>
                       <el-autocomplete
+                        v-else
                         v-model.trim="row.goods_name"
                         :fetch-suggestions="querySearchAsync"
                         placeholder="请输入货品"
                         @select="handleSelect"
-                        :disabled="row.goods_id !== ''"
                       />
                       <el-button
+                        v-if="dialogStatus === 'create'"
                         size="mini"
                         type="danger"
                         style="padding: 2px 4px; margin-left: 4px"
@@ -197,11 +228,12 @@
                     </el-row>
                   </template>
                 </el-table-column>
-                <el-table-column align="center" label="订购量" min-width="115">
+                <el-table-column align="center" label="订购量" min-width="105">
                   <template slot-scope="{ row }">
                     <!-- this input only permit positive integer or 0 -->
                     <el-input
                       v-model.trim="row.order_num"
+                      :disabled="!canModidyPlan"
                       pattern="[0-9]*"
                       type="number"
                       onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
@@ -213,7 +245,7 @@
                   </template>
                 </el-table-column>
               </el-table>
-              <el-row type="flex" justify="end">
+              <el-row v-if="canModidyPlan" type="flex" justify="end">
                 <el-button
                   class="margin-top-6"
                   style="width: 100%"
@@ -248,7 +280,7 @@
                   添加冷冻品类
                 </el-button>
               </el-row>
-              <el-row type="flex" justify="end">
+              <el-row v-if="canModidyPlan" type="flex" justify="end">
                 <el-button
                   class="margin-top-6"
                   style="width: 100%"
@@ -277,6 +309,7 @@
             <el-button @click="cancelForm">取 消</el-button>
             <el-button
               :loading="requestLoading"
+              :disabled="!canModidyPlan"
               type="primary"
               @click="$refs.drawer.closeDrawer()"
               >{{ requestLoading ? "提交中 ..." : "确 定" }}</el-button
@@ -285,7 +318,7 @@
         </div>
       </div>
     </el-drawer>
-
+    <!-- 订购单 -->
     <el-dialog
       v-else
       :title="textMap[dialogStatus]"
@@ -304,10 +337,15 @@
           <span> {{ temp.id || "无" }} </span>
         </el-form-item>
         <el-form-item label="方案名称" prop="plan_name">
-          <el-input v-model.trim="temp.plan_name" />
+          <el-input v-if="canModidyPlan" v-model.trim="temp.plan_name" />
+          <span v-else>{{ temp.plan_name }}</span>
         </el-form-item>
-        <el-form-item label="描述" prop="description">
-          <el-input v-model="temp.description" />
+        <el-form-item label="方案描述" prop="description">
+          <el-input v-if="canModidyPlan" v-model.trim="temp.description" />
+          <span v-else>{{ temp.description }}</span>
+        </el-form-item>
+        <el-form-item v-if="temp.notice" label="系统提示" prop="notice">
+          <span>{{ temp.notice }}</span>
         </el-form-item>
         <el-form-item label="方案详情" prop="order_goods">
           <el-table
@@ -318,22 +356,38 @@
             fit
             highlight-current-row
           >
-            <el-table-column align="center" label="编号" width="75">
+            <el-table-column align="center" label="标志位" width="65">
+              <template slot-scope="{ row }">
+                <span>{{ row.goods_sort }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" label="编号" width="72">
               <template slot-scope="{ row }">
                 <span>{{ row.goods_id }}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="品名" min-width="115">
+            <el-table-column
+              align="center"
+              label="品名"
+              :min-width="dialogStatus === 'create' ? 130 : 100"
+            >
               <template slot-scope="{ row, $index }">
                 <el-row type="flex" justify="center">
+                  <el-tag
+                    v-if="row.goods_id"
+                    :type="row.goods_type_id | typeCssFilter"
+                  >
+                    <span>{{ row.goods_name }}</span>
+                  </el-tag>
                   <el-autocomplete
+                    v-else
                     v-model.trim="row.goods_name"
                     :fetch-suggestions="querySearchAsync"
                     placeholder="请输入货品"
                     @select="handleSelect"
-                    :disabled="row.goods_id !== ''"
                   />
                   <el-button
+                    v-if="dialogStatus === 'create'"
                     size="mini"
                     type="danger"
                     style="padding: 2px 4px; margin-left: 4px"
@@ -343,12 +397,16 @@
                 </el-row>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="订购量" min-width="115">
+            <el-table-column align="center" label="订购量" min-width="105">
               <template slot-scope="{ row }">
                 <!-- this input only permit positive integer or 0 -->
                 <el-input
-                  v-model.number="row.order_num"
+                  v-model.trim="row.order_num"
+                  :disabled="!canModidyPlan"
+                  pattern="[0-9]*"
                   type="number"
+                  onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                  onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
                   placeholder="0"
                 >
                   <template slot="append">{{ row.order_unit }}</template>
@@ -356,7 +414,7 @@
               </template>
             </el-table-column>
           </el-table>
-          <el-row type="flex" justify="end">
+          <el-row v-if="canModidyPlan" type="flex" justify="end">
             <el-button
               class="margin-top-6"
               style="width: 100%"
@@ -391,7 +449,7 @@
               添加冷冻品类
             </el-button>
           </el-row>
-          <el-row type="flex" justify="end">
+          <el-row v-if="canModidyPlan" type="flex" justify="end">
             <el-button
               class="margin-top-6"
               style="width: 100%"
@@ -426,6 +484,7 @@
       </div>
     </el-dialog>
 
+    <!-- 添加方案时：方案详情 -->
     <el-drawer
       title="方案详情"
       :visible.sync="tableDetialDrawerVisible"
@@ -500,12 +559,14 @@
       </div>
     </el-drawer>
 
+    <!-- 表格设置 -->
     <el-drawer
       title="表格设置"
       :visible.sync="tableSettingsDrawerVisible"
       direction="ltr"
       :with-header="false"
       :size="tableSettingsDrawerSize"
+      @close="setShowSettings"
     >
       <div class="tableSettingsDrawer">
         <el-page-header
@@ -519,7 +580,6 @@
             v-model="showSettings['showId']"
             border
             class="filter-item margin-l-0"
-            @change="tableKey = tableKey + 1"
           >
             编号
           </el-checkbox>
@@ -527,7 +587,6 @@
             v-model="showSettings['showTitle']"
             border
             class="filter-item margin-l-0"
-            @change="tableKey = tableKey + 1"
           >
             方案名称
           </el-checkbox>
@@ -535,15 +594,20 @@
             v-model="showSettings['showDesc']"
             border
             class="filter-item margin-l-0"
-            @change="tableKey = tableKey + 1"
           >
             描述
+          </el-checkbox>
+          <el-checkbox
+            v-model="showSettings['showShopName']"
+            border
+            class="filter-item margin-l-0"
+          >
+            方案归属
           </el-checkbox>
           <el-checkbox
             v-model="showSettings['showAction']"
             border
             class="filter-item margin-l-0"
-            @change="tableKey = tableKey + 1"
           >
             操作
           </el-checkbox>
@@ -564,10 +628,6 @@ import { fetchCommodity } from "@/api/commodity";
 import waves from "@/directive/waves"; // waves directive
 import { parseTime, resetPagination } from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
-
-const limitPositiveInteger = function (event) {
-  console.log(event.keyCode);
-};
 
 export default {
   name: "OrderSchemePage",
@@ -603,7 +663,6 @@ export default {
       requestLoading: false,
       tableDetailLoading: false,
       timer: null,
-      tableKey: 0,
       list: null,
       commodityList: null,
       commodityListTotal: 0,
@@ -613,12 +672,7 @@ export default {
         page: 1,
         limit: 20,
       },
-      temp: {
-        id: undefined,
-        plan_name: "", // 标题
-        description: "", // 描述
-        order_goods: [], // 方案表
-      },
+      temp: null,
       sortOptions: [
         { label: "升序", key: "+id" },
         { label: "降序", key: "-id" },
@@ -655,10 +709,27 @@ export default {
           },
         ],
       },
+      showSettings: {
+        showId: true,
+        showTitle: true,
+        showDesc: true,
+        showAction: true,
+        showShopName: true,
+      },
       tableCurrentRow: null,
     };
   },
   computed: {
+    canModidyPlan() {
+      // if true, shop clerk cann't modify orderplan
+      if (
+        this.dialogStatus === "create" ||
+        this.$store.getters.roles[0] === "manager"
+      ) {
+        return true;
+      }
+      return this.$store.getters.shop_id === this.temp.shop_id;
+    },
     userInfo() {
       return {
         name: this.$store.getters.name,
@@ -669,17 +740,6 @@ export default {
     device() {
       // mobile or desktop
       return this.$store.state.app.device;
-    },
-    showSettings() {
-      const i = {
-        showId: true,
-        showTitle: true,
-        showDesc: true,
-        showAction: true,
-      };
-      if (this.device === "mobile") {
-      }
-      return i;
     },
     tableSettingsDrawerSize() {
       if (this.device === "mobile") {
@@ -698,12 +758,26 @@ export default {
   },
   created() {
     // 钩子函数
+    this.resetTemp();
     this.getList();
+    if (!window.sessionStorage.getItem("orderScheme")) {
+      this.setShowSettings();
+    } else {
+      this.showSettings = JSON.parse(
+        window.sessionStorage.getItem("orderScheme")
+      );
+    }
   },
   mounted() {
     resetPagination();
   },
   methods: {
+    setShowSettings() {
+      window.sessionStorage.setItem(
+        "orderScheme",
+        JSON.stringify(this.showSettings)
+      );
+    },
     getList() {
       this.listLoading = true;
       fetchScheme(this.listQuery).then((res) => {

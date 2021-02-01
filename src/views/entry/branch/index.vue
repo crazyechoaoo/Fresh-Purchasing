@@ -242,7 +242,6 @@
 
     <!-- 表格 -->
     <el-table
-      :key="tableKey"
       v-loading="listLoading"
       :data="list"
       border
@@ -371,7 +370,7 @@
       @pagination="getList"
     />
 
-    <!-- 抽屉 -->
+    <!-- 订购单 -->
     <el-drawer
       v-if="device === 'mobile'"
       ref="drawer"
@@ -458,36 +457,38 @@
                 fit
                 highlight-current-row
               >
-                <el-table-column
-                  v-if="!(temp.approved === 0 || temp.approved === 1)"
-                  align="center"
-                  label="编号"
-                  width="70"
-                >
+                <el-table-column align="center" label="标志位" width="65">
+                  <template slot-scope="{ row }">
+                    <span>{{ row.goods_sort }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" label="编号" width="70">
                   <template slot-scope="{ row }">
                     <span>{{ row.goods_id }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column align="center" label="品名" min-width="115">
+                <el-table-column
+                  align="center"
+                  label="品名"
+                  :min-width="dialogStatus === 'create' ? 130 : 100"
+                >
                   <template slot-scope="{ row, $index }">
                     <el-row type="flex" justify="center">
-                      <span v-if="temp.approved === 0 || temp.approved === 1">
-                        {{ "(" + row.goods_id + ")" + row.goods_name }}
-                      </span>
+                      <el-tag
+                        v-if="row.goods_id"
+                        :type="row.goods_type_id | typeCssFilter"
+                      >
+                        <span>{{ row.goods_name }}</span>
+                      </el-tag>
                       <el-autocomplete
                         v-else
                         v-model.trim="row.goods_name"
                         :fetch-suggestions="querySearchAsync"
                         placeholder="请输入货品"
-                        :disabled="
-                          row.approved === 0 ||
-                          row.approved === 1 ||
-                          row.goods_id !== ''
-                        "
                         @select="handleSelect"
                       />
                       <el-button
-                        v-if="!(temp.approved === 0 || temp.approved === 1)"
+                        v-if="dialogStatus === 'create'"
                         size="mini"
                         type="danger"
                         @click="tableItemDel(row, $index)"
@@ -500,13 +501,14 @@
                 <el-table-column
                   align="center"
                   label="订购量"
-                  :min-width="
-                    temp.approved === 0 || temp.approved === 1 ? 80 : 115
-                  "
+                  :min-width="dialogStatus === 'update' ? 80 : 115"
                 >
                   <template slot-scope="{ row }">
-                    <span v-if="temp.approved === 0 || temp.approved === 1">
+                    <span v-if="dialogStatus === 'update'">
                       {{ row.order_num + " " + row.order_unit }}
+                    </span>
+                    <span v-else-if="!row.can_order">
+                      {{ "不可订" }}
                     </span>
                     <el-input
                       v-else
@@ -536,17 +538,26 @@
                   <template slot="append">{{ row.buy_unit }}</template>
                 </el-input> -->
                     <span>{{
-                      (row.buy_num || "") + " " + (row.buy_unit || "")
+                      (row.buy_num || "0") + " " + (row.buy_unit || "")
                     }}</span>
                   </template>
                 </el-table-column>
                 <el-table-column
-                  v-if="temp.approved === 0 || temp.approved === 1"
+                  v-if="dialogStatus === 'update'"
                   align="center"
                   label="单价"
                 >
                   <template slot-scope="{ row }">
-                    <span>{{ row.goods_price + " 元" }}</span>
+                    <span>{{ row.goods_price || 0 + " 元" }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column
+                  v-if="dialogStatus === 'update'"
+                  align="center"
+                  label="金额"
+                >
+                  <template slot-scope="{ row }">
+                    <span>{{ row.total_money || 0 + " 元" }}</span>
                   </template>
                 </el-table-column>
               </el-table>
@@ -606,7 +617,7 @@
         </div>
       </div>
     </el-drawer>
-    <!-- 模态框 -->
+    <!-- 订购单 -->
     <el-dialog
       v-else
       :title="textMap[dialogStatus]"
@@ -679,36 +690,38 @@
             fit
             highlight-current-row
           >
-            <el-table-column
-              v-if="!(temp.approved === 0 || temp.approved === 1)"
-              align="center"
-              label="编号"
-              width="70"
-            >
+            <el-table-column align="center" label="标志位" width="65">
+              <template slot-scope="{ row }">
+                <span>{{ row.goods_sort }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" label="编号" width="70">
               <template slot-scope="{ row }">
                 <span>{{ row.goods_id }}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="品名" min-width="115">
+            <el-table-column
+              align="center"
+              label="品名"
+              :min-width="dialogStatus === 'create' ? 130 : 100"
+            >
               <template slot-scope="{ row, $index }">
                 <el-row type="flex" justify="center">
-                  <span v-if="temp.approved === 0 || temp.approved === 1">
-                    {{ "(" + row.goods_id + ")" + row.goods_name }}
-                  </span>
+                  <el-tag
+                    v-if="row.goods_id"
+                    :type="row.goods_type_id | typeCssFilter"
+                  >
+                    <span>{{ row.goods_name }}</span>
+                  </el-tag>
                   <el-autocomplete
                     v-else
                     v-model.trim="row.goods_name"
                     :fetch-suggestions="querySearchAsync"
                     placeholder="请输入货品"
-                    :disabled="
-                      row.approved === 0 ||
-                      row.approved === 1 ||
-                      row.goods_id !== ''
-                    "
                     @select="handleSelect"
                   />
                   <el-button
-                    v-if="!(temp.approved === 0 || temp.approved === 1)"
+                    v-if="dialogStatus === 'create'"
                     size="mini"
                     type="danger"
                     @click="tableItemDel(row, $index)"
@@ -721,11 +734,14 @@
             <el-table-column
               align="center"
               label="订购量"
-              :min-width="temp.approved === 0 || temp.approved === 1 ? 80 : 115"
+              :min-width="dialogStatus === 'update' ? 80 : 115"
             >
               <template slot-scope="{ row }">
-                <span v-if="temp.approved === 0 || temp.approved === 1">
+                <span v-if="dialogStatus === 'update'">
                   {{ row.order_num + " " + row.order_unit }}
+                </span>
+                <span v-else-if="!row.can_order">
+                  {{ "不可订" }}
                 </span>
                 <el-input
                   v-else
@@ -745,7 +761,7 @@
               v-if="temp.approved === 0 || temp.approved === 1"
               align="center"
               label="采购量"
-              min-width="70"
+              min-width="80"
             >
               <template slot-scope="{ row }">
                 <!-- <el-input v-model="row.buy_num"
@@ -755,17 +771,26 @@
                   <template slot="append">{{ row.buy_unit }}</template>
                 </el-input> -->
                 <span>{{
-                  (row.buy_num || "") + " " + (row.buy_unit || "")
+                  (row.buy_num || "0") + " " + (row.buy_unit || "")
                 }}</span>
               </template>
             </el-table-column>
             <el-table-column
-              v-if="temp.approved === 0 || temp.approved === 1"
+              v-if="dialogStatus === 'update'"
               align="center"
               label="单价"
             >
               <template slot-scope="{ row }">
-                <span>{{ row.goods_price + " 元" }}</span>
+                <span>{{ row.goods_price || 0 + " 元" }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              v-if="dialogStatus === 'update'"
+              align="center"
+              label="金额"
+            >
+              <template slot-scope="{ row }">
+                <span>{{ row.total_money || 0 + " 元" }}</span>
               </template>
             </el-table-column>
           </el-table>
@@ -822,12 +847,14 @@
       </div>
     </el-dialog>
 
+    <!-- 表格设置 -->
     <el-drawer
       title="表格设置"
       :visible.sync="tableSettingsDrawerVisible"
       direction="ltr"
       :with-header="false"
       :size="tableSettingsDrawerSize"
+      @close="setShowSettings"
     >
       <div class="tableSettingsDrawer">
         <el-page-header
@@ -841,7 +868,6 @@
             v-model="showSettings['showId']"
             border
             class="filter-item margin-l-0"
-            @change="tableKey = tableKey + 1"
           >
             单号
           </el-checkbox>
@@ -849,7 +875,6 @@
             v-model="showSettings['showTitle']"
             border
             class="filter-item margin-l-0"
-            @change="tableKey = tableKey + 1"
           >
             店名
           </el-checkbox>
@@ -857,7 +882,6 @@
             v-model="showSettings['showTime']"
             border
             class="filter-item margin-l-0"
-            @change="tableKey = tableKey + 1"
           >
             日期
           </el-checkbox>
@@ -865,7 +889,6 @@
             v-model="showSettings['showSubmitter']"
             border
             class="filter-item margin-l-0"
-            @change="tableKey = tableKey + 1"
           >
             上报人
           </el-checkbox>
@@ -873,15 +896,20 @@
             v-model="showSettings['showStatus']"
             border
             class="filter-item margin-l-0"
-            @change="tableKey = tableKey + 1"
           >
             当前进度
+          </el-checkbox>
+          <el-checkbox
+            v-model="showSettings['showOrderType']"
+            border
+            class="filter-item margin-l-0"
+          >
+            订单类型
           </el-checkbox>
           <el-checkbox
             v-model="showSettings['showAction']"
             border
             class="filter-item margin-l-0"
-            @change="tableKey = tableKey + 1"
           >
             操作
           </el-checkbox>
@@ -913,6 +941,22 @@ export default {
   components: { Pagination },
   directives: { waves },
   filters: {
+    typeNameFilter(type) {
+      const typeNameMap = {
+        1101: "水果",
+        1102: "蔬菜",
+        1208: "冷冻品",
+      };
+      return typeNameMap[type];
+    },
+    typeCssFilter(type) {
+      const typeCssMap = {
+        1101: "danger", // red
+        1102: "success", // green
+        1208: "", // blue
+      };
+      return typeCssMap[type];
+    },
     parseTime,
   },
   data() {
@@ -938,7 +982,7 @@ export default {
         timeEnd: undefined,
         sort: "+id", // 升序排序
         search: "",
-        order_type: "",
+        order_type: "混合类订单",
       },
       temp: {},
       TableCellStyle: { padding: "2px 0" },
@@ -950,7 +994,7 @@ export default {
       typeOptions: [
         { label: "水果类订单", key: "水果类订单" },
         { label: "蔬菜类订单", key: "蔬菜类订单" },
-        { label: "冷冻品订单", key: "冷冻品订单" },
+        { label: "冷冻品类订单", key: "冷冻品类订单" },
         { label: "混合类订单", key: "混合类订单" },
       ],
       historyOptions: [
@@ -970,7 +1014,7 @@ export default {
                   callback(new Error("请将方案表填写完整"));
                 }
                 if (item.order_num <= 0) {
-                  callback(new Error("订购数量需大于0"));
+                  callback(new Error("订购数量需大于0，请不要订购不可订货品"));
                 }
               }
               callback();
@@ -979,6 +1023,15 @@ export default {
           },
         ],
       }, // 表单验证的规则
+      showSettings: {
+        showId: true,
+        showTitle: true,
+        showTime: true,
+        showSubmitter: true,
+        showStatus: true,
+        showAction: true,
+        showOrderType: true,
+      },
     };
   },
   computed: {
@@ -992,23 +1045,6 @@ export default {
         affiliation: this.$store.getters.shop_name, // 所属分店
         role: this.$store.getters.roles[0],
       };
-    },
-    showSettings() {
-      const i = {
-        showId: true,
-        showTitle: true,
-        showTime: true,
-        showSubmitter: true,
-        showStatus: true,
-        showAction: true,
-        showOrderType: true,
-      };
-      if (this.device === "mobile") {
-        i.showId = false;
-        i.showSubmitter = false;
-        i.showTime = false;
-      }
-      return i;
     },
     tableSettingsDrawerSize() {
       if (this.device === "mobile") {
@@ -1039,11 +1075,22 @@ export default {
     this.resetTemp();
     this.getList();
     this.getScheme();
+    if (!window.sessionStorage.getItem("branch")) {
+      this.setShowSettings();
+    } else {
+      this.showSettings = JSON.parse(window.sessionStorage.getItem("branch"));
+    }
   },
   mounted() {
     resetPagination();
   },
   methods: {
+    setShowSettings() {
+      window.sessionStorage.setItem(
+        "branch",
+        JSON.stringify(this.showSettings)
+      );
+    },
     getList() {
       this.listLoading = true;
       fetchBranch(this.listQuery).then((res) => {
@@ -1295,6 +1342,7 @@ export default {
     handleSchemeSelect: function (item) {
       this.temp.goods_order = [];
       item.order_goods.forEach((i) => {
+        if (!i.can_order) i.order_num = 0;
         this.temp.goods_order.push(Object.assign({}, i));
       });
     },
@@ -1342,6 +1390,7 @@ export default {
       };
     },
     handleSelect(item) {
+      if (!item.can_order) item.order_num = 0;
       this.temp.goods_order.splice(this.temp.goods_order.length - 1, 1, item);
     },
     tableItemDel(row, index) {

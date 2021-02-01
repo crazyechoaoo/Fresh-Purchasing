@@ -151,8 +151,8 @@
       </el-row>
     </div>
 
+    <!-- 表格 -->
     <el-table
-      :key="tableKey"
       v-loading="listLoading"
       :data="list"
       border
@@ -246,7 +246,7 @@
         min-width="60"
       >
         <template slot-scope="{ row }">
-          {{ row.can_order || "" }}
+          {{ row.can_order ? "可订" : "不可订" }}
         </template>
       </el-table-column>
       <el-table-column
@@ -557,6 +557,7 @@
       direction="ltr"
       :with-header="false"
       :size="tableSettingsDrawerSize"
+      @close="setShowSettings"
     >
       <div class="tableSettingsDrawer">
         <el-page-header
@@ -570,7 +571,6 @@
             v-model="showSettings['showId']"
             border
             class="filter-item"
-            @change="tableKey = tableKey + 1"
           >
             编号
           </el-checkbox>
@@ -578,7 +578,6 @@
             v-model="showSettings['showTitle']"
             border
             class="filter-item"
-            @change="tableKey = tableKey + 1"
           >
             品名
           </el-checkbox>
@@ -586,7 +585,6 @@
             v-model="showSettings['showType']"
             border
             class="filter-item"
-            @change="tableKey = tableKey + 1"
           >
             分类
           </el-checkbox>
@@ -594,7 +592,6 @@
             v-model="showSettings['showKey']"
             border
             class="filter-item"
-            @change="tableKey = tableKey + 1"
           >
             标志位
           </el-checkbox>
@@ -602,7 +599,6 @@
             v-model="showSettings['showOrderUnit']"
             border
             class="filter-item"
-            @change="tableKey = tableKey + 1"
           >
             订购单位
           </el-checkbox>
@@ -610,7 +606,6 @@
             v-model="showSettings['showSellUnit']"
             border
             class="filter-item"
-            @change="tableKey = tableKey + 1"
           >
             销售单位
           </el-checkbox>
@@ -618,16 +613,28 @@
             v-model="showSettings['showReceiveUnit']"
             border
             class="filter-item"
-            @change="tableKey = tableKey + 1"
           >
             收货单位
+          </el-checkbox>
+          <el-checkbox
+            v-model="showSettings['showCanOrder']"
+            border
+            class="filter-item"
+          >
+            可订/不可订
+          </el-checkbox>
+          <el-checkbox
+            v-model="showSettings['showDesc']"
+            border
+            class="filter-item"
+          >
+            备注
           </el-checkbox>
           <el-checkbox
             v-if="isPermit"
             v-model="showSettings['showAction']"
             border
             class="filter-item"
-            @change="tableKey = tableKey + 1"
           >
             操作
           </el-checkbox>
@@ -680,7 +687,6 @@ export default {
       requestLoading: false,
       downloadLoading: false,
       timer: null,
-      tableKey: 0,
       list: null,
       total: 0,
       listLoading: true,
@@ -721,6 +727,18 @@ export default {
           { required: true, message: "货品名称不能为空", trigger: "blur" },
         ],
       },
+      showSettings: {
+        showId: true,
+        showType: true,
+        showTitle: true,
+        showOrderUnit: true,
+        showSellUnit: true,
+        showReceiveUnit: true,
+        showKey: true,
+        showAction: true,
+        showCanOrder: true,
+        showDesc: true,
+      },
     };
   },
   computed: {
@@ -743,29 +761,6 @@ export default {
       // mobile or desktop
       return this.$store.state.app.device;
     },
-    showSettings() {
-      const i = {
-        showId: true,
-        showType: true,
-        showTitle: true,
-        showOrderUnit: true,
-        showSellUnit: true,
-        showReceiveUnit: true,
-        showKey: true,
-        showAction: true,
-        showCanOrder: true,
-        showDesc: true,
-      };
-      if (this.device === "mobile") {
-        i.showOrderUnit = false;
-        i.showSellUnit = false;
-        i.showReceiveUnit = false;
-        i.showKey = false;
-        i.showAction = false;
-        i.showDesc = false;
-      }
-      return i;
-    },
     tableSettingsDrawerSize() {
       if (this.device === "mobile") {
         return "60%";
@@ -777,11 +772,21 @@ export default {
   created() {
     this.resetTemp();
     this.getList();
+    if (!window.sessionStorage.getItem("commodity")) {
+      this.setShowSettings()
+    } else {
+      this.showSettings = JSON.parse(
+        window.sessionStorage.getItem("commodity")
+      );
+    }
   },
   mounted() {
     resetPagination();
   },
   methods: {
+    setShowSettings(){
+      window.sessionStorage.setItem('commodity',JSON.stringify(this.showSettings))
+    },
     getList() {
       this.listLoading = true;
       fetchCommodity(this.listQuery).then((res) => {
@@ -804,7 +809,7 @@ export default {
         sale_unit: "",
         rec_unit: "",
         goods_sort: undefined, // 标志位
-        can_order: "",
+        can_order: false,
         desc: "",
       };
     },

@@ -37,3 +37,15 @@ export function fetchWaitingShopNum() {
     method: 'get',
   })
 }
+export function fetchOrderNum() {
+  return request({
+    url: '/stat/today_order_num',
+    method: 'get',
+  })
+}
+export function fetchGoodsNums() {
+  return request({
+    url: '/stat/today_goods_num',
+    method: 'get',
+  })
+}

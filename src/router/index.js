@@ -115,7 +115,7 @@ export const asyncRoutes = [{
         name: 'OrderScheme',
         meta: {
           title: '订购方案',
-          roles: ['shop']
+          roles: ['shop', 'manager']
         }
       },
       {

@@ -89,3 +89,12 @@ export function finishSingle(data) {
     data
   })
 }
+
+// 作废
+export function setInvalidSingle(data) {
+  return request({
+    url: '/single_order/setInvalid',
+    method: 'post',
+    data
+  })
+}
