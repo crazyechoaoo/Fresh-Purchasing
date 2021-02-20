@@ -278,7 +278,8 @@ aside {
   }
 }
 
-.el-drawer{
+.el-drawer {
+
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -349,7 +350,7 @@ aside {
 
 // 解决input自动填充样式问题
 input:-webkit-autofill {
-  box-shadow: 0 0 0px 1000px #C7C6C6 inset !important;
+  box-shadow: 0 0 0 1000px #C7C6C6 inset !important;
   -webkit-text-fill-color: #ededed !important;
   -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
   background-color: transparent;
@@ -357,7 +358,7 @@ input:-webkit-autofill {
   transition: background-color 50000s ease-in-out 0s;
 }
 
-.printDialog .el-dialog__body{
+.printDialog .el-dialog__body {
   padding: 0;
   margin: 0;
 }
@@ -373,3 +374,4 @@ input:-webkit-autofill {
 .fresh-row {
   background-color: #CCFFFF !important;
 }
+

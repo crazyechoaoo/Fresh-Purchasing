@@ -1,17 +1,17 @@
 <template>
   <div class="dashboard-container"
        style="min-height:calc(94vh)">
-    <adminDashboard />
+    <adminDashboard/>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import {mapGetters} from "vuex";
 import adminDashboard from "./admin";
 
 export default {
   name: "Dashboard",
-  components: { adminDashboard },
+  components: {adminDashboard},
   computed: {
     ...mapGetters(["name"])
   }
@@ -25,6 +25,7 @@ export default {
     margin: 0px;
   }
 }
+
 .dashboard-container {
   text-align: center;
 }

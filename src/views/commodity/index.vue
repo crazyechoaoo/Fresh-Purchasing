@@ -773,7 +773,7 @@ export default {
     this.resetTemp();
     this.getList();
     if (!window.sessionStorage.getItem("commodity")) {
-      this.setShowSettings()
+      this.setShowSettings();
     } else {
       this.showSettings = JSON.parse(
         window.sessionStorage.getItem("commodity")
@@ -784,8 +784,11 @@ export default {
     resetPagination();
   },
   methods: {
-    setShowSettings(){
-      window.sessionStorage.setItem('commodity',JSON.stringify(this.showSettings))
+    setShowSettings() {
+      window.sessionStorage.setItem(
+        "commodity",
+        JSON.stringify(this.showSettings)
+      );
     },
     getList() {
       this.listLoading = true;
@@ -969,25 +972,28 @@ export default {
           "rec_unit",
           "goods_sort",
         ];
-        const data = this.formatJson(filterVal);
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: "货品信息",
+        fetchCommodity({
+          page: 1,
+          limit: 999999,
+          sort: "-goods_sort", // 升序排序
+        }).then((res) => {
+          const data = res.data.map((v) =>
+            filterVal.map((j) => {
+              if (j === "timestamp") {
+                return parseTime(v[j]);
+              } else {
+                return v[j];
+              }
+            })
+          );
+          excel.export_json_to_excel({
+            header: tHeader,
+            data,
+            filename: "货品信息",
+          });
+          this.downloadLoading = false;
         });
-        this.downloadLoading = false;
       });
-    },
-    formatJson(filterVal) {
-      return this.list.map((v) =>
-        filterVal.map((j) => {
-          if (j === "timestamp") {
-            return parseTime(v[j]);
-          } else {
-            return v[j];
-          }
-        })
-      );
     },
     cancelForm() {
       this.requestLoading = false;

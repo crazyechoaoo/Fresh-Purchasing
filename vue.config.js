@@ -5,7 +5,7 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = defaultSettings.title || ''
+const name = defaultSettings.title
 
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
@@ -38,14 +38,14 @@ module.exports = {
     proxy: { // 配置跨域
       [process.env.VUE_APP_BASE_API]: {
         target: 'http://121.199.76.157',
-        changOrigin: true, // 允许跨域
+        changOrigin: true, // 跨域
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''
         }
       },
       '/api': {
         target: 'http://121.199.76.157',
-        changOrigin: true, // 允许跨域
+        changOrigin: true, // 跨域
         pathRewrite: {
           '^/api': ''
         }

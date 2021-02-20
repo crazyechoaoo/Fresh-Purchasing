@@ -10,7 +10,7 @@
           <el-option v-for="item in sortOptions"
                      :key="item.key"
                      :label="item.label"
-                     :value="item.key" />
+                     :value="item.key"/>
         </el-select>
         <el-button class="filter-item margin-l-10"
                    type="primary"
@@ -21,7 +21,7 @@
         <el-input v-model.trim="listQuery.name"
                   placeholder="搜索..."
                   class="filter-item margin-l-10"
-                  @keyup.enter.native="handleFilter" />
+                  @keyup.enter.native="handleFilter"/>
         <el-button v-waves
                    class="filter-item margin-l-10"
                    type="primary"
@@ -122,7 +122,8 @@
                      class="margin-l-10 margin-top-6"
                      size="mini"
                      type="danger"
-                     @click="openConfirmMsgBox('delete', row, $index)">删除</el-button>
+                     @click="openConfirmMsgBox('delete', row, $index)">删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -131,7 +132,7 @@
                 :total="total"
                 :page.sync="listQuery.page"
                 :limit.sync="listQuery.limit"
-                @pagination="getList" />
+                @pagination="getList"/>
 
     <!-- 模态框 -->
     <el-dialog :top="device === 'mobile' ? '0vh' : '15vh'"
@@ -148,7 +149,7 @@
                class="pageForm">
         <el-form-item label="姓名"
                       prop="name">
-          <el-input v-model.trim="temp.name" />
+          <el-input v-model.trim="temp.name"/>
         </el-form-item>
         <el-form-item label="性别"
                       prop="gender">
@@ -158,7 +159,7 @@
             <el-option v-for="item in genderTypeOptions"
                        :key="item.key"
                        :label="item.display_name"
-                       :value="item.display_name" />
+                       :value="item.display_name"/>
           </el-select>
         </el-form-item>
         <el-form-item label="职务"
@@ -169,7 +170,7 @@
             <el-option v-for="item in roleTypeOptions"
                        :key="item.key"
                        :label="item.display_name"
-                       :value="item.key" />
+                       :value="item.key"/>
           </el-select>
         </el-form-item>
         <el-form-item v-if="temp.role === 'shop'"
@@ -183,36 +184,36 @@
             <el-option v-for="(item, index) in shopList"
                        :key="index"
                        :label="item.shop_name"
-                       :value="item.shop_id" />
+                       :value="item.shop_id"/>
           </el-select>
         </el-form-item>
         <el-form-item label="账号"
                       prop="username">
           <el-input v-if="dialogStatus === 'create'"
                     v-model.trim="temp.username"
-                    :disabled="dialogStatus == 'update'" />
+                    :disabled="dialogStatus == 'update'"/>
           <span v-else>{{ temp.username }}</span>
         </el-form-item>
         <el-form-item :label="dialogStatus === 'create' ? '密码' : '修改密码'"
                       prop="password">
           <el-input v-model.trim="temp.password"
-                    show-password />
+                    show-password/>
         </el-form-item>
         <el-form-item label="手机"
                       prop="phone">
           <el-input type="number"
                     pattern="[0-9]*"
-                    v-model.trim="temp.phone" />
+                    v-model.trim="temp.phone"/>
         </el-form-item>
         <el-form-item label="地址"
                       prop="addr">
-          <el-input v-model="temp.addr" />
+          <el-input v-model="temp.addr"/>
         </el-form-item>
         <el-form-item label="身份证号"
                       prop="id_card">
           <el-input type="number"
                     pattern="[0-9]*"
-                    v-model.trim="temp.id_card" />
+                    v-model.trim="temp.id_card"/>
         </el-form-item>
       </el-form>
       <div slot="footer"
@@ -242,18 +243,18 @@ import {
   updateAccount,
   delAccount
 } from "@/api/account";
-import { fetchStore } from "@/api/store";
+import {fetchStore} from "@/api/store";
 import waves from "@/directive/waves"; // waves directive
-import { parseTime } from "@/utils";
+import {parseTime} from "@/utils";
 import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
 
 export default {
   name: "AccountPage",
-  components: { Pagination },
-  directives: { waves },
+  components: {Pagination},
+  directives: {waves},
   filters: {
     parseTime,
-    roleFilter (role) {
+    roleFilter(role) {
       const roleMap = {
         manager: "采购经理",
         buyer: "采购员",
@@ -263,7 +264,7 @@ export default {
       return roleMap[role];
     }
   },
-  data () {
+  data() {
     return {
       dialogFormVisible: false,
       shopList: null,
@@ -294,27 +295,27 @@ export default {
         shop_id: ""
       },
       genderTypeOptions: [
-        { key: "man", display_name: "男" },
-        { key: "lady", display_name: "女" }
+        {key: "man", display_name: "男"},
+        {key: "lady", display_name: "女"}
       ],
       roleTypeOptions: [
-        { key: "admin", display_name: "管理员" },
-        { key: "manager", display_name: "采购经理" },
-        { key: "buyer", display_name: "采购员" },
-        { key: "shop", display_name: "分店店员" }
+        {key: "admin", display_name: "管理员"},
+        {key: "manager", display_name: "采购经理"},
+        {key: "buyer", display_name: "采购员"},
+        {key: "shop", display_name: "分店店员"}
       ],
       sortOptions: [
-        { label: "按姓名升序", key: "+name" },
-        { label: "按姓名降序", key: "-name" }
+        {label: "按姓名升序", key: "+name"},
+        {label: "按姓名降序", key: "-name"}
       ],
       textMap: {
         update: "修改账号",
         create: "添加账号"
       },
       rules: {
-        name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
+        name: [{required: true, message: "请输入姓名", trigger: "blur"}],
         username: [
-          { required: true, message: "请输入账号", trigger: "blur" },
+          {required: true, message: "请输入账号", trigger: "blur"},
           {
             min: 3,
             max: 11,
@@ -364,14 +365,14 @@ export default {
     };
   },
   computed: {
-    userInfo () {
+    userInfo() {
       return {
         name: this.$store.getters.name,
         shop_name: this.$store.getters.shop_name, // 所属分店
         role: this.$store.getters.roles[0]
       };
     },
-    isPermit () {
+    isPermit() {
       // 是否允许增删改
       if (this.userInfo.role === "admin" || this.userInfo.role === "manager") {
         return true;
@@ -379,11 +380,11 @@ export default {
         return false;
       }
     },
-    device () {
+    device() {
       // mobile or desktop
       return this.$store.state.app.device;
     },
-    tableSettingsDrawerSize () {
+    tableSettingsDrawerSize() {
       if (this.device === "mobile") {
         return "60%";
       } else {
@@ -391,13 +392,13 @@ export default {
       }
     }
   },
-  created () {
+  created() {
     // 钩子函数
     this.getList();
     this.getShopList();
   },
   methods: {
-    getList () {
+    getList() {
       this.listLoading = true;
       fetchAccount(this.listQuery).then(res => {
         this.list = res.data;
@@ -405,7 +406,7 @@ export default {
         this.listLoading = false;
       });
     },
-    getShopList () {
+    getShopList() {
       if (!this.shopList) {
         fetchStore({
           limit: 99999
@@ -414,11 +415,11 @@ export default {
         });
       }
     },
-    handleFilter () {
+    handleFilter() {
       this.listQuery.page = 1;
       this.getList();
     },
-    resetTemp () {
+    resetTemp() {
       this.temp = {
         id: undefined,
         name: "",
@@ -433,7 +434,7 @@ export default {
         shop_id: ""
       };
     },
-    handleCreate () {
+    handleCreate() {
       this.resetTemp();
       this.dialogStatus = "create";
       this.dialogFormVisible = true;
@@ -441,7 +442,7 @@ export default {
         this.$refs["dataForm"].clearValidate();
       });
     },
-    createData () {
+    createData() {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
           if (this.requestLoading) {
@@ -476,7 +477,7 @@ export default {
         }
       });
     },
-    handleUpdate (row) {
+    handleUpdate(row) {
       this.temp = Object.assign({}, row); // copy obj
       this.dialogStatus = "update";
       this.dialogFormVisible = true;
@@ -484,7 +485,7 @@ export default {
         this.$refs["dataForm"].clearValidate();
       });
     },
-    updateData () {
+    updateData() {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
           if (this.requestLoading) {
@@ -522,8 +523,8 @@ export default {
         }
       });
     },
-    handleDelete (row, index) {
-      const params = { username: row.username };
+    handleDelete(row, index) {
+      const params = {username: row.username};
       delAccount(params).then(res => {
         if (res.status === "success") {
           this.$notify({
@@ -543,12 +544,12 @@ export default {
         }
       });
     },
-    cancelForm () {
+    cancelForm() {
       this.requestLoading = false;
       this.dialogFormVisible = false;
       clearTimeout(this.timer);
     },
-    openConfirmMsgBox (msg, row, index) {
+    openConfirmMsgBox(msg, row, index) {
       let boxMsg = "";
       if (msg === "delete") {
         boxMsg = "此操作将永久删除该记录, 是否继续?";
@@ -571,7 +572,7 @@ export default {
           });
         });
     },
-    shopSelect (shop_id) {
+    shopSelect(shop_id) {
       this.temp.shop_name = this.shopList.find(v => v.shop_id === shop_id).shop_name;
     }
   }

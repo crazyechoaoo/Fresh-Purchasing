@@ -14,7 +14,7 @@
         </el-row>
 
         <div class="title-container">
-          <h3 class="title">欢迎回到生鲜外采系统!</h3>
+          <h3 class="title">欢迎回到生鲜外采系统</h3>
         </div>
 
         <el-form-item prop="username">
@@ -28,7 +28,6 @@
             name="username"
             type="text"
             tabindex="1"
-            auto-complete="off"
           />
         </el-form-item>
 
@@ -44,7 +43,6 @@
             placeholder="请输入密码..."
             name="password"
             tabindex="2"
-            auto-complete="off"
             @keyup.enter.native="handleLogin"
           />
           <span class="show-pwd" @click="showPwd">
@@ -186,8 +184,15 @@ $cursor: #fff;
       caret-color: #6e707e;
 
       &:-webkit-autofill {
-        box-shadow: 0 0 0px 1000px $bg inset !important;
-        -webkit-text-fill-color: $cursor !important;
+      background: #e5e5e5 !important;
+      border: 0px !important;
+      -webkit-appearance: none !important;
+      border-radius: 0px !important;
+      padding: 12px 5px 12px 15px !important;
+      color: #6e707e !important;
+      height: 47px !important;
+      caret-color: #6e707e !important;
+      -webkit-text-fill-color: #6e707e !important;
       }
     }
   }
