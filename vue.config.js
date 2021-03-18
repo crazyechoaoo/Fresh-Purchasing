@@ -16,33 +16,19 @@ const port = process.env.port || process.env.npm_config_port || 9528 // dev port
 
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
-  /**
-   * You will need to set publicPath if you plan to deploy your site under a sub path,
-   * for example GitHub Pages. If you plan to deploy your site to https://foo.github.io/bar/,
-   * then publicPath should be set to "/bar/".
-   * In most cases please use '/' !!!
-   * Detail: https://cli.vuejs.org/config/#publicpath
-   */
   publicPath: './',
   outputDir: 'dist',
   assetsDir: 'static',
-  lintOnSave: false, //process.env.NODE_ENV === 'development',
+  lintOnSave: true,
   productionSourceMap: false,
   devServer: {
     port: port,
-    open: true,
+    open: false,
     overlay: {
       warnings: false,
       errors: true
     },
-    proxy: { // 配置跨域
-      [process.env.VUE_APP_BASE_API]: {
-        target: 'http://121.199.76.157',
-        changOrigin: true, // 跨域
-        pathRewrite: {
-          ['^' + process.env.VUE_APP_BASE_API]: ''
-        }
-      },
+    proxy: { // 开发环境下：通过代理服务器跨域
       '/api': {
         target: 'http://121.199.76.157',
         changOrigin: true, // 跨域
@@ -57,7 +43,7 @@ module.exports = {
     // it can be accessed in index.html to inject the correct title.
     name: name,
     resolve: {
-      alias: {
+      alias: { // 路径别名
         '@': resolve('src')
       }
     }

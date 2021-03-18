@@ -14,10 +14,6 @@ import {
 import {
   resetRouter
 } from '@/router'
-import {
-  data
-} from 'autoprefixer'
-import store from '..'
 
 const getDefaultState = () => {
   return {
@@ -46,20 +42,11 @@ const mutations = {
   SET_TOKEN: (state, token) => {
     state.token = token
   },
-  SET_INTRODUCTION: (state, introduction) => {
-    state.introduction = introduction
-  },
   SET_NAME: (state, name) => {
     state.name = name
   },
-  SET_AVATAR: (state, avatar) => {
-    state.avatar = avatar
-  },
   SET_ROLES: (state, roles) => {
     state.roles = roles
-  },
-  SET_ROLE: (state, role) => {
-    state.role = role
   },
   SET_SHOPID: (state, shop_id) => {
     state.shop_id = shop_id
@@ -69,9 +56,6 @@ const mutations = {
   },
   SET_GENDER: (state, gender) => {
     state.gender = gender
-  },
-  SET_PASSWORD: (state, password) => {
-    state.password = password
   },
   SET_ACCOUNT: (state, account) => {
     state.account = account
@@ -84,7 +68,7 @@ const mutations = {
   },
   SET_IDENTITY: (state, identity) => {
     state.identity = identity
-  },
+  }
 }
 
 const actions = {
@@ -101,9 +85,9 @@ const actions = {
         username: username.trim(),
         password: password
       }).then(response => {
-        if (response.status === 'success') {
+        if (response.status.toString() === 'success') {
           const {
-            user,
+            user
           } = response
           const data = user
           data.token = 'a-fake-token'
@@ -114,14 +98,14 @@ const actions = {
         }
         resolve(response)
       }).catch(error => {
-        // 登录验证失败
-        reject(res)
+        // 登录失败
+        reject(error)
       })
     })
   },
 
   update({
-    commit,
+    commit
   }, userInfo) {
     const username = userInfo.account
     const name = userInfo.name
@@ -164,12 +148,11 @@ const actions = {
     })
   },
 
-  // get user info => add Rounter
-  addRounter({
-    commit,
-    state
+  // get user info => add Router
+  addRouter({
+    commit
   }) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const data = getUserInfo()
       commit('SET_ROLES', [data.role])
       commit('SET_NAME', data.name)

@@ -1,6 +1,8 @@
 <template>
-  <div :class="className"
-       :style="{height:height,width:width}" />
+  <div
+    :class="className"
+    :style="{height:height,width:width}"
+  />
 </template>
 
 <script>
@@ -25,13 +27,13 @@ export default {
     },
     clerkData: Array
   },
-  data () {
+  data() {
     return {
       chart: null
     }
   },
   watch: {
-    clerkData () {
+    clerkData() {
       if (this.clerkData.length > 0) {
         this.$nextTick(() => {
           this.initChart()
@@ -39,7 +41,7 @@ export default {
       }
     }
   },
-  beforeDestroy () {
+  beforeDestroy() {
     if (!this.chart) {
       return
     }
@@ -47,7 +49,7 @@ export default {
     this.chart = null
   },
   methods: {
-    initChart () {
+    initChart() {
       this.chart = echarts.init(this.$el, 'macarons')
 
       this.chart.setOption({
@@ -71,7 +73,7 @@ export default {
               { value: this.clerkData[0], name: '管理员' },
               { value: this.clerkData[1], name: '采购经理' },
               { value: this.clerkData[2], name: '采购员' },
-              { value: this.clerkData[3], name: '分店店员' },
+              { value: this.clerkData[3], name: '分店店员' }
             ],
             animationEasing: 'cubicInOut',
             animationDuration: 2600

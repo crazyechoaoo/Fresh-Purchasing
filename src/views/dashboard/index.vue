@@ -1,21 +1,23 @@
 <template>
-  <div class="dashboard-container"
-       style="min-height:calc(94vh)">
-    <adminDashboard/>
+  <div
+    class="dashboard-container"
+    style="min-height:calc(94vh)"
+  >
+    <adminDashboard />
   </div>
 </template>
 
 <script>
-import {mapGetters} from "vuex";
-import adminDashboard from "./admin";
+import { mapGetters } from 'vuex'
+import adminDashboard from './admin'
 
 export default {
-  name: "Dashboard",
-  components: {adminDashboard},
+  name: 'Dashboard',
+  components: { adminDashboard },
   computed: {
-    ...mapGetters(["name"])
+    ...mapGetters(['name'])
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

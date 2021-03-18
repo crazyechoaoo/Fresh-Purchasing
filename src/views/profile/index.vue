@@ -44,7 +44,7 @@
                     label="所属分店"
                     prop="shop_name"
                   >
-                    <span>{{user.shop_name}}</span>
+                    <span>{{ user.shop_name }}</span>
                   </el-form-item>
                   <el-form-item label="账号" prop="account">
                     <!-- <el-input v-model.trim="user.account"
@@ -58,13 +58,13 @@
                     <el-input v-model.trim="user.password" show-password />
                   </el-form-item>
                   <el-form-item label="电话" prop="phone">
-                    <el-input type="number" pattern="[0-9]*" v-model.trim="user.phone" />
+                    <el-input v-model.trim="user.phone" type="number" pattern="[0-9]*" />
                   </el-form-item>
                   <el-form-item label="地址" prop="address">
                     <el-input v-model="user.address" />
                   </el-form-item>
                   <el-form-item label="身份证" prop="identity">
-                    <el-input type="number" pattern="[0-9]*" v-model.trim="user.identity" />
+                    <el-input v-model.trim="user.identity" type="number" pattern="[0-9]*" />
                   </el-form-item>
                   <el-form-item>
                     <el-button type="primary" style="width:100%" @click="submit">更新</el-button>
@@ -80,53 +80,50 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import UserCard from "./components/UserCard";
-import { updateUser } from "@/api/user";
+import { mapGetters } from 'vuex'
 
 export default {
-  name: "Profile",
-  components: { UserCard },
+  name: 'Profile',
   filters: {
     roleFilter(role) {
       const roleMap = {
-        manager: "采购经理",
-        buyer: "采购员",
-        shop: "分店店员",
-        admin: "管理员"
-      };
-      return roleMap[role];
+        manager: '采购经理',
+        buyer: '采购员',
+        shop: '分店店员',
+        admin: '管理员'
+      }
+      return roleMap[role]
     }
   },
   data() {
     return {
       user: {},
-      activeTab: "account",
+      activeTab: 'account',
       genderTypeOptions: [
-        { key: "man", value: "男" },
-        { key: "lady", value: "女" }
+        { key: 'man', value: '男' },
+        { key: 'lady', value: '女' }
       ],
       rules: {
-        name: [{ required: true, message: "请输入姓名.", trigger: "blur" }],
+        name: [{ required: true, message: '请输入姓名.', trigger: 'blur' }],
         account: [
-          { required: true, message: "请输入账号.", trigger: "blur" },
+          { required: true, message: '请输入账号.', trigger: 'blur' },
           {
             min: 3,
             max: 11,
-            message: "长度需在 3 到 11 个字符.",
-            trigger: "blur"
+            message: '长度需在 3 到 11 个字符.',
+            trigger: 'blur'
           }
         ],
         password: [
           {
             validator: (rule, value, callback) => {
               if (!/^[0-9a-zA-Z]*$/g.test(value)) {
-                callback(new Error("密码只能由数字和字母组成"));
+                callback(new Error('密码只能由数字和字母组成'))
               } else {
-                callback();
+                callback()
               }
             },
-            trigger: "blur"
+            trigger: 'blur'
           }
         ],
         identity: [
@@ -134,40 +131,40 @@ export default {
             validator: (rule, value, callback) => {
               if (value) {
                 if (value.length !== 18 || !/^[0-9]*$/g.test(value)) {
-                  callback(new Error("身份证号由18位数字组成"));
+                  callback(new Error('身份证号由18位数字组成'))
                 }
               }
-              callback();
+              callback()
             },
-            trigger: "blur"
+            trigger: 'blur'
           }
         ]
       }
-    };
+    }
   },
   computed: {
     ...mapGetters([
-      "name",
-      "avatar",
-      "roles",
-      "gender",
-      "phone",
-      "address",
-      "identity",
-      "account",
-      "shop_id",
-      "shop_name"
+      'name',
+      'avatar',
+      'roles',
+      'gender',
+      'phone',
+      'address',
+      'identity',
+      'account',
+      'shop_id',
+      'shop_name'
     ]),
     userInfo() {
       return {
         name: this.$store.getters.name,
         shop_name: this.$store.getters.shop_name, // 所属分店
         role: this.$store.getters.roles[0]
-      };
+      }
     }
   },
   created() {
-    this.getUser();
+    this.getUser()
   },
   methods: {
     getUser() {
@@ -182,35 +179,35 @@ export default {
         identity: this.identity,
         shop_id: this.shop_id,
         shop_name: this.shop_name,
-        password: ""
-      };
+        password: ''
+      }
     },
     submit() {
       this.$refs.userForm.validate(valid => {
         if (valid) {
           this.$store
-            .dispatch("user/update", this.user)
+            .dispatch('user/update', this.user)
             .then(res => {
-              if (res.status === "success") {
+              if (res.status === 'success') {
                 this.$message({
-                  message: "用户信息更新成功",
-                  type: "success",
+                  message: '用户信息更新成功',
+                  type: 'success',
                   duration: 2 * 1000
-                });
+                })
               } else {
                 this.$message({
-                  message: "用户信息更新失败",
-                  type: "error",
+                  message: '用户信息更新失败',
+                  type: 'error',
                   duration: 2 * 1000
-                });
+                })
               }
             })
-            .catch(() => {});
+            .catch(() => {})
         } else {
-          return false;
+          return false
         }
-      });
+      })
     }
   }
-};
+}
 </script>

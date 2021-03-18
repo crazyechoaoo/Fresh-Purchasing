@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import CountTo from "vue-count-to";
+import CountTo from 'vue-count-to'
 
 export default {
   components: {
@@ -86,15 +86,15 @@ export default {
         name: this.$store.getters.name,
         shop_name: this.$store.getters.shop_name, // 所属分店
         role: this.$store.getters.roles[0]
-      };
+      }
     }
   },
   methods: {
     handleSetLineChartData(type) {
-      this.$emit("handleSetLineChartData", type);
+      this.$emit('handleSetLineChartData', type)
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

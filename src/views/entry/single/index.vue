@@ -27,8 +27,8 @@
           />
         </el-select>
         <el-select
-          class="filter-item margin-l-10"
           v-model="listQuery.supplier"
+          class="filter-item margin-l-10"
           placeholder="全部供应商"
           :disabled="listQuery.history === 'false'"
           clearable
@@ -99,7 +99,6 @@
           @keyup.enter.native="handleFilter"
         />
         <el-button
-          v-waves
           class="filter-item margin-l-10"
           type="primary"
           icon="el-icon-search"
@@ -138,9 +137,9 @@
           />
         </el-select>
         <el-select
+          v-model="listQuery.supplier"
           class="filter-item margin-l-10"
           style="max-width: 220px"
-          v-model="listQuery.supplier"
           :disabled="listQuery.history === 'false'"
           clearable
           placeholder="全部供应商"
@@ -198,7 +197,6 @@
           @keyup.enter.native="handleFilter"
         />
         <el-button
-          v-waves
           class="filter-item margin-l-10"
           type="primary"
           icon="el-icon-search"
@@ -278,10 +276,9 @@
         <el-button @click="assignmentDialogVisible = false">取 消</el-button>
         <el-button
           type="primary"
-          @click="handleAssign"
           :disabled="!assignmentList || assignmentList.length === 0"
-          >确 定</el-button
-        >
+          @click="handleAssign"
+        >确 定</el-button>
       </span>
     </el-dialog>
 
@@ -389,14 +386,13 @@
           <el-button
             v-if="
               userInfo.role === 'manager' &&
-              row.buy_status === '已发配，等待采购'
+                row.buy_status === '已发配，等待采购'
             "
             type="danger"
             class="margin-l-10 margin-top-6"
             size="mini"
             @click="openConfirmMsgBox('invalid', row, $index)"
-            >作废</el-button
-          >
+          >作废</el-button>
           <el-button
             v-if="
               userInfo.role === 'buyer' && row.buy_status === '已发配，等待采购'
@@ -405,8 +401,7 @@
             size="mini"
             type="danger"
             @click="openConfirmMsgBox('finish', row, $index)"
-            >完成</el-button
-          >
+          >完成</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -462,8 +457,8 @@
             <el-form-item label="订购总数" prop="order_goods_num">
               <span>{{
                 temp.order_goods_num +
-                " " +
-                (temp.goods_order ? temp.goods_order[0].order_unit : "")
+                  " " +
+                  (temp.goods_order ? temp.goods_order[0].order_unit : "")
               }}</span>
             </el-form-item>
             <el-form-item label="当前进度" prop="buy_status">
@@ -493,10 +488,10 @@
                   <el-input
                     v-if="
                       userInfo.role === 'buyer' &&
-                      temp.buy_status !== '采购完成'
+                        temp.buy_status !== '采购完成'
                     "
-                    pattern="[0-9]*"
                     v-model="temp.buy_goods_num"
+                    pattern="[0-9]*"
                     type="number"
                     @change="computePrice"
                   />
@@ -508,11 +503,11 @@
                   <el-select
                     v-if="
                       userInfo.role === 'buyer' &&
-                      temp.buy_status !== '采购完成'
+                        temp.buy_status !== '采购完成'
                     "
                     v-model="temp.buy_goods_unit"
-                    @change="buy_goods_unitChange"
                     placeholder="请选择"
+                    @change="buy_goods_unitChange"
                   >
                     <el-option
                       v-for="item in unit_options"
@@ -531,10 +526,10 @@
                   <el-input
                     v-if="
                       userInfo.role === 'buyer' &&
-                      temp.buy_status !== '采购完成'
+                        temp.buy_status !== '采购完成'
                     "
-                    pattern="[0-9]*"
                     v-model="temp.total_money"
+                    pattern="[0-9]*"
                     type="number"
                     @change="computePrice"
                   >
@@ -580,10 +575,10 @@
                     <el-input
                       v-if="
                         userInfo.role === 'buyer' &&
-                        temp.buy_status !== '采购完成'
+                          temp.buy_status !== '采购完成'
                       "
-                      pattern="[0-9]*"
                       v-model="row.buy_num"
+                      pattern="[0-9]*"
                       type="number"
                       placeholder="0"
                       :disabled="temp.buy_goods_num <= 0"
@@ -610,8 +605,8 @@
             <el-form-item label="工作人员" prop="buyer">
               <span>{{
                 temp.manager +
-                "（下发人）、" +
-                (temp.name ? temp.name + "（采购员）" : "未分配采购员")
+                  "（下发人）、" +
+                  (temp.name ? temp.name + "（采购员）" : "未分配采购员")
               }}</span>
             </el-form-item>
             <el-form-item
@@ -658,8 +653,7 @@
               :loading="requestLoading"
               type="primary"
               @click="$refs.drawer.closeDrawer()"
-              >{{ requestLoading ? "提交中 ..." : "确 定" }}</el-button
-            >
+            >{{ requestLoading ? "提交中 ..." : "确 定" }}</el-button>
           </el-row>
         </div>
       </div>
@@ -692,8 +686,8 @@
         <el-form-item label="订购总数" prop="order_goods_num">
           <span>{{
             temp.order_goods_num +
-            " " +
-            (temp.goods_order ? temp.goods_order[0].order_unit : "")
+              " " +
+              (temp.goods_order ? temp.goods_order[0].order_unit : "")
           }}</span>
         </el-form-item>
         <el-form-item label="当前进度" prop="buy_status">
@@ -722,8 +716,8 @@
                 v-if="
                   userInfo.role === 'buyer' && temp.buy_status !== '采购完成'
                 "
-                pattern="[0-9]*"
                 v-model.trim="temp.buy_goods_num"
+                pattern="[0-9]*"
                 onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
                 onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
                 type="number"
@@ -739,8 +733,8 @@
                   userInfo.role === 'buyer' && temp.buy_status !== '采购完成'
                 "
                 v-model="temp.buy_goods_unit"
-                @change="buy_goods_unitChange"
                 placeholder="请选择"
+                @change="buy_goods_unitChange"
               >
                 <el-option
                   v-for="item in unit_options"
@@ -760,8 +754,8 @@
                 v-if="
                   userInfo.role === 'buyer' && temp.buy_status !== '采购完成'
                 "
-                pattern="[0-9]*"
                 v-model.trim="temp.total_money"
+                pattern="[0-9]*"
                 type="number"
                 @change="computePrice"
               >
@@ -807,8 +801,8 @@
                   v-if="
                     userInfo.role === 'buyer' && temp.buy_status !== '采购完成'
                   "
-                  pattern="[0-9]*"
                   v-model="row.buy_num"
+                  pattern="[0-9]*"
                   type="number"
                   onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
                   onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
@@ -837,8 +831,8 @@
         <el-form-item label="工作人员" prop="buyer">
           <span>{{
             temp.manager +
-            "（下发人）、" +
-            (temp.name ? temp.name + "（采购员）" : "未分配采购员")
+              "（下发人）、" +
+              (temp.name ? temp.name + "（采购员）" : "未分配采购员")
           }}</span>
         </el-form-item>
         <el-form-item
@@ -1078,21 +1072,19 @@ import {
   fetchAllbuyer,
   fetchScheme,
   finishSingle,
-  setInvalidSingle,
-} from "@/api/single";
-import waves from "@/directive/waves"; // waves directive
-import { parseTime, resetPagination } from "@/utils";
-import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
-import { fetchProvider } from "@/api/provider";
-import { fetchStore } from "@/api/store";
-import html2canvas from "html2canvas";
+  setInvalidSingle
+} from '@/api/single'
+import { parseTime, resetPagination } from '@/utils'
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import { fetchProvider } from '@/api/provider'
+import { fetchStore } from '@/api/store'
+import html2canvas from 'html2canvas'
 
 export default {
-  name: "SinglePage",
+  name: 'SinglePage',
   components: { Pagination },
-  directives: { waves },
   filters: {
-    parseTime,
+    parseTime
   },
   data() {
     return {
@@ -1101,11 +1093,11 @@ export default {
       imageWrapperDialogVisible: false,
       assignmentList: null,
       assignmentListLoading: false,
-      commentTextArea: "",
+      commentTextArea: '',
       tableSettingsDrawerVisible: false,
       formDrawerVisible: false,
       dialogFormVisible: false,
-      dialogStatus: "",
+      dialogStatus: '',
       requestLoading: false,
       downloadLoading: false,
       timer: null,
@@ -1121,82 +1113,82 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
-        history: "false",
+        history: 'false',
         search: undefined,
         timeBegin: undefined,
         timeEnd: undefined,
         supplier: undefined,
-        sort: "+id", // 升序排序
+        sort: '+id' // 升序排序
       },
       temp: {
         single_order_id: undefined,
         start_time: null, // 日期
         goods_id: undefined,
-        goods_type: "",
-        goods_name: "", // 货品名称
-        manager: "", // 采购经理
-        buyer_username: "", // 采购员
-        name: "", // 采购员
-        supplier_id: "", // 采购商
-        supplier_name: "", // 采购商
-        buy_goods_num: "", // 采购数量
-        order_goods_num: "", // 订购数量
-        buy_goods_price: "", // 成交单价
-        total_money: "", // 总额
-        buy_status: "", // 进度
-        buyer_note: "", // 备注
-        manager_note: "", // 备注
-        rec_unit: "", // 订购单位
-        sellUnit: "", // 销售单位
-        buy_goods_unit: "", // 采购单位
-        goods_order: "", // 分配表
+        goods_type: '',
+        goods_name: '', // 货品名称
+        manager: '', // 采购经理
+        buyer_username: '', // 采购员
+        name: '', // 采购员
+        supplier_id: '', // 采购商
+        supplier_name: '', // 采购商
+        buy_goods_num: '', // 采购数量
+        order_goods_num: '', // 订购数量
+        buy_goods_price: '', // 成交单价
+        total_money: '', // 总额
+        buy_status: '', // 进度
+        buyer_note: '', // 备注
+        manager_note: '', // 备注
+        rec_unit: '', // 订购单位
+        sellUnit: '', // 销售单位
+        buy_goods_unit: '', // 采购单位
+        goods_order: '' // 分配表
       },
       sortOptions: [
-        { label: "按单号升序", key: "+id" },
-        { label: "按单号降序", key: "-id" },
+        { label: '按单号升序', key: '+id' },
+        { label: '按单号降序', key: '-id' }
       ],
       historyOptions: [
-        { label: "历史采购单", key: "true" },
-        { label: "未完成采购单", key: "false" },
+        { label: '历史采购单', key: 'true' },
+        { label: '未完成采购单', key: 'false' }
       ],
-      TableCellStyle: { padding: "2px 0" },
-      TableHeaderStyle: { padding: "1px 0" },
+      TableCellStyle: { padding: '2px 0' },
+      TableHeaderStyle: { padding: '1px 0' },
       unit_options: [
         {
-          value: "half_kilo",
-          label: "斤",
+          value: 'half_kilo',
+          label: '斤'
         },
         {
-          value: "kilo",
-          label: "公斤",
+          value: 'kilo',
+          label: '公斤'
         },
         {
-          value: "piece",
-          label: "件",
-        },
+          value: 'piece',
+          label: '件'
+        }
       ],
       textMap: {
-        update: "管理单品采购单",
-        create: "添加单品采购单",
+        update: '管理单品采购单',
+        create: '添加单品采购单'
       },
       rules: {
         total_money: [
           {
             validator: (rule, value, callback) => {
-              if (value < 0) callback(new Error("总金额不能为负"));
-              callback();
+              if (value < 0) callback(new Error('总金额不能为负'))
+              callback()
             },
-            trigger: "blur",
-          },
+            trigger: 'blur'
+          }
         ],
         buy_goods_num: [
           {
             validator: (rule, value, callback) => {
-              if (value < 0) callback(new Error("总采购数量不能为负"));
-              callback();
+              if (value < 0) callback(new Error('总采购数量不能为负'))
+              callback()
             },
-            trigger: "blur",
-          },
+            trigger: 'blur'
+          }
         ],
         goods_order: [
           {
@@ -1204,17 +1196,17 @@ export default {
               // var total = 0;
               for (const item of value) {
                 if (item.buy_num < 0) {
-                  callback(new Error("采购数量不能为负"));
+                  callback(new Error('采购数量不能为负'))
                 }
                 // total += Number(item.buy_num);
               }
               // if (Number(this.temp.buy_goods_num) !== total)
               //   callback(new Error("总采购量与分店采购量之和不符"));
-              callback();
+              callback()
             },
-            trigger: "commit",
-          },
-        ],
+            trigger: 'commit'
+          }
+        ]
       },
       showSettings: {
         showId: true,
@@ -1224,488 +1216,488 @@ export default {
         showBuyer: true,
         showProvider: true,
         showStatus: true,
-        showAction: true,
-      },
-    };
+        showAction: true
+      }
+    }
   },
   computed: {
     device() {
       // mobile or desktop
-      return this.$store.state.app.device;
+      return this.$store.state.app.device
     },
     userInfo() {
       return {
         name: this.$store.getters.name,
         affiliation: this.$store.getters.shop_name, // 所属分店
-        role: this.$store.getters.roles[0],
-      };
+        role: this.$store.getters.roles[0]
+      }
     },
     tableSettingsDrawerSize() {
-      if (this.device === "mobile") {
-        return "60%";
+      if (this.device === 'mobile') {
+        return '60%'
       } else {
-        return "25%";
+        return '25%'
       }
     },
     haveAssign() {
-      if (this.temp.status === "订单已生成，等待发布") {
-        return false;
+      if (this.temp.status === '订单已生成，等待发布') {
+        return false
       } else {
-        return true;
+        return true
       }
     },
     labelPosition() {
-      if (this.device === "mobile") {
-        return "top";
+      if (this.device === 'mobile') {
+        return 'top'
       } else {
-        return "left";
+        return 'left'
       }
     },
     assignmentDialogWidth() {
-      if (this.device === "mobile") {
-        return "90%";
+      if (this.device === 'mobile') {
+        return '90%'
       } else {
-        return "40%";
+        return '40%'
       }
-    },
+    }
   },
   created() {
     // 钩子函数
-    this.getList();
-    this.getBuyList();
-    this.getProviderList();
-    this.getScheme();
-    this.getShopList();
-    if (!window.sessionStorage.getItem("single")) {
-      this.setShowSettings();
+    this.getList()
+    this.getBuyList()
+    this.getProviderList()
+    this.getScheme()
+    this.getShopList()
+    if (!window.sessionStorage.getItem('single')) {
+      this.setShowSettings()
     } else {
       this.showSettings = JSON.parse(
-        window.sessionStorage.getItem("single")
-      );
+        window.sessionStorage.getItem('single')
+      )
     }
   },
   mounted() {
-    resetPagination();
+    resetPagination()
   },
   methods: {
     setShowSettings() {
       window.sessionStorage.setItem(
-        "single",
+        'single',
         JSON.stringify(this.showSettings)
-      );
+      )
     },
     getList() {
-      this.listLoading = true;
+      this.listLoading = true
       fetchSingle(this.listQuery).then((res) => {
-        this.list = res.data;
-        this.total = res.total;
-        this.listLoading = false;
-      });
+        this.list = res.data
+        this.total = res.total
+        this.listLoading = false
+      })
     },
     getBuyList() {
-      if (!this.buyerList && this.userInfo.role === "manager") {
+      if (!this.buyerList && this.userInfo.role === 'manager') {
         fetchAllbuyer({}).then((res) => {
-          if (res.status === "success") {
-            this.buyerList = res.data;
+          if (res.status === 'success') {
+            this.buyerList = res.data
           } else {
             this.$notify({
-              title: "失败",
-              message: res.msg || "获取采购员失败，原因未知",
-              type: "error",
-              duration: 2000,
-            });
+              title: '失败',
+              message: res.msg || '获取采购员失败，原因未知',
+              type: 'error',
+              duration: 2000
+            })
           }
-        });
+        })
       }
     },
     getProviderList() {
       if (!this.providerList) {
         fetchProvider({
-          limit: 99999,
+          limit: 99999
         }).then((res) => {
-          this.providerList = res.data;
-        });
+          this.providerList = res.data
+        })
       }
     },
     getShopList() {
       if (!this.storeList) {
         fetchStore({
-          limit: 99999,
+          limit: 99999
         }).then((res) => {
-          this.storeList = res.data;
-        });
+          this.storeList = res.data
+        })
       }
     },
     getScheme() {
       // get 分配方案
-      if (!this.scheme && this.userInfo.role == "manager") {
+      if (!this.scheme && this.userInfo.role === 'manager') {
         fetchScheme({
-          limit: 99999,
+          limit: 99999
         }).then((res) => {
-          this.scheme = res.data;
-        });
+          this.scheme = res.data
+        })
       }
     },
     handleFilter() {
-      this.listQuery.page = 1;
-      this.getList();
+      this.listQuery.page = 1
+      this.getList()
     },
     resetTemp() {
       this.temp = {
         single_order_id: undefined,
         start_time: null, // 日期
         goods_id: undefined,
-        goods_type: "",
-        goods_name: "", // 货品名称
-        manager: "", // 采购经理
-        buyer_username: "", // 采购员
-        name: "", // 采购员
-        supplier_id: "", // 采购商
-        supplier_name: "", // 采购商
-        buy_goods_num: "", // 采购数量
-        order_goods_num: "", // 订购数量
-        buy_goods_price: "", // 成交单价
-        total_money: "", // 总额
-        buy_status: "", // 进度
-        buyer_note: "", // 备注
-        manager_note: "", // 备注
-        rec_unit: "", // 订购单位
-        sellUnit: "", // 销售单位
-        buy_goods_unit: "", // 采购单位
-        goods_order: "", // 表
-      };
+        goods_type: '',
+        goods_name: '', // 货品名称
+        manager: '', // 采购经理
+        buyer_username: '', // 采购员
+        name: '', // 采购员
+        supplier_id: '', // 采购商
+        supplier_name: '', // 采购商
+        buy_goods_num: '', // 采购数量
+        order_goods_num: '', // 订购数量
+        buy_goods_price: '', // 成交单价
+        total_money: '', // 总额
+        buy_status: '', // 进度
+        buyer_note: '', // 备注
+        manager_note: '', // 备注
+        rec_unit: '', // 订购单位
+        sellUnit: '', // 销售单位
+        buy_goods_unit: '', // 采购单位
+        goods_order: '' // 表
+      }
     },
     handleCreate() {
-      this.resetTemp();
-      this.dialogStatus = "create";
-      this.dialogFormVisible = true;
-      if (this.device === "desktop") {
-        this.dialogFormVisible = true;
+      this.resetTemp()
+      this.dialogStatus = 'create'
+      this.dialogFormVisible = true
+      if (this.device === 'desktop') {
+        this.dialogFormVisible = true
         this.$nextTick(() => {
-          this.$refs["dataForm"].clearValidate();
-        });
+          this.$refs['dataForm'].clearValidate()
+        })
       } else {
-        this.formDrawerVisible = true;
+        this.formDrawerVisible = true
       }
     },
     createData(done) {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           if (this.requestLoading) {
-            return;
+            return
           }
-          this.requestLoading = true;
+          this.requestLoading = true
           createSingle(this.temp).then((res) => {
-            if (res.status === "success") {
-              if (this.device === "mobile") {
-                done();
+            if (res.status === 'success') {
+              if (this.device === 'mobile') {
+                done()
               } else {
-                this.dialogFormVisible = false;
+                this.dialogFormVisible = false
               }
               setTimeout(() => {
                 // 动画关闭需要一定的时间
-                this.requestLoading = false;
-              }, 400);
-              this.getList();
+                this.requestLoading = false
+              }, 400)
+              this.getList()
               this.$notify({
-                title: "成功",
-                message: "采购单创建成功",
-                type: "success",
-                duration: 2000,
-              });
+                title: '成功',
+                message: '采购单创建成功',
+                type: 'success',
+                duration: 2000
+              })
             } else {
-              this.requestLoading = false;
+              this.requestLoading = false
               this.$notify({
-                title: "失败",
-                message: res.msg || "采购单创建失败,原因未知",
-                type: "error",
-                duration: 2000,
-              });
+                title: '失败',
+                message: res.msg || '采购单创建失败,原因未知',
+                type: 'error',
+                duration: 2000
+              })
             }
-          });
+          })
         }
-      });
+      })
     },
     handleUpdate(row) {
       // deep copy obj
-      const goods_order = [];
+      const goods_order = []
       row.goods_order.forEach((item) => {
-        goods_order.push(Object.assign({}, item));
-      });
-      this.temp = Object.assign({}, row, { goods_order });
+        goods_order.push(Object.assign({}, item))
+      })
+      this.temp = Object.assign({}, row, { goods_order })
       //
       if (this.temp.buy_goods_num <= 0) {
-        this.temp.buy_goods_num = this.temp.order_goods_num;
+        this.temp.buy_goods_num = this.temp.order_goods_num
         this.temp.goods_order.forEach((v) => {
-          v.buy_num = v.order_num;
-        });
+          v.buy_num = v.order_num
+        })
       }
       //
       this.storeList.forEach((i) => {
-        i.order_num = "";
-        i.order_unit = "";
-      });
+        i.order_num = ''
+        i.order_unit = ''
+      })
       this.temp.goods_order.forEach((v) => {
         this.storeList.forEach((j) => {
-          if (j.shop_id == v.shop_id) {
-            if (typeof j.order_num === "number") j.order_num += v.order_num;
-            else j.order_num = v.order_num;
-            j.order_unit = v.order_unit;
+          if (j.shop_id === v.shop_id) {
+            if (typeof j.order_num === 'number') j.order_num += v.order_num
+            else j.order_num = v.order_num
+            j.order_unit = v.order_unit
           }
-        });
-      });
+        })
+      })
       //
-      this.dialogStatus = "update";
-      if (this.device === "desktop") {
-        this.dialogFormVisible = true;
+      this.dialogStatus = 'update'
+      if (this.device === 'desktop') {
+        this.dialogFormVisible = true
         this.$nextTick(() => {
-          this.$refs["dataForm"].clearValidate();
-        });
+          this.$refs['dataForm'].clearValidate()
+        })
       } else {
-        this.formDrawerVisible = true;
+        this.formDrawerVisible = true
       }
     },
     updateData(done) {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           if (this.requestLoading) {
-            return;
+            return
           }
-          this.requestLoading = true;
-          const tempData = Object.assign({}, this.temp);
-          tempData.buy_goods_num = Number(tempData.buy_goods_num);
-          tempData.total_money = Number(tempData.total_money);
+          this.requestLoading = true
+          const tempData = Object.assign({}, this.temp)
+          tempData.buy_goods_num = Number(tempData.buy_goods_num)
+          tempData.total_money = Number(tempData.total_money)
           updateSingle(tempData).then((res) => {
-            if (res.status === "success") {
-              //修改id
+            if (res.status === 'success') {
+              // 修改id
               const index = this.list.findIndex(
                 (v) => v.single_order_id === this.temp.single_order_id
-              );
-              this.list.splice(index, 1, this.temp);
-              if (this.device === "mobile") {
-                done();
+              )
+              this.list.splice(index, 1, this.temp)
+              if (this.device === 'mobile') {
+                done()
               } else {
-                this.dialogFormVisible = false;
+                this.dialogFormVisible = false
               }
               setTimeout(() => {
                 // 动画关闭需要一定的时间
-                this.requestLoading = false;
-              }, 400);
+                this.requestLoading = false
+              }, 400)
               this.$notify({
-                title: "成功",
-                message: "采购单修改成功",
-                type: "success",
-                duration: 2000,
-              });
+                title: '成功',
+                message: '采购单修改成功',
+                type: 'success',
+                duration: 2000
+              })
             } else {
-              this.requestLoading = false;
+              this.requestLoading = false
               this.$notify({
-                title: "失败",
-                message: res.msg || "采购单修改失败,原因未知",
-                type: "error",
-                duration: 2000,
-              });
+                title: '失败',
+                message: res.msg || '采购单修改失败,原因未知',
+                type: 'error',
+                duration: 2000
+              })
             }
-          });
+          })
         }
-      });
+      })
     },
     handleDelete(row, index) {
       // 这里要修改id名
-      const params = { single_order_id: row.single_order_id }; // 删除单号为id的订购单
+      const params = { single_order_id: row.single_order_id } // 删除单号为id的订购单
       delSingle(params).then((res) => {
-        if (res.status === "success") {
+        if (res.status === 'success') {
           this.$notify({
-            title: "成功",
-            message: "采购单删除成功",
-            type: "success",
-            duration: 2000,
-          });
-          this.list.splice(index, 1);
+            title: '成功',
+            message: '采购单删除成功',
+            type: 'success',
+            duration: 2000
+          })
+          this.list.splice(index, 1)
         } else {
           this.$notify({
-            title: "失败",
-            message: res.msg || "采购单删除失败,原因未知",
-            type: "error",
-            duration: 2000,
-          });
+            title: '失败',
+            message: res.msg || '采购单删除失败,原因未知',
+            type: 'error',
+            duration: 2000
+          })
         }
-      });
+      })
     },
     handleFinish(row, index) {
-      const params = { single_order_id: row.single_order_id };
+      const params = { single_order_id: row.single_order_id }
       finishSingle(params).then((res) => {
-        if (res.status === "success") {
-          this.getList();
+        if (res.status === 'success') {
+          this.getList()
           this.$notify({
-            title: "成功",
-            message: "采购单确认完成",
-            type: "success",
-            duration: 2000,
-          });
+            title: '成功',
+            message: '采购单确认完成',
+            type: 'success',
+            duration: 2000
+          })
         } else {
           this.$notify({
-            title: "失败",
-            message: res.msg || "采购单确认完成失败,原因未知",
-            type: "error",
-            duration: 2000,
-          });
+            title: '失败',
+            message: res.msg || '采购单确认完成失败,原因未知',
+            type: 'error',
+            duration: 2000
+          })
         }
-      });
+      })
     },
     handleSetInvalid(row, index) {
-      const params = { single_order_id: row.single_order_id };
+      const params = { single_order_id: row.single_order_id }
       setInvalidSingle(params).then((res) => {
-        if (res.status === "success") {
-          this.getList();
+        if (res.status === 'success') {
+          this.getList()
           this.$notify({
-            title: "成功",
-            message: "采购单已被作废",
-            type: "success",
-            duration: 2000,
-          });
+            title: '成功',
+            message: '采购单已被作废',
+            type: 'success',
+            duration: 2000
+          })
         } else {
           this.$notify({
-            title: "失败",
-            message: res.msg || "采购单未能作废",
-            type: "error",
-            duration: 2000,
-          });
+            title: '失败',
+            message: res.msg || '采购单未能作废',
+            type: 'error',
+            duration: 2000
+          })
         }
-      });
+      })
     },
     handlePrint() {
-      window.pageYoffset = 0;
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
-      this.imageWrapperDialogVisible = true;
+      window.pageYoffset = 0
+      document.documentElement.scrollTop = 0
+      document.body.scrollTop = 0
+      this.imageWrapperDialogVisible = true
       setTimeout((v) => {
         html2canvas(this.$refs.imageWrapper).then((canvas) => {
-          var a = document.createElement("a");
-          a.href = canvas.toDataURL("image/png");
-          a.download = "单品采购单";
-          a.click();
-          this.imageWrapperDialogVisible = false;
-        });
-      }, 600);
+          var a = document.createElement('a')
+          a.href = canvas.toDataURL('image/png')
+          a.download = '单品采购单'
+          a.click()
+          this.imageWrapperDialogVisible = false
+        })
+      }, 600)
     },
-    handleSchemeSelect: function (item) {
-      this.assignmentList.forEach((j) => (j.buyer_username = ""));
+    handleSchemeSelect: function(item) {
+      this.assignmentList.forEach((j) => (j.buyer_username = ''))
       item.buy_plan_buyer.forEach((i) => {
         this.assignmentList.forEach((j) => {
           // delete j.buyer_username
           if (j.goods_id === i.goods_id) {
-            j.buyer_username = i.buyer_username;
+            j.buyer_username = i.buyer_username
           }
-        });
-      });
+        })
+      })
     },
     cancelForm() {
-      this.requestLoading = false;
-      this.dialogFormVisible = false;
-      this.formDrawerVisible = false;
-      clearTimeout(this.timer);
+      this.requestLoading = false
+      this.dialogFormVisible = false
+      this.formDrawerVisible = false
+      clearTimeout(this.timer)
     },
     formDrawerOpen() {
       this.$nextTick(() => {
-        this.$refs["dataForm"].clearValidate();
-      });
+        this.$refs['dataForm'].clearValidate()
+      })
     },
     tableItemDel(row, index) {
-      this.temp.table.splice(index, 1);
+      this.temp.table.splice(index, 1)
     },
     computePrice(value) {
       if (this.temp.buy_goods_num && this.temp.total_money) {
         this.temp.buy_goods_price =
-          this.temp.total_money / this.temp.buy_goods_num;
+          this.temp.total_money / this.temp.buy_goods_num
       } else {
-        this.temp.buy_goods_price = null;
+        this.temp.buy_goods_price = null
       }
     },
     handleAssign() {
       assignSingle(this.assignmentList).then((res) => {
-        if (res.status === "success") {
-          this.assignmentDialogVisible = false;
-          this.getList();
+        if (res.status === 'success') {
+          this.assignmentDialogVisible = false
+          this.getList()
           this.$notify({
-            title: "成功",
-            message: "分配成功",
-            type: "success",
-            duration: 2000,
-          });
+            title: '成功',
+            message: '分配成功',
+            type: 'success',
+            duration: 2000
+          })
         } else {
           this.$notify({
-            title: "失败",
-            message: res.msg || "分配失败,原因未知",
-            type: "error",
-            duration: 2000,
-          });
+            title: '失败',
+            message: res.msg || '分配失败,原因未知',
+            type: 'error',
+            duration: 2000
+          })
         }
-      });
+      })
     },
     openAssignmentDialog() {
-      this.assignmentDialogVisible = true;
-      this.assignmentListLoading = true;
+      this.assignmentDialogVisible = true
+      this.assignmentListLoading = true
       fetchSingle({
-        limit: 999999,
+        limit: 999999
       }).then((res) => {
-        this.assignmentList = [];
+        this.assignmentList = []
         res.data.forEach((item) => {
           if (!item.buyer_username) {
             this.assignmentList.push({
               goods_id: item.goods_id,
               goods_name: item.goods_name,
               single_order_id: item.single_order_id,
-              buyer_username: item.buyer_username,
-            });
+              buyer_username: item.buyer_username
+            })
           }
-        });
-        this.assignmentListLoading = false;
-      });
+        })
+        this.assignmentListLoading = false
+      })
     },
     providerSelected(value) {
       this.temp.supplier_name = this.providerList.find(
         (v) => v.id === value
-      ).supplier_name;
+      ).supplier_name
     },
     buy_goods_unitChange(value) {
       this.temp.goods_order.forEach((v) => {
-        v.buy_unit = value;
-      });
+        v.buy_unit = value
+      })
     },
     openConfirmMsgBox(msg, row, index) {
-      let boxMsg = "";
-      if (msg === "delete") {
-        boxMsg = "此操作将永久删除该记录, 是否继续?";
-      } else if (msg === "finish") {
-        boxMsg = "此操作将确认该采购单已经完成, 是否继续?";
-      } else if (msg === "invalid") {
-        boxMsg = "此操作将作废该采购单, 是否继续?";
+      let boxMsg = ''
+      if (msg === 'delete') {
+        boxMsg = '此操作将永久删除该记录, 是否继续?'
+      } else if (msg === 'finish') {
+        boxMsg = '此操作将确认该采购单已经完成, 是否继续?'
+      } else if (msg === 'invalid') {
+        boxMsg = '此操作将作废该采购单, 是否继续?'
       }
-      this.$confirm(boxMsg, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-        center: true,
+      this.$confirm(boxMsg, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true
       })
         .then(() => {
-          if (msg === "delete") {
-            this.handleDelete(row, index);
-          } else if (msg === "finish") {
-            this.handleFinish(row, index);
-          } else if (msg === "invalid") {
-            this.handleSetInvalid(row, index);
+          if (msg === 'delete') {
+            this.handleDelete(row, index)
+          } else if (msg === 'finish') {
+            this.handleFinish(row, index)
+          } else if (msg === 'invalid') {
+            this.handleSetInvalid(row, index)
           }
         })
         .catch(() => {
           this.$message({
-            type: "info",
-            message: "已取消操作",
-          });
-        });
-    },
-  },
-};
+            type: 'info',
+            message: '已取消操作'
+          })
+        })
+    }
+  }
+}
 </script>
 
 <style scoped>

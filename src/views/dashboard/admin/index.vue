@@ -9,7 +9,7 @@
         width="50%"
         style="min-width: 310px"
         src="@/assets/title/title.png"
-      />
+      >
     </div>
 
     <el-row v-if="userInfo.role === 'manager'" :gutter="30" class="panel-group">
@@ -245,10 +245,10 @@
     >
       <el-col :xs="24" :sm="24" :lg="24">
         <div class="chart-wrapper">
-          <bar-chart v-if="userInfo.role === 'manager'" v-bind:total="total" />
+          <bar-chart v-if="userInfo.role === 'manager'" :total="total" />
           <bar-chart
             v-if="userInfo.role === 'shop'"
-            v-bind:total="
+            :total="
               shop_total.length === 0 ? [] : shop_total[userInfo.shop_id]
             "
           />
@@ -258,7 +258,7 @@
     <el-row v-if="userInfo.role === 'admin'" :gutter="32">
       <el-col :xs="24" :sm="24" :lg="24">
         <div class="chart-wrapper">
-          <pie-chart v-bind:clerkData="clerkData" />
+          <pie-chart :clerk-data="clerkData" />
         </div>
       </el-col>
     </el-row>
@@ -333,7 +333,7 @@
       :title="detailTitle"
       :visible.sync="detailVisible"
       direction="ltr"
-      :withHeader="false"
+      :with-header="false"
       :size="tableSettingsDrawerSize"
     >
       <div class="tableSettingsDrawer">
@@ -363,14 +363,9 @@
 </template>
 
 <script>
-import CountTo from "vue-count-to";
-import LineChart from "./components/LineChart";
-import RaddarChart from "./components/RaddarChart";
-import PieChart from "./components/PieChart";
-import BarChart from "./components/BarChart";
-import TransactionTable from "./components/TransactionTable";
-import TodoList from "./components/TodoList";
-import BoxCard from "./components/BoxCard";
+import CountTo from 'vue-count-to'
+import PieChart from './components/PieChart'
+import BarChart from './components/BarChart'
 import {
   fetchTotal,
   fetchTodoNum,
@@ -379,26 +374,21 @@ import {
   fetchBuyingManNum,
   fetchWaitingShopNum,
   fetchOrderNum,
-  fetchGoodsNums,
-} from "@/api/stat";
-import { fetchAccount } from "@/api/account";
+  fetchGoodsNums
+} from '@/api/stat'
+import { fetchAccount } from '@/api/account'
 
 export default {
-  name: "DashboardAdmin",
+  name: 'DashboardAdmin',
   components: {
-    LineChart,
-    RaddarChart,
     PieChart,
     BarChart,
-    TransactionTable,
-    TodoList,
-    BoxCard,
-    CountTo,
+    CountTo
   },
   data() {
     return {
-      detailTitle: "",
-      detailSum: "",
+      detailTitle: '',
+      detailSum: '',
       detailVisible: false,
       detailTemp: [],
       total: [],
@@ -413,27 +403,8 @@ export default {
       buyTotal: 0,
       buyingManNum: 0,
       waitingShopNum: 0,
-      TableCellStyle: { padding: "2px 0" },
-      TableHeaderStyle: { padding: "10px 0" },
-    };
-  },
-  created() {
-    if (this.userInfo.role === "admin") {
-      this.getAllClerk();
-      return;
-    }
-    this.getTodoNum();
-    this.getBuyTotal();
-    this.getOrderNum();
-    this.getGoodsNums();
-    this.getTotal();
-    if (this.userInfo.role === "buyer") return;
-    this.day = new Date().getDay();
-
-    if (this.userInfo.role === "shop") this.getClerkNum();
-    if (this.userInfo.role === "manager") {
-      this.getBuyingManNum();
-      this.getWaitingShopNum();
+      TableCellStyle: { padding: '2px 0' },
+      TableHeaderStyle: { padding: '10px 0' }
     }
   },
   computed: {
@@ -442,130 +413,150 @@ export default {
         name: this.$store.getters.name,
         shop_name: this.$store.getters.shop_name, // 所属分店
         shop_id: this.$store.getters.shop_id,
-        role: this.$store.getters.roles[0],
-      };
+        role: this.$store.getters.roles[0]
+      }
     },
     device() {
       // mobile or desktop
-      return this.$store.state.app.device;
+      return this.$store.state.app.device
     },
     tableSettingsDrawerSize() {
-      if (this.device === "mobile") {
-        return "70%";
+      if (this.device === 'mobile') {
+        return '70%'
       } else {
-        return "30%";
+        return '30%'
       }
-    },
+    }
+  },
+  created() {
+    if (this.userInfo.role === 'admin') {
+      this.getAllClerk()
+      return
+    }
+    this.getTodoNum()
+    this.getBuyTotal()
+    this.getOrderNum()
+    this.getGoodsNums()
+    this.getTotal()
+    if (this.userInfo.role === 'buyer') return
+    this.day = new Date().getDay()
+
+    if (this.userInfo.role === 'shop') this.getClerkNum()
+    if (this.userInfo.role === 'manager') {
+      this.getBuyingManNum()
+      this.getWaitingShopNum()
+    }
   },
   methods: {
     getTotal() {
       fetchTotal().then((res) => {
-        this.adjust(res.total);
-        this.total = res.total;
+        this.adjust(res.total)
+        this.total = res.total
         if (res.shop_total) {
-          for (const [key, value] of Object.entries(res.shop_total)) {
-            this.adjust(value);
+          // eslint-disable-next-line
+          for (const [_, value] of Object.entries(res.shop_total)) {
+            this.adjust(value)
           }
-          this.shop_total = res.shop_total;
+          this.shop_total = res.shop_total
         }
-      });
+      })
     },
     getTodoNum() {
       fetchTodoNum().then((res) => {
-        this.todoNum = res.todo_num;
-      });
+        this.todoNum = res.todo_num
+      })
     },
     adjust(array) {
       if (array) {
-        array.reverse();
+        array.reverse()
         if (this.day !== 0) {
           for (let i = 7; i > this.day; i--) {
-            array.push(array.shift());
+            array.push(array.shift())
           }
         }
       }
     },
     getMoney(array) {
       if (this.day === 0) {
-        return array[6];
+        return array[6]
       } else {
-        return array[this.day - 1];
+        return array[this.day - 1]
       }
     },
     getAllClerk() {
-      let admin = 0;
-      let manager = 0;
-      let shop = 0;
-      let buyer = 0;
+      let admin = 0
+      let manager = 0
+      let shop = 0
+      let buyer = 0
       fetchAccount({ limit: 999999 }).then((res) => {
-        this.allClerk = res.total;
+        this.allClerk = res.total
         res.data.forEach((e) => {
-          if (e.role === "admin") admin++;
-          else if (e.role === "manager") manager++;
-          else if (e.role === "shop") shop++;
-          else buyer++;
-        });
-        this.clerkData = [admin, manager, buyer, shop];
-      });
+          if (e.role === 'admin') admin++
+          else if (e.role === 'manager') manager++
+          else if (e.role === 'shop') shop++
+          else buyer++
+        })
+        this.clerkData = [admin, manager, buyer, shop]
+      })
     },
     getClerkNum() {
       fetchClerkNum().then((res) => {
-        this.ClerkNum = res.shop_man_num;
-      });
+        this.ClerkNum = res.shop_man_num
+      })
     },
     getBuyTotal() {
       fetchBuyTotal().then((res) => {
-        this.buyTotal = res.buy_total;
-      });
+        this.buyTotal = res.buy_total
+      })
     },
     getBuyingManNum() {
       fetchBuyingManNum().then((res) => {
-        this.buyingManNum = res.buying_man_num;
-      });
+        this.buyingManNum = res.buying_man_num
+      })
     },
     getWaitingShopNum() {
       fetchWaitingShopNum().then((res) => {
-        this.waitingShopNum = res.waiting_shop_num;
-      });
+        this.waitingShopNum = res.waiting_shop_num
+      })
     },
     getOrderNum() {
       fetchOrderNum().then((res) => {
         this.order_num_list = res.data
-      });
+      })
     },
     getGoodsNums() {
       fetchGoodsNums().then((res) => {
         this.goods_num_list = res.data
         this.goods_num_list.sort((a, b) => {
           if (a.type_name === b.type_name) {
-            return b.goods_sort - a.goods_name;
+            return b.goods_sort - a.goods_name
           } else {
-            if (a.type_name === "水果") {
-              return -1;
-            } else if (b.type_name === "水果") {
-              return 1;
-            } else if (a.type_name === "蔬菜") {
-              return -1;
-            } else if (b.type_name === "蔬菜") {
-              return 1;
+            if (a.type_name === '水果') {
+              return -1
+            } else if (b.type_name === '水果') {
+              return 1
+            } else if (a.type_name === '蔬菜') {
+              return -1
+            } else if (b.type_name === '蔬菜') {
+              return 1
             }
           }
-        });
-      });
+        })
+      })
     },
     tableRowClassName({ row, index }) {
-      if (row.type_name === "水果") return "fruit-row";
-      if (row.type_name === "蔬菜") return "veg-row";
-      if (row.type_name === "冷冻品") return "fresh-row";
+      if (row.type_name === '水果') return 'fruit-row'
+      if (row.type_name === '蔬菜') return 'veg-row'
+      if (row.type_name === '冷冻品') return 'fresh-row'
     },
     openDetail(row) {
-      this.detailVisible = true;
-      this.detailTitle = row.goods_name;
-      this.detailSum = row.order_num + row.order_unit;
-      this.detailTemp = row.shop_data;
-    },
-  },
-};
+      this.detailVisible = true
+      this.detailTitle = row.goods_name
+      this.detailSum = row.order_num + row.order_unit
+      this.detailTemp = row.shop_data
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

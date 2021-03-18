@@ -39,7 +39,6 @@
           @keyup.enter.native="handleFilter"
         />
         <el-button
-          v-waves
           class="filter-item margin-l-10"
           type="primary"
           icon="el-icon-search"
@@ -86,7 +85,6 @@
           @keyup.enter.native="handleFilter"
         />
         <el-button
-          v-waves
           class="filter-item margin-l-10"
           type="primary"
           icon="el-icon-search"
@@ -168,8 +166,7 @@
             size="mini"
             type="danger"
             @click="openConfirmMsgBox('delete', row, $index)"
-            >删除</el-button
-          >
+          >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -215,9 +212,9 @@
             </el-form-item>
             <el-form-item label="电话" prop="supplier_phone">
               <el-input
+                v-model.trim="temp.supplier_phone"
                 type="number"
                 pattern="[0-9]*"
-                v-model.trim="temp.supplier_phone"
               />
             </el-form-item>
             <el-form-item label="说明" prop="desc">
@@ -232,8 +229,7 @@
               :loading="requestLoading"
               type="primary"
               @click="$refs.drawer.closeDrawer()"
-              >{{ requestLoading ? "提交中 ..." : "确 定" }}</el-button
-            >
+            >{{ requestLoading ? "提交中 ..." : "确 定" }}</el-button>
           </el-row>
         </div>
       </div>
@@ -258,9 +254,9 @@
         </el-form-item>
         <el-form-item label="电话" prop="supplier_phone">
           <el-input
+            v-model.trim="temp.supplier_phone"
             type="number"
             pattern="[0-9]*"
-            v-model.trim="temp.supplier_phone"
           />
         </el-form-item>
         <el-form-item label="说明" prop="desc">
@@ -346,25 +342,23 @@ import {
   fetchProvider,
   createProvider,
   updateProvider,
-  delProvider,
-} from "@/api/provider";
-import waves from "@/directive/waves"; // waves directive
-import { parseTime, resetPagination } from "@/utils";
-import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
+  delProvider
+} from '@/api/provider'
+import { parseTime, resetPagination } from '@/utils'
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
-  name: "ProviderPage",
+  name: 'ProviderPage',
   components: { Pagination },
-  directives: { waves },
   filters: {
-    parseTime,
+    parseTime
   },
   data() {
     return {
       tableSettingsDrawerVisible: false,
       formDrawerVisible: false,
       dialogFormVisible: false,
-      dialogStatus: "",
+      dialogStatus: '',
       requestLoading: false,
       timer: null,
       tableKey: 0,
@@ -375,262 +369,262 @@ export default {
         page: 1,
         limit: 20,
         search: undefined,
-        sort: "+id", // 升序排序
+        sort: '+id' // 升序排序
       },
 
       temp: {
         id: undefined,
-        supplier_name: "", // 供应商名
-        supplier_phone: "", // 供应商电话
-        note: "", // 供应商描述
+        supplier_name: '', // 供应商名
+        supplier_phone: '', // 供应商电话
+        note: '' // 供应商描述
       },
       sortOptions: [
-        { label: "按编号升序", key: "+id" },
-        { label: "按编号降序", key: "-id" },
+        { label: '按编号升序', key: '+id' },
+        { label: '按编号降序', key: '-id' }
       ],
       textMap: {
-        update: "编辑供应商",
-        create: "添加供应商",
+        update: '编辑供应商',
+        create: '添加供应商'
       },
       rules: {
         supplier_name: [
-          { required: true, message: "供应商名称不能为空", trigger: "blur" },
-        ],
+          { required: true, message: '供应商名称不能为空', trigger: 'blur' }
+        ]
       },
       showSettings: {
         showId: true,
         showTitle: true,
         showPhone: true,
         showDesc: true,
-        showAction: true,
-      },
-    };
+        showAction: true
+      }
+    }
   },
   computed: {
     userInfo() {
       return {
         name: this.$store.getters.name,
         affiliation: this.$store.getters.shop_name, // 所属分店
-        role: this.$store.getters.roles[0],
-      };
+        role: this.$store.getters.roles[0]
+      }
     },
     isPermit() {
       // 是否允许增删改
-      if (this.userInfo.role === "admin" || this.userInfo.role === "manager") {
-        return true;
+      if (this.userInfo.role === 'admin' || this.userInfo.role === 'manager') {
+        return true
       } else {
-        return false;
+        return false
       }
     },
     device() {
       // mobile or desktop
-      return this.$store.state.app.device;
+      return this.$store.state.app.device
     },
     tableSettingsDrawerSize() {
-      if (this.device === "mobile") {
-        return "60%";
+      if (this.device === 'mobile') {
+        return '60%'
       } else {
-        return "25%";
+        return '25%'
       }
-    },
+    }
   },
   created() {
     // 钩子函数
-    this.getList();
-    if (!window.sessionStorage.getItem("provider")) {
-      this.setShowSettings();
+    this.getList()
+    if (!window.sessionStorage.getItem('provider')) {
+      this.setShowSettings()
     } else {
-      this.showSettings = JSON.parse(window.sessionStorage.getItem("provider"));
+      this.showSettings = JSON.parse(window.sessionStorage.getItem('provider'))
     }
   },
   mounted() {
-    resetPagination();
+    resetPagination()
   },
   methods: {
     setShowSettings() {
-      window.sessionStorage.setItem("provider", JSON.stringify(this.showSettings));
+      window.sessionStorage.setItem('provider', JSON.stringify(this.showSettings))
     },
     getList() {
-      this.listLoading = true;
+      this.listLoading = true
       fetchProvider(this.listQuery).then((res) => {
-        this.list = res.data;
-        this.total = res.total;
-        this.listLoading = false;
-      });
+        this.list = res.data
+        this.total = res.total
+        this.listLoading = false
+      })
     },
     handleFilter() {
-      this.listQuery.page = 1;
-      this.getList();
+      this.listQuery.page = 1
+      this.getList()
     },
     resetTemp() {
       this.temp = {
         id: undefined,
-        supplier_name: "", // 供应商名
-        supplier_phone: "", // 供应商电话
-        note: "", // 供应商描述
-      };
+        supplier_name: '', // 供应商名
+        supplier_phone: '', // 供应商电话
+        note: '' // 供应商描述
+      }
     },
     handleCreate() {
-      this.resetTemp();
-      this.dialogStatus = "create";
-      if (this.device === "desktop") {
-        this.dialogFormVisible = true;
+      this.resetTemp()
+      this.dialogStatus = 'create'
+      if (this.device === 'desktop') {
+        this.dialogFormVisible = true
         this.$nextTick(() => {
-          this.$refs["dataForm"].clearValidate();
-        });
+          this.$refs['dataForm'].clearValidate()
+        })
       } else {
-        this.formDrawerVisible = true;
+        this.formDrawerVisible = true
       }
     },
     createData(done) {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           if (this.requestLoading) {
-            return;
+            return
           }
-          this.requestLoading = true;
+          this.requestLoading = true
           // this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
           createProvider(this.temp).then((res) => {
-            if (res.status === "success") {
-              if (this.device === "mobile") {
-                done();
+            if (res.status === 'success') {
+              if (this.device === 'mobile') {
+                done()
               } else {
-                this.dialogFormVisible = false;
+                this.dialogFormVisible = false
               }
               setTimeout(() => {
                 // 动画关闭需要一定的时间
-                this.requestLoading = false;
-              }, 400);
+                this.requestLoading = false
+              }, 400)
               // this.list.unshift(this.temp)
-              this.getList();
+              this.getList()
               this.$notify({
-                title: "成功",
-                message: "供应商创建成功.",
-                type: "success",
-                duration: 2000,
-              });
+                title: '成功',
+                message: '供应商创建成功.',
+                type: 'success',
+                duration: 2000
+              })
             } else {
-              this.requestLoading = false;
+              this.requestLoading = false
               this.$notify({
-                title: "失败",
-                message: res.msg || "供应商创建失败,原因未知",
-                type: "error",
-                duration: 2000,
-              });
+                title: '失败',
+                message: res.msg || '供应商创建失败,原因未知',
+                type: 'error',
+                duration: 2000
+              })
             }
-          });
+          })
         }
-      });
+      })
     },
     handleUpdate(row) {
-      this.temp = Object.assign({}, row); // copy obj
-      this.dialogStatus = "update";
-      if (this.device === "desktop") {
-        this.dialogFormVisible = true;
+      this.temp = Object.assign({}, row) // copy obj
+      this.dialogStatus = 'update'
+      if (this.device === 'desktop') {
+        this.dialogFormVisible = true
         this.$nextTick(() => {
-          this.$refs["dataForm"].clearValidate();
-        });
+          this.$refs['dataForm'].clearValidate()
+        })
       } else {
-        this.formDrawerVisible = true;
+        this.formDrawerVisible = true
       }
     },
     updateData(done) {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           if (this.requestLoading) {
-            return;
+            return
           }
-          this.requestLoading = true;
-          const tempData = Object.assign({}, this.temp);
+          this.requestLoading = true
+          const tempData = Object.assign({}, this.temp)
           updateProvider(tempData).then((res) => {
-            if (res.status === "success") {
-              const index = this.list.findIndex((v) => v.id === this.temp.id);
-              this.list.splice(index, 1, this.temp);
-              if (this.device === "mobile") {
-                done();
+            if (res.status === 'success') {
+              const index = this.list.findIndex((v) => v.id === this.temp.id)
+              this.list.splice(index, 1, this.temp)
+              if (this.device === 'mobile') {
+                done()
               } else {
-                this.dialogFormVisible = false;
+                this.dialogFormVisible = false
               }
               setTimeout(() => {
                 // 动画关闭需要一定的时间
-                this.requestLoading = false;
-              }, 400);
+                this.requestLoading = false
+              }, 400)
               this.$notify({
-                title: "成功",
-                message: "供应商信息修改成功.",
-                type: "success",
-                duration: 2000,
-              });
+                title: '成功',
+                message: '供应商信息修改成功.',
+                type: 'success',
+                duration: 2000
+              })
             } else {
-              this.requestLoading = false;
+              this.requestLoading = false
               this.$notify({
-                title: "失败",
-                message: res.msg || "供应商信息更新失败,原因未知",
-                type: "error",
-                duration: 2000,
-              });
+                title: '失败',
+                message: res.msg || '供应商信息更新失败,原因未知',
+                type: 'error',
+                duration: 2000
+              })
             }
-          });
+          })
         }
-      });
+      })
     },
     handleDelete(row, index) {
-      const params = { id: row.id };
+      const params = { id: row.id }
       delProvider(params).then((res) => {
-        if (res.status === "success") {
+        if (res.status === 'success') {
           this.$notify({
-            title: "成功",
-            message: "供应商删除成功",
-            type: "success",
-            duration: 2000,
-          });
-          this.list.splice(index, 1);
+            title: '成功',
+            message: '供应商删除成功',
+            type: 'success',
+            duration: 2000
+          })
+          this.list.splice(index, 1)
         } else {
           this.$notify({
-            title: "失败",
-            message: res.msg || "供应商删除失败,原因未知",
-            type: "error",
-            duration: 2000,
-          });
+            title: '失败',
+            message: res.msg || '供应商删除失败,原因未知',
+            type: 'error',
+            duration: 2000
+          })
         }
-      });
+      })
     },
     cancelForm() {
-      this.requestLoading = false;
-      this.dialogFormVisible = false;
-      this.formDrawerVisible = false;
-      clearTimeout(this.timer);
+      this.requestLoading = false
+      this.dialogFormVisible = false
+      this.formDrawerVisible = false
+      clearTimeout(this.timer)
     },
     formDrawerOpen() {
       this.$nextTick(() => {
-        this.$refs["dataForm"].clearValidate();
-      });
+        this.$refs['dataForm'].clearValidate()
+      })
     },
     openConfirmMsgBox(msg, row, index) {
-      let boxMsg = "";
-      if (msg === "delete") {
-        boxMsg = "此操作将永久删除该记录, 是否继续?";
+      let boxMsg = ''
+      if (msg === 'delete') {
+        boxMsg = '此操作将永久删除该记录, 是否继续?'
       }
-      this.$confirm(boxMsg, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-        center: true,
+      this.$confirm(boxMsg, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true
       })
         .then(() => {
-          if (msg === "delete") {
-            this.handleDelete(row, index);
+          if (msg === 'delete') {
+            this.handleDelete(row, index)
           }
         })
         .catch(() => {
           this.$message({
-            type: "info",
-            message: "已取消操作",
-          });
-        });
-    },
-  },
-};
+            type: 'info',
+            message: '已取消操作'
+          })
+        })
+    }
+  }
+}
 </script>
 
 <style scoped>

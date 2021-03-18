@@ -15,7 +15,6 @@
           />
         </el-select>
         <el-button
-          v-waves
           v-if="isPermit"
           :loading="downloadLoading"
           class="filter-item margin-l-10"
@@ -67,7 +66,6 @@
           @keyup.enter.native="handleFilter"
         />
         <el-button
-          v-waves
           class="filter-item margin-l-10"
           type="primary"
           icon="el-icon-search"
@@ -92,7 +90,6 @@
           />
         </el-select>
         <el-button
-          v-waves
           v-if="isPermit"
           :loading="downloadLoading"
           class="filter-item margin-l-10"
@@ -140,7 +137,6 @@
           @keyup.enter.native="handleFilter"
         />
         <el-button
-          v-waves
           class="filter-item margin-l-10"
           type="primary"
           icon="el-icon-search"
@@ -280,8 +276,7 @@
             size="mini"
             type="danger"
             @click="openConfirmMsgBox('delete', row, $index)"
-            >删除</el-button
-          >
+          >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -326,9 +321,9 @@
               <!-- <span> {{ temp.goods_id || '暂无' }} </span> -->
               <el-input
                 v-if="dialogStatus === 'create'"
+                v-model.trim="temp.goods_id"
                 type="number"
                 pattern="[0-9]*"
-                v-model.trim="temp.goods_id"
               />
               <span v-else> {{ temp.goods_id || "暂无" }} </span>
             </el-form-item>
@@ -352,9 +347,9 @@
             </el-form-item>
             <el-form-item label="标志位" prop="key">
               <el-input
+                v-model.trim="temp.goods_sort"
                 type="number"
                 pattern="[0-9]*"
-                v-model.trim="temp.goods_sort"
               />
             </el-form-item>
             <el-form-item label="订购单位">
@@ -414,7 +409,7 @@
               </el-select>
             </el-form-item>
             <el-form-item label="备注">
-              <el-input placeholder="备注内容..." v-model.trim="temp.desc" />
+              <el-input v-model.trim="temp.desc" placeholder="备注内容..." />
             </el-form-item>
           </el-form>
         </div>
@@ -425,8 +420,7 @@
               :loading="requestLoading"
               type="primary"
               @click="$refs.drawer.closeDrawer()"
-              >{{ requestLoading ? "提交中 ..." : "确 定" }}</el-button
-            >
+            >{{ requestLoading ? "提交中 ..." : "确 定" }}</el-button>
           </el-row>
         </div>
       </div>
@@ -449,8 +443,8 @@
           <!-- <span> {{ temp.goods_id || '暂无' }} </span> -->
           <el-input
             v-if="dialogStatus === 'create'"
-            type="number"
             v-model.trim="temp.goods_id"
+            type="number"
           />
           <span v-else> {{ temp.goods_id || "暂无" }} </span>
         </el-form-item>
@@ -474,9 +468,9 @@
         </el-form-item>
         <el-form-item label="标志位" prop="key">
           <el-input
+            v-model.trim="temp.goods_sort"
             type="number"
             pattern="[0-9]*"
-            v-model.trim="temp.goods_sort"
           />
         </el-form-item>
         <el-form-item label="订购单位">
@@ -536,7 +530,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="备注">
-          <el-input placeholder="备注内容..." v-model.trim="temp.desc" />
+          <el-input v-model.trim="temp.desc" placeholder="备注内容..." />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -649,41 +643,39 @@ import {
   fetchCommodity,
   createCommodity,
   updateCommodity,
-  delCommodity,
-} from "@/api/commodity";
-import waves from "@/directive/waves"; // waves directive
-import { parseTime, resetPagination } from "@/utils";
-import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
+  delCommodity
+} from '@/api/commodity'
+import { parseTime, resetPagination } from '@/utils'
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
-  name: "CommodityPage",
+  name: 'CommodityPage',
   components: { Pagination },
-  directives: { waves },
   filters: {
     typeNameFilter(type) {
       const typeNameMap = {
-        1101: "水果",
-        1102: "蔬菜",
-        1208: "冷冻品",
-      };
-      return typeNameMap[type];
+        1101: '水果',
+        1102: '蔬菜',
+        1208: '冷冻品'
+      }
+      return typeNameMap[type]
     },
     typeCssFilter(type) {
       const typeCssMap = {
-        1101: "danger", // red
-        1102: "success", // green
-        1208: "", // blue
-      };
-      return typeCssMap[type];
+        1101: 'danger', // red
+        1102: 'success', // green
+        1208: '' // blue
+      }
+      return typeCssMap[type]
     },
-    parseTime,
+    parseTime
   },
   data() {
     return {
       tableSettingsDrawerVisible: false,
       formDrawerVisible: false,
       dialogFormVisible: false,
-      dialogStatus: "",
+      dialogStatus: '',
       requestLoading: false,
       downloadLoading: false,
       timer: null,
@@ -697,35 +689,35 @@ export default {
         search: undefined,
         // type: undefined,
         goods_type_id: undefined,
-        sort: "-goods_sort", // 升序排序
+        sort: '-goods_sort' // 升序排序
       },
       goodTypeOptions: [
-        { key: "1101", display_name: "水果" },
-        { key: "1102", display_name: "蔬菜" },
-        { key: "1208", display_name: "冷冻品" },
+        { key: '1101', display_name: '水果' },
+        { key: '1102', display_name: '蔬菜' },
+        { key: '1208', display_name: '冷冻品' }
       ],
       sortOptions: [
-        { label: "按编号升序", key: "+goods_id" },
-        { label: "按编号降序", key: "-goods_id" },
-        { label: "按标志位升序", key: "+goods_sort" },
-        { label: "按标志位降序", key: "-goods_sort" },
+        { label: '按编号升序', key: '+goods_id' },
+        { label: '按编号降序', key: '-goods_id' },
+        { label: '按标志位升序', key: '+goods_sort' },
+        { label: '按标志位降序', key: '-goods_sort' }
       ],
       canOrderOptions: [
-        { label: "可订", key: true },
-        { label: "不可订", key: false },
+        { label: '可订', key: true },
+        { label: '不可订', key: false }
       ],
-      unitOptions: ["斤", "公斤", "件"],
+      unitOptions: ['斤', '公斤', '件'],
       textMap: {
-        update: "编辑货品",
-        create: "添加货品",
+        update: '编辑货品',
+        create: '添加货品'
       },
       rules: {
         type_name: [
-          { required: true, message: "需要选择货品分类", trigger: "change" },
+          { required: true, message: '需要选择货品分类', trigger: 'change' }
         ],
         goods_name: [
-          { required: true, message: "货品名称不能为空", trigger: "blur" },
-        ],
+          { required: true, message: '货品名称不能为空', trigger: 'blur' }
+        ]
       },
       showSettings: {
         showId: true,
@@ -737,303 +729,303 @@ export default {
         showKey: true,
         showAction: true,
         showCanOrder: true,
-        showDesc: true,
-      },
-    };
+        showDesc: true
+      }
+    }
   },
   computed: {
     userInfo() {
       return {
         name: this.$store.getters.name,
         shop_name: this.$store.getters.shop_name, // 所属分店
-        role: this.$store.getters.roles[0],
-      };
+        role: this.$store.getters.roles[0]
+      }
     },
     isPermit() {
       // 是否允许增删改
-      if (this.userInfo.role === "admin" || this.userInfo.role === "manager") {
-        return true;
+      if (this.userInfo.role === 'admin' || this.userInfo.role === 'manager') {
+        return true
       } else {
-        return false;
+        return false
       }
     },
     device() {
       // mobile or desktop
-      return this.$store.state.app.device;
+      return this.$store.state.app.device
     },
     tableSettingsDrawerSize() {
-      if (this.device === "mobile") {
-        return "60%";
+      if (this.device === 'mobile') {
+        return '60%'
       } else {
-        return "25%";
+        return '25%'
       }
-    },
+    }
   },
   created() {
-    this.resetTemp();
-    this.getList();
-    if (!window.sessionStorage.getItem("commodity")) {
-      this.setShowSettings();
+    this.resetTemp()
+    this.getList()
+    if (!window.sessionStorage.getItem('commodity')) {
+      this.setShowSettings()
     } else {
       this.showSettings = JSON.parse(
-        window.sessionStorage.getItem("commodity")
-      );
+        window.sessionStorage.getItem('commodity')
+      )
     }
   },
   mounted() {
-    resetPagination();
+    resetPagination()
   },
   methods: {
     setShowSettings() {
       window.sessionStorage.setItem(
-        "commodity",
+        'commodity',
         JSON.stringify(this.showSettings)
-      );
+      )
     },
     getList() {
-      this.listLoading = true;
+      this.listLoading = true
       fetchCommodity(this.listQuery).then((res) => {
-        this.list = res.data;
-        this.total = res.total;
-        this.listLoading = false;
-      });
+        this.list = res.data
+        this.total = res.total
+        this.listLoading = false
+      })
     },
     handleFilter() {
-      this.listQuery.page = 1;
-      this.getList();
+      this.listQuery.page = 1
+      this.getList()
     },
     resetTemp() {
       this.temp = {
         goods_id: undefined,
-        goods_type_id: "",
-        type_name: "",
-        goods_name: "",
-        order_unit: "",
-        sale_unit: "",
-        rec_unit: "",
+        goods_type_id: '',
+        type_name: '',
+        goods_name: '',
+        order_unit: '',
+        sale_unit: '',
+        rec_unit: '',
         goods_sort: undefined, // 标志位
         can_order: false,
-        desc: "",
-      };
+        desc: ''
+      }
     },
     handleCreate() {
-      this.resetTemp();
-      this.dialogStatus = "create";
-      if (this.device === "desktop") {
-        this.dialogFormVisible = true;
+      this.resetTemp()
+      this.dialogStatus = 'create'
+      if (this.device === 'desktop') {
+        this.dialogFormVisible = true
         this.$nextTick(() => {
-          this.$refs["dataForm"].clearValidate();
-        });
+          this.$refs['dataForm'].clearValidate()
+        })
       } else {
-        this.formDrawerVisible = true;
+        this.formDrawerVisible = true
       }
     },
     createData(done) {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           if (this.requestLoading) {
-            return;
+            return
           }
-          this.requestLoading = true;
+          this.requestLoading = true
           // this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
           createCommodity(this.temp).then((res) => {
-            if (res.status === "success") {
-              if (this.device === "mobile") {
-                done();
+            if (res.status === 'success') {
+              if (this.device === 'mobile') {
+                done()
               } else {
-                this.dialogFormVisible = false;
+                this.dialogFormVisible = false
               }
               setTimeout(() => {
                 // 动画关闭需要一定的时间
-                this.requestLoading = false;
-              }, 400);
-              this.list.unshift(this.temp);
+                this.requestLoading = false
+              }, 400)
+              this.list.unshift(this.temp)
               this.$notify({
-                title: "成功",
-                message: "货品添加成功",
-                type: "success",
-                duration: 2000,
-              });
+                title: '成功',
+                message: '货品添加成功',
+                type: 'success',
+                duration: 2000
+              })
             } else {
-              this.requestLoading = false;
+              this.requestLoading = false
               this.$notify({
-                title: "失败",
-                message: res.msg || "货品添加失败,原因未知",
-                type: "error",
-                duration: 2000,
-              });
+                title: '失败',
+                message: res.msg || '货品添加失败,原因未知',
+                type: 'error',
+                duration: 2000
+              })
             }
-          });
+          })
         }
-      });
+      })
     },
     handleUpdate(row) {
-      this.temp = Object.assign({}, row); // copy obj
-      this.dialogStatus = "update";
-      if (this.device === "desktop") {
-        this.dialogFormVisible = true;
+      this.temp = Object.assign({}, row) // copy obj
+      this.dialogStatus = 'update'
+      if (this.device === 'desktop') {
+        this.dialogFormVisible = true
         this.$nextTick(() => {
-          this.$refs["dataForm"].clearValidate();
-        });
+          this.$refs['dataForm'].clearValidate()
+        })
       } else {
-        this.formDrawerVisible = true;
+        this.formDrawerVisible = true
       }
     },
     updateData(done) {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           if (this.requestLoading) {
-            return;
+            return
           }
-          this.requestLoading = true;
-          const tempData = Object.assign({}, this.temp);
+          this.requestLoading = true
+          const tempData = Object.assign({}, this.temp)
           updateCommodity(tempData).then((res) => {
-            if (res.status === "success") {
+            if (res.status === 'success') {
               const index = this.list.findIndex(
                 (v) => v.goods_id === this.temp.goods_id
-              );
-              this.list.splice(index, 1, this.temp);
-              if (this.device === "mobile") {
-                done();
+              )
+              this.list.splice(index, 1, this.temp)
+              if (this.device === 'mobile') {
+                done()
               } else {
-                this.dialogFormVisible = false;
+                this.dialogFormVisible = false
               }
               setTimeout(() => {
                 // 动画关闭需要一定的时间
-                this.requestLoading = false;
-              }, 400);
+                this.requestLoading = false
+              }, 400)
               this.$notify({
-                title: "操作",
-                message: "货品信息更新成功",
-                type: "success",
-                duration: 2000,
-              });
+                title: '操作',
+                message: '货品信息更新成功',
+                type: 'success',
+                duration: 2000
+              })
             } else {
-              this.requestLoading = false;
+              this.requestLoading = false
               this.$notify({
-                title: "失败",
-                message: res.msg || "货品信息更新失败,原因未知",
-                type: "error",
-                duration: 2000,
-              });
+                title: '失败',
+                message: res.msg || '货品信息更新失败,原因未知',
+                type: 'error',
+                duration: 2000
+              })
             }
-          });
+          })
         }
-      });
+      })
     },
     handleDelete(row, index) {
-      const params = { goods_id: row.goods_id };
+      const params = { goods_id: row.goods_id }
       delCommodity(params).then((res) => {
-        if (res.status === "success") {
+        if (res.status === 'success') {
           this.$notify({
-            title: "成功",
-            message: "货品删除成功！",
-            type: "success",
-            duration: 2000,
-          });
-          this.list.splice(index, 1);
+            title: '成功',
+            message: '货品删除成功！',
+            type: 'success',
+            duration: 2000
+          })
+          this.list.splice(index, 1)
         } else {
           this.$notify({
-            title: "失败",
-            message: res.msg || "货品删除失败,原因未知",
-            type: "error",
-            duration: 2000,
-          });
+            title: '失败',
+            message: res.msg || '货品删除失败,原因未知',
+            type: 'error',
+            duration: 2000
+          })
         }
-      });
+      })
     },
     handleDownload() {
-      if (this.device === "mobile") {
+      if (this.device === 'mobile') {
         this.$notify({
-          title: "失败",
-          message: "移动端不支持该操作，请在电脑端打印",
-          type: "error",
-          duration: 2000,
-        });
-        return;
+          title: '失败',
+          message: '移动端不支持该操作，请在电脑端打印',
+          type: 'error',
+          duration: 2000
+        })
+        return
       }
-      this.downloadLoading = true;
-      import("@/vendor/Export2Excel").then((excel) => {
+      this.downloadLoading = true
+      import('@/vendor/Export2Excel').then((excel) => {
         const tHeader = [
-          "货品编号",
-          "货品名称",
-          "货品分类",
-          "订购单位",
-          "销售单位",
-          "采购单位",
-          "标志位",
-        ];
+          '货品编号',
+          '货品名称',
+          '货品分类',
+          '订购单位',
+          '销售单位',
+          '采购单位',
+          '标志位'
+        ]
         const filterVal = [
-          "goods_id",
-          "goods_name",
-          "type_name",
-          "order_unit",
-          "sale_unit",
-          "rec_unit",
-          "goods_sort",
-        ];
+          'goods_id',
+          'goods_name',
+          'type_name',
+          'order_unit',
+          'sale_unit',
+          'rec_unit',
+          'goods_sort'
+        ]
         fetchCommodity({
           page: 1,
           limit: 999999,
-          sort: "-goods_sort", // 升序排序
+          sort: '-goods_sort' // 升序排序
         }).then((res) => {
           const data = res.data.map((v) =>
             filterVal.map((j) => {
-              if (j === "timestamp") {
-                return parseTime(v[j]);
+              if (j === 'timestamp') {
+                return parseTime(v[j])
               } else {
-                return v[j];
+                return v[j]
               }
             })
-          );
+          )
           excel.export_json_to_excel({
             header: tHeader,
             data,
-            filename: "货品信息",
-          });
-          this.downloadLoading = false;
-        });
-      });
+            filename: '货品信息'
+          })
+          this.downloadLoading = false
+        })
+      })
     },
     cancelForm() {
-      this.requestLoading = false;
-      this.dialogFormVisible = false;
-      this.formDrawerVisible = false;
-      clearTimeout(this.timer);
+      this.requestLoading = false
+      this.dialogFormVisible = false
+      this.formDrawerVisible = false
+      clearTimeout(this.timer)
     },
     formDrawerOpen() {
       this.$nextTick(() => {
-        this.$refs["dataForm"].clearValidate();
-      });
+        this.$refs['dataForm'].clearValidate()
+      })
     },
     typeChange(value) {
-      this.temp.goods_type_id = value;
+      this.temp.goods_type_id = value
     },
     openConfirmMsgBox(msg, row, index) {
-      let boxMsg = "";
-      if (msg === "delete") {
-        boxMsg = "此操作将永久删除该记录, 是否继续?";
+      let boxMsg = ''
+      if (msg === 'delete') {
+        boxMsg = '此操作将永久删除该记录, 是否继续?'
       }
-      this.$confirm(boxMsg, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-        center: true,
+      this.$confirm(boxMsg, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true
       })
         .then(() => {
-          if (msg === "delete") {
-            this.handleDelete(row, index);
+          if (msg === 'delete') {
+            this.handleDelete(row, index)
           }
         })
         .catch(() => {
           this.$message({
-            type: "info",
-            message: "已取消操作",
-          });
-        });
-    },
-  },
-};
+            type: 'info',
+            message: '已取消操作'
+          })
+        })
+    }
+  }
+}
 </script>
 
 <style scoped>

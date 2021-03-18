@@ -102,8 +102,7 @@
             size="mini"
             type="danger"
             @click="openConfirmMsgBox('delete', row, $index)"
-            >删除</el-button
-          >
+          >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -207,7 +206,7 @@
                         style="padding: 2px 4px; margin-left: 4px"
                         icon="el-icon-circle-close"
                         @click="tableItemDel(row, $index)"
-                      ></el-button>
+                      />
                     </el-row>
                   </template>
                 </el-table-column>
@@ -255,8 +254,7 @@
               :loading="requestLoading"
               type="primary"
               @click="$refs.drawer.closeDrawer()"
-              >{{ requestLoading ? "提交中 ..." : "确 定" }}</el-button
-            >
+            >{{ requestLoading ? "提交中 ..." : "确 定" }}</el-button>
           </el-row>
         </div>
       </div>
@@ -332,7 +330,7 @@
                     style="padding: 2px 4px; margin-left: 4px"
                     icon="el-icon-circle-close"
                     @click="tableItemDel(row, $index)"
-                  ></el-button>
+                  />
                 </el-row>
               </template>
             </el-table-column>
@@ -391,8 +389,8 @@
       direction="ltr"
       :with-header="false"
       size="100%"
-      @open="tableDetailDrawerOpen"
       :before-close="tableDetailDrawerClose"
+      @open="tableDetailDrawerOpen"
     >
       <div class="formDrawer">
         <div class="formDrawer-header">
@@ -451,8 +449,7 @@
               :total="commodityListTotal"
               :page-size="40"
               @current-change="getCommodityList"
-            >
-            </el-pagination>
+            />
           </el-row>
         </div>
       </div>
@@ -515,35 +512,33 @@ import {
   updateScheme,
   delScheme,
   createScheme,
-  fetchAllbuyer,
-} from "@/api/single";
-import { fetchCommodity } from "@/api/commodity";
-import waves from "@/directive/waves"; // waves directive
-import { parseTime, resetPagination } from "@/utils";
-import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
+  fetchAllbuyer
+} from '@/api/single'
+import { fetchCommodity } from '@/api/commodity'
+import { parseTime, resetPagination } from '@/utils'
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
-  name: "OrderSchemePage",
+  name: 'OrderSchemePage',
   components: { Pagination },
-  directives: { waves },
   filters: {
     typeNameFilter(type) {
       const typeNameMap = {
-        1101: "水果",
-        1102: "蔬菜",
-        1208: "冷冻品",
-      };
-      return typeNameMap[type];
+        1101: '水果',
+        1102: '蔬菜',
+        1208: '冷冻品'
+      }
+      return typeNameMap[type]
     },
     typeCssFilter(type) {
       const typeCssMap = {
-        1101: "danger", // red
-        1102: "success", // green
-        1208: "", // blue
-      };
-      return typeCssMap[type];
+        1101: 'danger', // red
+        1102: 'success', // green
+        1208: '' // blue
+      }
+      return typeCssMap[type]
     },
-    parseTime,
+    parseTime
   },
   data() {
     return {
@@ -551,7 +546,7 @@ export default {
       tableSettingsDrawerVisible: false,
       formDrawerVisible: false,
       dialogFormVisible: false,
-      dialogStatus: "",
+      dialogStatus: '',
       requestLoading: false,
       tableDetailLoading: false,
       timer: null,
@@ -563,27 +558,27 @@ export default {
       listLoading: true,
       listQuery: {
         page: 1,
-        limit: 20,
+        limit: 20
       },
       temp: {
         id: undefined,
-        plan_name: "", // 标题
-        description: "", // 描述
-        buy_plan_buyer: [], // 分配表
+        plan_name: '', // 标题
+        description: '', // 描述
+        buy_plan_buyer: [] // 分配表
       },
       sortOptions: [
-        { label: "升序", key: "+id" },
-        { label: "降序", key: "-id" },
+        { label: '升序', key: '+id' },
+        { label: '降序', key: '-id' }
       ],
-      TableCellStyle: { padding: "2px 0" },
-      TableHeaderStyle: { padding: "1px 0" },
+      TableCellStyle: { padding: '2px 0' },
+      TableHeaderStyle: { padding: '1px 0' },
       textMap: {
-        update: "修改方案",
-        create: "添加方案",
+        update: '修改方案',
+        create: '添加方案'
       },
       rules: {
         plan_name: [
-          { required: true, message: "请输入方案名", trigger: "blur" },
+          { required: true, message: '请输入方案名', trigger: 'blur' }
         ],
         buy_plan_buyer: [
           {
@@ -594,265 +589,265 @@ export default {
                   !item.goods_id ||
                   !item.buyer_username
                 ) {
-                  callback(new Error("请将方案表填写完整"));
+                  callback(new Error('请将方案表填写完整'))
                 }
               }
-              callback();
+              callback()
             },
-            trigger: "commit",
-          },
-        ],
+            trigger: 'commit'
+          }
+        ]
       },
       showSettings: {
         showId: true,
         showTitle: true,
         showDesc: true,
-        showAction: true,
+        showAction: true
       },
-      tableCurrentRow: null,
-    };
+      tableCurrentRow: null
+    }
   },
   computed: {
     userInfo() {
       return {
         name: this.$store.getters.name,
         affiliation: this.$store.getters.shop_name, // 所属分店
-        role: this.$store.getters.roles[0],
-      };
+        role: this.$store.getters.roles[0]
+      }
     },
     device() {
       // mobile or desktop
-      return this.$store.state.app.device;
+      return this.$store.state.app.device
     },
     tableSettingsDrawerSize() {
-      if (this.device === "mobile") {
-        return "60%";
+      if (this.device === 'mobile') {
+        return '60%'
       } else {
-        return "20%";
+        return '20%'
       }
     },
     labelPosition() {
-      if (this.device === "mobile") {
-        return "top";
+      if (this.device === 'mobile') {
+        return 'top'
       } else {
-        return "left";
+        return 'left'
       }
-    },
+    }
   },
   created() {
     // 钩子函数
-    this.getList();
-    this.getBuyerList();
-    if (!window.sessionStorage.getItem("buyScheme")) {
-      this.setShowSettings();
+    this.getList()
+    this.getBuyerList()
+    if (!window.sessionStorage.getItem('buyScheme')) {
+      this.setShowSettings()
     } else {
       this.showSettings = JSON.parse(
-        window.sessionStorage.getItem("buyScheme")
-      );
+        window.sessionStorage.getItem('buyScheme')
+      )
     }
   },
   mounted() {
-    resetPagination();
+    resetPagination()
   },
   methods: {
     setShowSettings() {
       window.sessionStorage.setItem(
-        "buyScheme",
+        'buyScheme',
         JSON.stringify(this.showSettings)
-      );
+      )
     },
     getList() {
-      this.listLoading = true;
+      this.listLoading = true
       fetchScheme(this.listQuery).then((res) => {
-        this.list = res.data;
-        this.total = res.total;
-        this.listLoading = false;
-      });
+        this.list = res.data
+        this.total = res.total
+        this.listLoading = false
+      })
     },
     getBuyerList() {
       if (!this.buyerList) {
         fetchAllbuyer({}).then((res) => {
-          if (res.status === "success") {
-            this.buyerList = res.data;
+          if (res.status === 'success') {
+            this.buyerList = res.data
           } else {
             this.$notify({
-              title: "失败",
-              message: res.msg || "获取采购员失败，原因未知",
-              type: "error",
-              duration: 2000,
-            });
+              title: '失败',
+              message: res.msg || '获取采购员失败，原因未知',
+              type: 'error',
+              duration: 2000
+            })
           }
-        });
+        })
       }
     },
     handleFilter() {
-      this.listQuery.page = 1;
-      this.getList();
+      this.listQuery.page = 1
+      this.getList()
     },
     resetTemp() {
       this.temp = {
         id: undefined,
-        plan_name: "", // 标题
-        description: "", // 描述
-        buy_plan_buyer: [], // 分配表
-      };
+        plan_name: '', // 标题
+        description: '', // 描述
+        buy_plan_buyer: [] // 分配表
+      }
     },
     handleCreate() {
-      this.resetTemp();
-      this.dialogStatus = "create";
-      if (this.device === "desktop") {
-        this.dialogFormVisible = true;
+      this.resetTemp()
+      this.dialogStatus = 'create'
+      if (this.device === 'desktop') {
+        this.dialogFormVisible = true
         this.$nextTick(() => {
-          this.$refs["dataForm"].clearValidate();
-        });
+          this.$refs['dataForm'].clearValidate()
+        })
       } else {
-        this.formDrawerVisible = true;
+        this.formDrawerVisible = true
       }
     },
     createData(done) {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           if (this.requestLoading) {
-            return;
+            return
           }
-          this.requestLoading = true;
+          this.requestLoading = true
           // this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
           createScheme(this.temp).then((res) => {
-            if (res.status === "success") {
-              if (this.device === "mobile") {
-                done();
+            if (res.status === 'success') {
+              if (this.device === 'mobile') {
+                done()
               } else {
-                this.dialogFormVisible = false;
+                this.dialogFormVisible = false
               }
               setTimeout(() => {
                 // 动画关闭需要一定的时间
-                this.requestLoading = false;
-              }, 400);
-              this.getList();
-              this.dialogFormVisible = false;
+                this.requestLoading = false
+              }, 400)
+              this.getList()
+              this.dialogFormVisible = false
               this.$notify({
-                title: "成功",
-                message: "方案创建成功",
-                type: "success",
-                duration: 2000,
-              });
+                title: '成功',
+                message: '方案创建成功',
+                type: 'success',
+                duration: 2000
+              })
             } else {
-              this.requestLoading = false;
+              this.requestLoading = false
               this.$notify({
-                title: "失败",
-                message: res.msg || "方案创建失败,原因未知",
-                type: "error",
-                duration: 2000,
-              });
+                title: '失败',
+                message: res.msg || '方案创建失败,原因未知',
+                type: 'error',
+                duration: 2000
+              })
             }
-          });
+          })
         }
-      });
+      })
     },
     handleUpdate(row) {
-      this.resetTemp();
-      const buy_plan_buyer = [];
+      this.resetTemp()
+      const buy_plan_buyer = []
       row.buy_plan_buyer.forEach((item) => {
-        buy_plan_buyer.push(Object.assign({}, item));
-      });
+        buy_plan_buyer.push(Object.assign({}, item))
+      })
 
       setTimeout(() => {
-        this.temp = Object.assign({}, row, { buy_plan_buyer }); // deep copy obj
-      }, 400);
+        this.temp = Object.assign({}, row, { buy_plan_buyer }) // deep copy obj
+      }, 400)
 
-      this.dialogStatus = "update";
-      if (this.device === "desktop") {
-        this.dialogFormVisible = true;
+      this.dialogStatus = 'update'
+      if (this.device === 'desktop') {
+        this.dialogFormVisible = true
         this.$nextTick(() => {
-          this.$refs["dataForm"].clearValidate();
-        });
+          this.$refs['dataForm'].clearValidate()
+        })
       } else {
-        this.formDrawerVisible = true;
+        this.formDrawerVisible = true
       }
     },
     updateData(done) {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           if (this.requestLoading) {
-            return;
+            return
           }
-          this.requestLoading = true;
-          const tempData = Object.assign({}, this.temp);
+          this.requestLoading = true
+          const tempData = Object.assign({}, this.temp)
           updateScheme(tempData).then((res) => {
-            if (res.status === "success") {
-              const index = this.list.findIndex((v) => v.id === this.temp.id);
-              this.list.splice(index, 1, this.temp);
-              if (this.device === "mobile") {
-                done();
+            if (res.status === 'success') {
+              const index = this.list.findIndex((v) => v.id === this.temp.id)
+              this.list.splice(index, 1, this.temp)
+              if (this.device === 'mobile') {
+                done()
               } else {
-                this.dialogFormVisible = false;
+                this.dialogFormVisible = false
               }
               setTimeout(() => {
                 // 动画关闭需要一定的时间
-                this.requestLoading = false;
-              }, 400);
+                this.requestLoading = false
+              }, 400)
               this.$notify({
-                title: "成功",
-                message: "方案修改成功",
-                type: "success",
-                duration: 2000,
-              });
+                title: '成功',
+                message: '方案修改成功',
+                type: 'success',
+                duration: 2000
+              })
             } else {
-              this.requestLoading = false;
+              this.requestLoading = false
               this.$notify({
-                title: "失败",
-                message: res.msg || "方案修改失败,原因未知",
-                type: "error",
-                duration: 2000,
-              });
+                title: '失败',
+                message: res.msg || '方案修改失败,原因未知',
+                type: 'error',
+                duration: 2000
+              })
             }
-          });
+          })
         }
-      });
+      })
     },
     handleDelete(row, index) {
-      const params = { id: row.id };
+      const params = { id: row.id }
       delScheme(params).then((res) => {
-        if (res.status === "success") {
+        if (res.status === 'success') {
           this.$notify({
-            title: "成功",
-            message: "方案删除成功",
-            type: "success",
-            duration: 2000,
-          });
-          this.list.splice(index, 1);
+            title: '成功',
+            message: '方案删除成功',
+            type: 'success',
+            duration: 2000
+          })
+          this.list.splice(index, 1)
         } else {
           this.$notify({
-            title: "失败",
-            message: res.msg || "方案删除失败,原因未知",
-            type: "error",
-            duration: 2000,
-          });
+            title: '失败',
+            message: res.msg || '方案删除失败,原因未知',
+            type: 'error',
+            duration: 2000
+          })
         }
-      });
+      })
     },
     querySearchAsync(queryString, cb) {
       if (queryString) {
         fetchCommodity({
           limit: 10,
           search: queryString,
-          sort: "+goods_id",
+          sort: '+goods_id'
         }).then((res) => {
-          const commodities = res.data;
+          const commodities = res.data
           const results = queryString
             ? commodities.filter(
-                (v) =>
-                  this.temp.buy_plan_buyer.findIndex(
-                    (i) => i.goods_id === v.goods_id
-                  ) < 0
-              )
-            : commodities;
+              (v) =>
+                this.temp.buy_plan_buyer.findIndex(
+                  (i) => i.goods_id === v.goods_id
+                ) < 0
+            )
+            : commodities
           for (const item of results) {
-            item["value"] = item.goods_name;
-            item["orderNum"] = 0;
+            item['value'] = item.goods_name
+            item['orderNum'] = 0
           }
-          cb(results);
-        });
+          cb(results)
+        })
       }
     },
     handleSelect(item) {
@@ -860,95 +855,95 @@ export default {
         this.temp.buy_plan_buyer.length - 1,
         1,
         item
-      );
+      )
     },
     tableItemAdd() {
       this.temp.buy_plan_buyer.push({
-        goods_id: "",
-        goods_name: "",
-        buyer_username: "",
-        name: "",
-      });
+        goods_id: '',
+        goods_name: '',
+        buyer_username: '',
+        name: ''
+      })
     },
     tableItemDel(row, index) {
-      this.temp.buy_plan_buyer.splice(index, 1);
+      this.temp.buy_plan_buyer.splice(index, 1)
     },
     cancelForm() {
-      this.requestLoading = false;
-      this.dialogFormVisible = false;
-      this.formDrawerVisible = false;
-      clearTimeout(this.timer);
+      this.requestLoading = false
+      this.dialogFormVisible = false
+      this.formDrawerVisible = false
+      clearTimeout(this.timer)
     },
     formDrawerOpen() {
       this.$nextTick(() => {
-        this.$refs["dataForm"].clearValidate();
-      });
+        this.$refs['dataForm'].clearValidate()
+      })
     },
     tableDetailDrawerOpen() {
       setTimeout(() => {
         // 动画需要一定的时间
-        this.getCommodityList(1);
-      }, 400);
+        this.getCommodityList(1)
+      }, 400)
     },
     tableDetailDrawerClose() {
-      this.commodityList = null;
+      this.commodityList = null
     },
     handleBuyerSelect(row) {
       const idx = this.temp.buy_plan_buyer.findIndex(
         (v) => v.goods_id === row.goods_id
-      );
+      )
       if (idx >= 0) {
-        this.temp.buy_plan_buyer[idx].buyer_username = row.buyer_username;
+        this.temp.buy_plan_buyer[idx].buyer_username = row.buyer_username
       } else {
-        this.temp.buy_plan_buyer.push(row);
+        this.temp.buy_plan_buyer.push(row)
       }
     },
     getCommodityList(page) {
-      this.tableDetailLoading = true;
+      this.tableDetailLoading = true
       fetchCommodity({
         page,
         limit: 40,
         search: undefined,
         goods_type_id: undefined,
-        sort: "-goods_sort", // 升序排序
+        sort: '-goods_sort' // 升序排序
       }).then((res) => {
-        this.commodityList = res.data;
-        this.commodityListTotal = res.total;
-        this.tableDetailLoading = false;
+        this.commodityList = res.data
+        this.commodityListTotal = res.total
+        this.tableDetailLoading = false
         this.temp.buy_plan_buyer.forEach((v) => {
           this.commodityList.forEach((j) => {
             if (v.goods_id === j.goods_id) {
-              this.$set(j, "buyer_username", v.buyer_username);
+              this.$set(j, 'buyer_username', v.buyer_username)
             }
-          });
-        });
-      });
+          })
+        })
+      })
     },
     openConfirmMsgBox(msg, row, index) {
-      let boxMsg = "";
-      if (msg === "delete") {
-        boxMsg = "此操作将永久删除该记录, 是否继续?";
+      let boxMsg = ''
+      if (msg === 'delete') {
+        boxMsg = '此操作将永久删除该记录, 是否继续?'
       }
-      this.$confirm(boxMsg, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-        center: true,
+      this.$confirm(boxMsg, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true
       })
         .then(() => {
-          if (msg === "delete") {
-            this.handleDelete(row, index);
+          if (msg === 'delete') {
+            this.handleDelete(row, index)
           }
         })
         .catch(() => {
           this.$message({
-            type: "info",
-            message: "已取消操作",
-          });
-        });
-    },
-  },
-};
+            type: 'info',
+            message: '已取消操作'
+          })
+        })
+    }
+  }
+}
 </script>
 
 <style scoped>

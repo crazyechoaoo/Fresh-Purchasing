@@ -41,7 +41,7 @@ export function printBranch(data) {
     url: '/shop_order/printOne',
     method: 'get',
     params: data,
-    responseType: 'blob' //!!!!!!下载文件必须要写这个参数！！！！！
+    responseType: 'blob' //! !!!!!下载文件必须要写这个参数！！！！！
   })
 }
 

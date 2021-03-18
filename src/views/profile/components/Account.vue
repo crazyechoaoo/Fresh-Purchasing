@@ -22,8 +22,10 @@
       <el-input v-model.trim="user.identity" />
     </el-form-item>
     <el-form-item>
-      <el-button type="primary"
-                 @click="submit">更新</el-button>
+      <el-button
+        type="primary"
+        @click="submit"
+      >更新</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -49,7 +51,7 @@ export default {
     }
   },
   methods: {
-    submit () {
+    submit() {
       this.$message({
         message: '用户信息更新成功',
         type: 'success',

@@ -1,15 +1,19 @@
 <template>
   <el-card style="margin-bottom:20px;">
-    <div slot="header"
-         class="clearfix">
+    <div
+      slot="header"
+      class="clearfix"
+    >
       <span>个人信息</span>
     </div>
 
     <div class="user-profile">
       <div class="box-center">
-        <pan-thumb image="@/assets/logo/logo.png"
-                   :height="'100px'"
-                   :width="'100px'">
+        <pan-thumb
+          image="@/assets/logo/logo.png"
+          :height="'100px'"
+          :width="'100px'"
+        >
           <div>你好</div>
           {{ user.role | roleFilter }}
         </pan-thumb>
@@ -26,7 +30,7 @@
 
 export default {
   filters: {
-    roleFilter (role) {
+    roleFilter(role) {
       const roleMap = {
         'manager': '采购经理',
         'buyer': '采购员',

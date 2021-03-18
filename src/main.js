@@ -4,7 +4,6 @@ import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-// import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 
 import '@/styles/index.scss' // global css
 
@@ -28,18 +27,14 @@ import '@/permission' // permission control
 //   mockXHR()
 // }
 
-// set ElementUI lang to EN
-// Vue.use(ElementUI, { locale })
-// 如果想要中文版 element-ui，按如下方式声明
-Vue.use(ElementUI, {
-  // size: 'small' // element-ui组件的尺寸一共分为large、default、small 、mini
-})
+Vue.use(ElementUI) // 通过全局方法 Vue.use() 使用插件
 
 Vue.config.productionTip = false
 
+// new Vue({ 选项 })
 new Vue({
   el: '#app',
-  router,
+  router, // 通过注入路由器，可以在任何组件内通过 this.$router 访问路由器
   store,
-  render: h => h(App)
+  render: h => h(App) // 渲染函数
 })

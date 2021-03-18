@@ -115,8 +115,7 @@
             size="mini"
             type="danger"
             @click="openConfirmMsgBox('delete', row, $index)"
-            >删除</el-button
-          >
+          >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -224,7 +223,7 @@
                         style="padding: 2px 4px; margin-left: 4px"
                         icon="el-icon-circle-close"
                         @click="tableItemDel(row, $index)"
-                      ></el-button>
+                      />
                     </el-row>
                   </template>
                 </el-table-column>
@@ -312,8 +311,7 @@
               :disabled="!canModidyPlan"
               type="primary"
               @click="$refs.drawer.closeDrawer()"
-              >{{ requestLoading ? "提交中 ..." : "确 定" }}</el-button
-            >
+            >{{ requestLoading ? "提交中 ..." : "确 定" }}</el-button>
           </el-row>
         </div>
       </div>
@@ -393,7 +391,7 @@
                     style="padding: 2px 4px; margin-left: 4px"
                     icon="el-icon-circle-close"
                     @click="tableItemDel(row, $index)"
-                  ></el-button>
+                  />
                 </el-row>
               </template>
             </el-table-column>
@@ -491,8 +489,8 @@
       direction="ltr"
       :with-header="false"
       size="100%"
-      @open="tableDetailDrawerOpen"
       :before-close="tableDetailDrawerClose"
+      @open="tableDetailDrawerOpen"
     >
       <div class="formDrawer">
         <div class="formDrawer-header">
@@ -552,8 +550,7 @@
               :total="commodityListTotal"
               :page-size="40"
               @current-change="getCommodityList"
-            >
-            </el-pagination>
+            />
           </el-row>
         </div>
       </div>
@@ -622,44 +619,42 @@ import {
   fetchScheme,
   updateScheme,
   delScheme,
-  createScheme,
-} from "@/api/branch";
-import { fetchCommodity } from "@/api/commodity";
-import waves from "@/directive/waves"; // waves directive
-import { parseTime, resetPagination } from "@/utils";
-import Pagination from "@/components/Pagination"; // secondary package based on el-pagination
+  createScheme
+} from '@/api/branch'
+import { fetchCommodity } from '@/api/commodity'
+import { parseTime, resetPagination } from '@/utils'
+import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 
 export default {
-  name: "OrderSchemePage",
+  name: 'OrderSchemePage',
   components: { Pagination },
-  directives: { waves },
   filters: {
     typeNameFilter(type) {
       const typeNameMap = {
-        1101: "水果",
-        1102: "蔬菜",
-        1208: "冷冻品",
-      };
-      return typeNameMap[type];
+        1101: '水果',
+        1102: '蔬菜',
+        1208: '冷冻品'
+      }
+      return typeNameMap[type]
     },
     typeCssFilter(type) {
       const typeCssMap = {
-        1101: "danger", // red
-        1102: "success", // green
-        1208: "", // blue
-      };
-      return typeCssMap[type];
+        1101: 'danger', // red
+        1102: 'success', // green
+        1208: '' // blue
+      }
+      return typeCssMap[type]
     },
-    parseTime,
+    parseTime
   },
   data() {
     return {
-      orderType: "", // 订购方案中，添加货品时的类型选择
+      orderType: '', // 订购方案中，添加货品时的类型选择
       tableDetialDrawerVisible: false,
       tableSettingsDrawerVisible: false,
       formDrawerVisible: false,
       dialogFormVisible: false,
-      dialogStatus: "",
+      dialogStatus: '',
       requestLoading: false,
       tableDetailLoading: false,
       timer: null,
@@ -670,395 +665,395 @@ export default {
       listLoading: true,
       listQuery: {
         page: 1,
-        limit: 20,
+        limit: 20
       },
       temp: null,
       sortOptions: [
-        { label: "升序", key: "+id" },
-        { label: "降序", key: "-id" },
+        { label: '升序', key: '+id' },
+        { label: '降序', key: '-id' }
       ],
       goodTypeOptions: [
-        { key: "1101", label: "水果" },
-        { key: "1102", label: "蔬菜" },
-        { key: "1208", label: "冷冻品" },
+        { key: '1101', label: '水果' },
+        { key: '1102', label: '蔬菜' },
+        { key: '1208', label: '冷冻品' }
       ],
-      TableCellStyle: { padding: "2px 0" },
-      TableHeaderStyle: { padding: "1px 0" },
+      TableCellStyle: { padding: '2px 0' },
+      TableHeaderStyle: { padding: '1px 0' },
       textMap: {
-        update: "修改方案",
-        create: "添加方案",
+        update: '修改方案',
+        create: '添加方案'
       },
       rules: {
         plan_name: [
-          { required: true, message: "请输入方案名", trigger: "blur" },
+          { required: true, message: '请输入方案名', trigger: 'blur' }
         ],
         order_goods: [
           {
             validator: (rule, value, callback) => {
               for (const item of value) {
                 if (!item.goods_name || !item.goods_id) {
-                  callback(new Error("请将方案表填写完整"));
+                  callback(new Error('请将方案表填写完整'))
                 }
                 if (item.order_num < 0) {
-                  callback(new Error("订购数量需大于等于0"));
+                  callback(new Error('订购数量需大于等于0'))
                 }
               }
-              callback();
+              callback()
             },
-            trigger: "commit",
-          },
-        ],
+            trigger: 'commit'
+          }
+        ]
       },
       showSettings: {
         showId: true,
         showTitle: true,
         showDesc: true,
         showAction: true,
-        showShopName: true,
+        showShopName: true
       },
-      tableCurrentRow: null,
-    };
+      tableCurrentRow: null
+    }
   },
   computed: {
     canModidyPlan() {
       // if true, shop clerk cann't modify orderplan
       if (
-        this.dialogStatus === "create" ||
-        this.$store.getters.roles[0] === "manager"
+        this.dialogStatus === 'create' ||
+        this.$store.getters.roles[0] === 'manager'
       ) {
-        return true;
+        return true
       }
-      return this.$store.getters.shop_id === this.temp.shop_id;
+      return this.$store.getters.shop_id === this.temp.shop_id
     },
     userInfo() {
       return {
         name: this.$store.getters.name,
         affiliation: this.$store.getters.shop_name, // 所属分店
-        role: this.$store.getters.roles[0],
-      };
+        role: this.$store.getters.roles[0]
+      }
     },
     device() {
       // mobile or desktop
-      return this.$store.state.app.device;
+      return this.$store.state.app.device
     },
     tableSettingsDrawerSize() {
-      if (this.device === "mobile") {
-        return "60%";
+      if (this.device === 'mobile') {
+        return '60%'
       } else {
-        return "25%";
+        return '25%'
       }
     },
     labelPosition() {
-      if (this.device === "mobile") {
-        return "top";
+      if (this.device === 'mobile') {
+        return 'top'
       } else {
-        return "left";
+        return 'left'
       }
-    },
+    }
   },
   created() {
     // 钩子函数
-    this.resetTemp();
-    this.getList();
-    if (!window.sessionStorage.getItem("orderScheme")) {
-      this.setShowSettings();
+    this.resetTemp()
+    this.getList()
+    if (!window.sessionStorage.getItem('orderScheme')) {
+      this.setShowSettings()
     } else {
       this.showSettings = JSON.parse(
-        window.sessionStorage.getItem("orderScheme")
-      );
+        window.sessionStorage.getItem('orderScheme')
+      )
     }
   },
   mounted() {
-    resetPagination();
+    resetPagination()
   },
   methods: {
     setShowSettings() {
       window.sessionStorage.setItem(
-        "orderScheme",
+        'orderScheme',
         JSON.stringify(this.showSettings)
-      );
+      )
     },
     getList() {
-      this.listLoading = true;
+      this.listLoading = true
       fetchScheme(this.listQuery).then((res) => {
-        this.list = res.data;
-        this.total = res.total;
-        this.listLoading = false;
-      });
+        this.list = res.data
+        this.total = res.total
+        this.listLoading = false
+      })
     },
     handleFilter() {
-      this.listQuery.page = 1;
-      this.getList();
+      this.listQuery.page = 1
+      this.getList()
     },
     resetTemp() {
       this.temp = {
         id: undefined,
-        plan_name: "", // 标题
-        description: "", // 描述
-        order_goods: [], // 方案表
-      };
+        plan_name: '', // 标题
+        description: '', // 描述
+        order_goods: [] // 方案表
+      }
     },
     handleCreate() {
-      this.resetTemp();
-      this.dialogStatus = "create";
-      if (this.device === "desktop") {
-        this.dialogFormVisible = true;
+      this.resetTemp()
+      this.dialogStatus = 'create'
+      if (this.device === 'desktop') {
+        this.dialogFormVisible = true
         this.$nextTick(() => {
-          this.$refs["dataForm"].clearValidate();
-        });
+          this.$refs['dataForm'].clearValidate()
+        })
       } else {
-        this.formDrawerVisible = true;
+        this.formDrawerVisible = true
       }
     },
     createData(done) {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           if (this.requestLoading) {
-            return;
+            return
           }
-          this.requestLoading = true;
+          this.requestLoading = true
           // this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
           createScheme(this.temp).then((res) => {
-            if (res.status === "success") {
-              if (this.device === "mobile") {
-                done();
+            if (res.status === 'success') {
+              if (this.device === 'mobile') {
+                done()
               } else {
-                this.dialogFormVisible = false;
+                this.dialogFormVisible = false
               }
               setTimeout(() => {
                 // 动画关闭需要一定的时间
-                this.requestLoading = false;
-              }, 400);
-              this.getList();
-              this.dialogFormVisible = false;
+                this.requestLoading = false
+              }, 400)
+              this.getList()
+              this.dialogFormVisible = false
               this.$notify({
-                title: "成功",
-                message: "方案创建成功",
-                type: "success",
-                duration: 2000,
-              });
+                title: '成功',
+                message: '方案创建成功',
+                type: 'success',
+                duration: 2000
+              })
             } else {
-              this.requestLoading = false;
+              this.requestLoading = false
               this.$notify({
-                title: "失败",
-                message: res.msg || "方案创建失败,原因未知",
-                type: "error",
-                duration: 2000,
-              });
+                title: '失败',
+                message: res.msg || '方案创建失败,原因未知',
+                type: 'error',
+                duration: 2000
+              })
             }
-          });
+          })
         }
-      });
+      })
     },
     handleUpdate(row) {
-      this.resetTemp();
-      const order_goods = [];
+      this.resetTemp()
+      const order_goods = []
       row.order_goods.forEach((item) => {
-        order_goods.push(Object.assign({}, item));
-      });
+        order_goods.push(Object.assign({}, item))
+      })
       setTimeout(() => {
-        this.temp = Object.assign({}, row, { order_goods }); // deep copy obj
-      }, 400);
-      this.dialogStatus = "update";
-      if (this.device === "desktop") {
-        this.dialogFormVisible = true;
+        this.temp = Object.assign({}, row, { order_goods }) // deep copy obj
+      }, 400)
+      this.dialogStatus = 'update'
+      if (this.device === 'desktop') {
+        this.dialogFormVisible = true
         this.$nextTick(() => {
-          this.$refs["dataForm"].clearValidate();
-        });
+          this.$refs['dataForm'].clearValidate()
+        })
       } else {
-        this.formDrawerVisible = true;
+        this.formDrawerVisible = true
       }
     },
     updateData(done) {
-      this.$refs["dataForm"].validate((valid) => {
+      this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           if (this.requestLoading) {
-            return;
+            return
           }
-          this.requestLoading = true;
-          const tempData = Object.assign({}, this.temp);
+          this.requestLoading = true
+          const tempData = Object.assign({}, this.temp)
           updateScheme(tempData).then((res) => {
-            if (res.status === "success") {
-              const index = this.list.findIndex((v) => v.id === this.temp.id);
+            if (res.status === 'success') {
+              // const index = this.list.findIndex((v) => v.id === this.temp.id)
               // this.list.splice(index, 1, this.temp);
-              this.getList();
-              if (this.device === "mobile") {
-                done();
+              this.getList()
+              if (this.device === 'mobile') {
+                done()
               } else {
-                this.dialogFormVisible = false;
+                this.dialogFormVisible = false
               }
               setTimeout(() => {
                 // 动画关闭需要一定的时间
-                this.requestLoading = false;
-              }, 400);
+                this.requestLoading = false
+              }, 400)
               this.$notify({
-                title: "成功",
-                message: "方案修改成功",
-                type: "success",
-                duration: 2000,
-              });
+                title: '成功',
+                message: '方案修改成功',
+                type: 'success',
+                duration: 2000
+              })
             } else {
-              this.requestLoading = false;
+              this.requestLoading = false
               this.$notify({
-                title: "失败",
-                message: res.msg || "方案修改失败,原因未知",
-                type: "error",
-                duration: 2000,
-              });
+                title: '失败',
+                message: res.msg || '方案修改失败,原因未知',
+                type: 'error',
+                duration: 2000
+              })
             }
-          });
+          })
         }
-      });
+      })
     },
     handleDelete(row, index) {
-      const params = { id: row.id };
+      const params = { id: row.id }
       delScheme(params).then((res) => {
-        if (res.status === "success") {
+        if (res.status === 'success') {
           this.$notify({
-            title: "成功",
-            message: "方案删除成功",
-            type: "success",
-            duration: 2000,
-          });
-          this.list.splice(index, 1);
+            title: '成功',
+            message: '方案删除成功',
+            type: 'success',
+            duration: 2000
+          })
+          this.list.splice(index, 1)
         } else {
           this.$notify({
-            title: "失败",
-            message: res.msg || "方案删除失败,原因未知",
-            type: "error",
-            duration: 2000,
-          });
+            title: '失败',
+            message: res.msg || '方案删除失败,原因未知',
+            type: 'error',
+            duration: 2000
+          })
         }
-      });
+      })
     },
     querySearchAsync(queryString, cb) {
       if (queryString) {
         fetchCommodity({
           limit: 10,
           search: queryString,
-          sort: "+goods_id",
+          sort: '+goods_id'
         }).then((res) => {
-          const commodities = res.data;
+          const commodities = res.data
           // 物品已经有了订购 就不显示出来
           const results = queryString
             ? commodities.filter(
-                (v) =>
-                  this.temp.order_goods.findIndex(
-                    (i) => i.goods_id === v.goods_id
-                  ) < 0
-              )
-            : commodities;
+              (v) =>
+                this.temp.order_goods.findIndex(
+                  (i) => i.goods_id === v.goods_id
+                ) < 0
+            )
+            : commodities
           for (const item of results) {
-            item["value"] = item.goods_name;
-            item["order_num"] = 0;
+            item['value'] = item.goods_name
+            item['order_num'] = 0
           }
-          cb(results);
-        });
+          cb(results)
+        })
       }
     },
     handleSelect(item) {
-      this.temp.order_goods.splice(this.temp.order_goods.length - 1, 1, item);
+      this.temp.order_goods.splice(this.temp.order_goods.length - 1, 1, item)
     },
     tableItemAdd() {
       this.temp.order_goods.push({
-        goods_id: "",
-        goods_name: "",
-        order_num: "",
-        order_unit: "",
-      });
+        goods_id: '',
+        goods_name: '',
+        order_num: '',
+        order_unit: ''
+      })
     },
     tableItemDel(row, index) {
-      this.temp.order_goods.splice(index, 1);
+      this.temp.order_goods.splice(index, 1)
     },
     cancelForm() {
-      this.requestLoading = false;
-      this.dialogFormVisible = false;
-      this.formDrawerVisible = false;
-      clearTimeout(this.timer);
+      this.requestLoading = false
+      this.dialogFormVisible = false
+      this.formDrawerVisible = false
+      clearTimeout(this.timer)
     },
     formDrawerOpen() {
       this.$nextTick(() => {
-        this.$refs["dataForm"].clearValidate();
-      });
+        this.$refs['dataForm'].clearValidate()
+      })
     },
     tableDetailDrawerOpen() {
       setTimeout(() => {
         // 动画需要一定的时间
-        this.getCommodityList(1);
-      }, 400);
+        this.getCommodityList(1)
+      }, 400)
     },
     tableDetailDrawerClose() {
-      this.commodityList = null;
+      this.commodityList = null
     },
     handleOrderChange(row) {
       const idx = this.temp.order_goods.findIndex(
         (v) => v.goods_id === row.goods_id
-      );
+      )
       if (idx >= 0) {
-        this.temp.order_goods[idx].order_num = row.order_num;
+        this.temp.order_goods[idx].order_num = row.order_num
       } else {
-        this.temp.order_goods.push(row);
+        this.temp.order_goods.push(row)
       }
     },
     getCommodityList(page) {
-      this.tableDetailLoading = true;
+      this.tableDetailLoading = true
       fetchCommodity({
         page,
         goods_type_id: this.orderType,
         limit: 40,
         search: undefined,
-        sort: "-goods_sort",
+        sort: '-goods_sort'
       }).then((res) => {
-        this.commodityList = res.data;
-        this.commodityListTotal = res.total;
-        this.tableDetailLoading = false;
+        this.commodityList = res.data
+        this.commodityListTotal = res.total
+        this.tableDetailLoading = false
         this.temp.order_goods.forEach((v) => {
           this.commodityList.forEach((j) => {
             if (v.goods_id === j.goods_id) {
-              this.$set(j, "order_num", v.order_num);
+              this.$set(j, 'order_num', v.order_num)
             }
-          });
-        });
-      });
+          })
+        })
+      })
     },
     openConfirmMsgBox(msg, row, index) {
-      let boxMsg = "";
-      if (msg === "delete") {
-        boxMsg = "此操作将永久删除该记录, 是否继续?";
+      let boxMsg = ''
+      if (msg === 'delete') {
+        boxMsg = '此操作将永久删除该记录, 是否继续?'
       }
-      this.$confirm(boxMsg, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-        center: true,
+      this.$confirm(boxMsg, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true
       })
         .then(() => {
-          if (msg === "delete") {
-            this.handleDelete(row, index);
+          if (msg === 'delete') {
+            this.handleDelete(row, index)
           }
         })
         .catch(() => {
           this.$message({
-            type: "info",
-            message: "已取消操作",
-          });
-        });
+            type: 'info',
+            message: '已取消操作'
+          })
+        })
     },
     setOrderType(type) {
       if (type.length === 0) {
-        this.orderType = "";
-        return;
+        this.orderType = ''
+        return
       }
-      for (let items of this.goodTypeOptions) {
+      for (const items of this.goodTypeOptions) {
         if (items.label === type) {
-          this.orderType = items.key;
-          return;
+          this.orderType = items.key
+          return
         }
       }
-      this.orderType = "";
-    },
-  },
-};
+      this.orderType = ''
+    }
+  }
+}
 </script>
 
 <style scoped>

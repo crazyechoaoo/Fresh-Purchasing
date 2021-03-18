@@ -1,6 +1,7 @@
 <template>
   <div class="login-container">
     <el-row type="flex" class="row-bg" justify="center">
+
       <el-form
         ref="loginForm"
         :model="loginForm"
@@ -10,7 +11,7 @@
         label-position="left"
       >
         <el-row type="flex" justify="center">
-          <img src="@/assets/logo/logo.png" alt />
+          <img src="@/assets/logo/logo.png" alt>
         </el-row>
 
         <div class="title-container">
@@ -45,6 +46,7 @@
             tabindex="2"
             @keyup.enter.native="handleLogin"
           />
+          <!-- .native修饰符 会把事件绑定到el-input的根元素上 -->
           <span class="show-pwd" @click="showPwd">
             <svg-icon
               :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
@@ -57,8 +59,8 @@
           type="primary"
           style="width:100%;background-color:#4e73df;border-color: #4e73df;"
           @click.native.prevent="handleLogin"
-          >登录</el-button
-        >
+        >登录</el-button>
+        <!-- .native修饰符 会把事件绑定到el-button的根元素上 -->
       </el-form>
     </el-row>
   </div>
@@ -66,100 +68,108 @@
 
 <script>
 export default {
-  name: "Login",
+  name: 'Login',
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!value) {
-        callback(new Error("请输入正确的用户名."));
+        callback(new Error('请输入正确的用户名'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     const validatePassword = (rule, value, callback) => {
       if (value.length <= 0) {
-        callback(new Error("密码不能为空."));
+        callback(new Error('密码不能为空'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     return {
       loginForm: {
-        username: "",
-        password: ""
+        username: '',
+        password: ''
       },
       loginRules: {
         username: [
-          { required: true, trigger: "blur", validator: validateUsername }
+          { required: true, trigger: 'blur', validator: validateUsername }
         ],
         password: [
-          { required: true, trigger: "blur", validator: validatePassword }
+          { required: true, trigger: 'blur', validator: validatePassword }
         ]
       },
       loading: false,
-      passwordType: "password",
+      passwordType: 'password',
       redirect: undefined
-    };
+    }
   },
   watch: {
     $route: {
       handler: function(route) {
-        this.redirect = route.query && route.query.redirect;
+        this.redirect = route.query && route.query.redirect
       },
       immediate: true
     }
   },
   methods: {
     showPwd() {
-      if (this.passwordType === "password") {
-        this.passwordType = "";
+      if (this.passwordType === 'password') {
+        this.passwordType = ''
       } else {
-        this.passwordType = "password";
+        this.passwordType = 'password'
       }
       this.$nextTick(() => {
-        this.$refs.password.focus();
-      });
+        this.$refs.password.focus()
+      })
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.loading = true;
-          this.$store
-            .dispatch("user/login", this.loginForm)
+          this.loading = true
+
+          this.$store.dispatch('user/login', this.loginForm)
             .then(res => {
-              if (res.status === "success") {
-                this.$router.push({ path: this.redirect || "/" });
-                this.loading = false;
+              if (res.status === 'success') {
+                this.$router.push({ path: this.redirect || '/' })
+
+                this.loading = false
               } else {
                 this.$notify({
-                  title: "失败",
-                  message: res.msg || "登录失败,原因未知",
-                  type: "error",
+                  title: '失败',
+                  message: res.msg || '服务器登陆验证失败',
+                  type: 'error',
                   duration: 1000
-                });
-                this.loading = false;
+                })
+
+                this.loading = false
               }
             })
             .catch(error => {
-              this.loading = false;
-            });
-        } else {
-          console.log("表格验证错误");
-          return false;
+              this.$notify({
+                title: '失败',
+                message: error.toString() || '网络错误',
+                type: 'error',
+                duration: 1000
+              })
+
+              this.loading = false
+              this.loading = false
+            })
         }
-      });
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="scss">
-/* 修复input 背景不协调 和光标变色 */
-/* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
-
-$bg: #283443;
-$light_gray: #fff;
+/* 全局样式 */
+$bg: #4e73df;
 $cursor: #fff;
+$fontColor: #6e707e;
 
+// 解决光标变色
+// https://github.com/PanJiaChen/vue-element-admin/pull/927
+// @supports 用来检测浏览器是否支持某个期望的样式功能
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
   .login-container .el-input input {
     color: $cursor;
@@ -179,20 +189,20 @@ $cursor: #fff;
       -webkit-appearance: none;
       border-radius: 0px;
       padding: 12px 5px 12px 15px;
-      color: #6e707e;
+      color: $fontColor;
       height: 47px;
-      caret-color: #6e707e;
+      caret-color: $fontColor;
 
       &:-webkit-autofill {
-      background: #e5e5e5 !important;
-      border: 0px !important;
-      -webkit-appearance: none !important;
-      border-radius: 0px !important;
-      padding: 12px 5px 12px 15px !important;
-      color: #6e707e !important;
-      height: 47px !important;
-      caret-color: #6e707e !important;
-      -webkit-text-fill-color: #6e707e !important;
+        background: #e5e5e5 !important;
+        border: 0px !important;
+        -webkit-appearance: none !important;
+        border-radius: 0px !important;
+        padding: 12px 5px 12px 15px !important;
+        color: $fontColor !important;
+        height: 47px !important;
+        caret-color: $fontColor !important;
+        -webkit-text-fill-color: $fontColor !important;
       }
     }
   }
@@ -201,23 +211,24 @@ $cursor: #fff;
     border: 1px solid rgba(255, 255, 255, 0.1);
     background: rgba(0, 0, 0, 0.1);
     border-radius: 5px;
-    color: #454545;
+    color: $fontColor;
   }
 }
 </style>
 
 <style lang="scss" scoped>
-$bg: #2d3a4b;
+// 当 <style> 标签有 scoped 属性时，它的 CSS 只作用于当前组件中的元素
+$bg: #4e73df;
 $dark_gray: #889aa4;
-$light_gray: #eee;
+$fontColor: #6e707e;
 
 .login-container {
   min-height: 100%;
   width: 100%;
   background-color: $bg;
   overflow: hidden;
-  background-color: #4e73df;
-  background-image: linear-gradient(180deg, #4e73df 10%, #224abe 100%);
+  background-color: $bg;
+  background-image: linear-gradient(180deg, $bg 10%, #224abe 100%);
   background-size: cover;
 
   .login-form {
@@ -257,7 +268,7 @@ $light_gray: #eee;
 
     .title {
       font-size: 24px;
-      color: #46474e;
+      color: $fontColor;
       margin: 48px auto 24px auto;
       text-align: center;
       font-weight: 400;
