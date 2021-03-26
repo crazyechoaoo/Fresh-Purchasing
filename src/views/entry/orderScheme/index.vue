@@ -927,7 +927,7 @@ export default {
       })
     },
     querySearchAsync(queryString, cb) {
-      if (queryString) {
+      if (queryString.length >= 0) {
         fetchCommodity({
           limit: 10,
           search: queryString,
