@@ -1,7 +1,14 @@
 <template>
   <div class="app-container">
-    <div v-if="device === 'mobile'" class="filter-container">
-      <el-row class="search" type="flex" justify="end">
+    <div
+      v-if="device === 'mobile'"
+      class="filter-container"
+    >
+      <el-row
+        class="search"
+        type="flex"
+        justify="end"
+      >
         <el-button
           class="filter-item"
           type="primary"
@@ -22,8 +29,15 @@
         </el-button>
       </el-row>
     </div>
-    <div v-else class="filter-container">
-      <el-row class="search" type="flex" justify="end">
+    <div
+      v-else
+      class="filter-container"
+    >
+      <el-row
+        class="search"
+        type="flex"
+        justify="end"
+      >
         <el-button
           class="filter-item"
           type="primary"
@@ -68,7 +82,10 @@
         align="center"
       >
         <template slot-scope="{ row }">
-          <span class="link-type" @click="handleUpdate(row)">{{
+          <span
+            class="link-type"
+            @click="handleUpdate(row)"
+          >{{
             row.plan_name
           }}</span>
         </template>
@@ -115,7 +132,9 @@
             size="mini"
             type="danger"
             @click="openConfirmMsgBox('delete', row, $index)"
-          >删除</el-button>
+          >
+            删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -166,18 +185,37 @@
             >
               <span> {{ temp.id || "无" }} </span>
             </el-form-item>
-            <el-form-item label="方案名称" prop="plan_name">
-              <el-input v-if="canModidyPlan" v-model.trim="temp.plan_name" />
+            <el-form-item
+              label="方案名称"
+              prop="plan_name"
+            >
+              <el-input
+                v-if="canModidyPlan"
+                v-model.trim="temp.plan_name"
+              />
               <span v-else>{{ temp.plan_name }}</span>
             </el-form-item>
-            <el-form-item label="方案描述" prop="description">
-              <el-input v-if="canModidyPlan" v-model.trim="temp.description" />
+            <el-form-item
+              label="方案描述"
+              prop="description"
+            >
+              <el-input
+                v-if="canModidyPlan"
+                v-model.trim="temp.description"
+              />
               <span v-else>{{ temp.description }}</span>
             </el-form-item>
-            <el-form-item v-if="temp.notice" label="系统提示" prop="notice">
+            <el-form-item
+              v-if="temp.notice"
+              label="系统提示"
+              prop="notice"
+            >
               <span>{{ temp.notice }}</span>
             </el-form-item>
-            <el-form-item label="方案详情" prop="order_goods">
+            <el-form-item
+              label="方案详情"
+              prop="order_goods"
+            >
               <el-table
                 :header-cell-style="TableHeaderStyle"
                 :cell-style="TableCellStyle"
@@ -186,12 +224,20 @@
                 fit
                 highlight-current-row
               >
-                <el-table-column align="center" label="标志位" width="65">
+                <el-table-column
+                  align="center"
+                  label="标志位"
+                  width="65"
+                >
                   <template slot-scope="{ row }">
                     <span>{{ row.goods_sort }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column align="center" label="编号" width="72">
+                <el-table-column
+                  align="center"
+                  label="编号"
+                  width="72"
+                >
                   <template slot-scope="{ row }">
                     <span>{{ row.goods_id }}</span>
                   </template>
@@ -202,7 +248,10 @@
                   :min-width="dialogStatus === 'create' ? 130 : 100"
                 >
                   <template slot-scope="{ row, $index }">
-                    <el-row type="flex" justify="center">
+                    <el-row
+                      type="flex"
+                      justify="center"
+                    >
                       <el-tag
                         v-if="row.goods_id"
                         :type="row.goods_type_id | typeCssFilter"
@@ -227,7 +276,11 @@
                     </el-row>
                   </template>
                 </el-table-column>
-                <el-table-column align="center" label="订购量" min-width="105">
+                <el-table-column
+                  align="center"
+                  label="订购量"
+                  min-width="105"
+                >
                   <template slot-scope="{ row }">
                     <!-- this input only permit positive integer or 0 -->
                     <el-input
@@ -239,12 +292,18 @@
                       onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
                       placeholder="0"
                     >
-                      <template slot="append">{{ row.order_unit }}</template>
+                      <template slot="append">
+                        {{ row.order_unit }}
+                      </template>
                     </el-input>
                   </template>
                 </el-table-column>
               </el-table>
-              <el-row v-if="canModidyPlan" type="flex" justify="end">
+              <el-row
+                v-if="canModidyPlan"
+                type="flex"
+                justify="end"
+              >
                 <el-button
                   class="margin-top-6"
                   style="width: 100%"
@@ -279,7 +338,11 @@
                   添加冷冻品类
                 </el-button>
               </el-row>
-              <el-row v-if="canModidyPlan" type="flex" justify="end">
+              <el-row
+                v-if="canModidyPlan"
+                type="flex"
+                justify="end"
+              >
                 <el-button
                   class="margin-top-6"
                   style="width: 100%"
@@ -304,14 +367,21 @@
           </el-form>
         </div>
         <div class="formDrawer-footer">
-          <el-row type="flex" justify="center">
-            <el-button @click="cancelForm">取 消</el-button>
+          <el-row
+            type="flex"
+            justify="center"
+          >
+            <el-button @click="cancelForm">
+              取 消
+            </el-button>
             <el-button
               :loading="requestLoading"
               :disabled="!canModidyPlan"
               type="primary"
               @click="$refs.drawer.closeDrawer()"
-            >{{ requestLoading ? "提交中 ..." : "确 定" }}</el-button>
+            >
+              {{ requestLoading ? "提交中 ..." : "确 定" }}
+            </el-button>
           </el-row>
         </div>
       </div>
@@ -331,21 +401,44 @@
         hide-required-asterisk
         class="pageForm"
       >
-        <el-form-item v-if="dialogStatus === 'update'" label="编号" prop="id">
+        <el-form-item
+          v-if="dialogStatus === 'update'"
+          label="编号"
+          prop="id"
+        >
           <span> {{ temp.id || "无" }} </span>
         </el-form-item>
-        <el-form-item label="方案名称" prop="plan_name">
-          <el-input v-if="canModidyPlan" v-model.trim="temp.plan_name" />
+        <el-form-item
+          label="方案名称"
+          prop="plan_name"
+        >
+          <el-input
+            v-if="canModidyPlan"
+            v-model.trim="temp.plan_name"
+          />
           <span v-else>{{ temp.plan_name }}</span>
         </el-form-item>
-        <el-form-item label="方案描述" prop="description">
-          <el-input v-if="canModidyPlan" v-model.trim="temp.description" />
+        <el-form-item
+          label="方案描述"
+          prop="description"
+        >
+          <el-input
+            v-if="canModidyPlan"
+            v-model.trim="temp.description"
+          />
           <span v-else>{{ temp.description }}</span>
         </el-form-item>
-        <el-form-item v-if="temp.notice" label="系统提示" prop="notice">
+        <el-form-item
+          v-if="temp.notice"
+          label="系统提示"
+          prop="notice"
+        >
           <span>{{ temp.notice }}</span>
         </el-form-item>
-        <el-form-item label="方案详情" prop="order_goods">
+        <el-form-item
+          label="方案详情"
+          prop="order_goods"
+        >
           <el-table
             :header-cell-style="TableHeaderStyle"
             :cell-style="TableCellStyle"
@@ -354,12 +447,20 @@
             fit
             highlight-current-row
           >
-            <el-table-column align="center" label="标志位" width="65">
+            <el-table-column
+              align="center"
+              label="标志位"
+              width="65"
+            >
               <template slot-scope="{ row }">
                 <span>{{ row.goods_sort }}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="编号" width="72">
+            <el-table-column
+              align="center"
+              label="编号"
+              width="72"
+            >
               <template slot-scope="{ row }">
                 <span>{{ row.goods_id }}</span>
               </template>
@@ -370,7 +471,10 @@
               :min-width="dialogStatus === 'create' ? 130 : 100"
             >
               <template slot-scope="{ row, $index }">
-                <el-row type="flex" justify="center">
+                <el-row
+                  type="flex"
+                  justify="center"
+                >
                   <el-tag
                     v-if="row.goods_id"
                     :type="row.goods_type_id | typeCssFilter"
@@ -395,7 +499,11 @@
                 </el-row>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="订购量" min-width="105">
+            <el-table-column
+              align="center"
+              label="订购量"
+              min-width="105"
+            >
               <template slot-scope="{ row }">
                 <!-- this input only permit positive integer or 0 -->
                 <el-input
@@ -407,12 +515,18 @@
                   onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
                   placeholder="0"
                 >
-                  <template slot="append">{{ row.order_unit }}</template>
+                  <template slot="append">
+                    {{ row.order_unit }}
+                  </template>
                 </el-input>
               </template>
             </el-table-column>
           </el-table>
-          <el-row v-if="canModidyPlan" type="flex" justify="end">
+          <el-row
+            v-if="canModidyPlan"
+            type="flex"
+            justify="end"
+          >
             <el-button
               class="margin-top-6"
               style="width: 100%"
@@ -447,7 +561,11 @@
               添加冷冻品类
             </el-button>
           </el-row>
-          <el-row v-if="canModidyPlan" type="flex" justify="end">
+          <el-row
+            v-if="canModidyPlan"
+            type="flex"
+            justify="end"
+          >
             <el-button
               class="margin-top-6"
               style="width: 100%"
@@ -470,8 +588,13 @@
           </el-row>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="cancelForm"> 取消 </el-button>
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button @click="cancelForm">
+          取消
+        </el-button>
         <el-button
           :loading="requestLoading"
           type="primary"
@@ -509,26 +632,44 @@
             fit
             highlight-current-row
           >
-            <el-table-column align="center" label="标志位" width="65">
+            <el-table-column
+              align="center"
+              label="标志位"
+              width="65"
+            >
               <template slot-scope="{ row }">
                 <span>{{ row.goods_sort }}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="编号">
+            <el-table-column
+              align="center"
+              label="编号"
+            >
               <template slot-scope="{ row }">
                 <span>{{ row.goods_id }}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="品名" min-width="120">
+            <el-table-column
+              align="center"
+              label="品名"
+              min-width="120"
+            >
               <template slot-scope="{ row }">
-                <el-row type="flex" justify="center">
+                <el-row
+                  type="flex"
+                  justify="center"
+                >
                   <el-tag :type="row.goods_type_id | typeCssFilter">
                     <span>{{ row.goods_name }}</span>
                   </el-tag>
                 </el-row>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="订购量" min-width="120">
+            <el-table-column
+              align="center"
+              label="订购量"
+              min-width="120"
+            >
               <template slot-scope="{ row }">
                 <el-input
                   v-model.number="row.order_num"
@@ -536,14 +677,19 @@
                   placeholder="0"
                   @change="handleOrderChange(row)"
                 >
-                  <template slot="append">{{ row.order_unit }}</template>
+                  <template slot="append">
+                    {{ row.order_unit }}
+                  </template>
                 </el-input>
               </template>
             </el-table-column>
           </el-table>
         </div>
         <div class="commodityDetailDrawer-footer">
-          <el-row type="flex" justify="center">
+          <el-row
+            type="flex"
+            justify="center"
+          >
             <el-pagination
               background
               layout="prev, pager, next"

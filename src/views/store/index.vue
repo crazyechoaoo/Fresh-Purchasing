@@ -166,7 +166,9 @@
             size="mini"
             type="danger"
             @click="openConfirmMsgBox('delete', row, $index)"
-          >删除</el-button>
+          >
+            删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -224,12 +226,14 @@
         </div>
         <div class="formDrawer-footer">
           <el-row type="flex" justify="center">
-            <el-button @click="cancelForm">取 消</el-button>
+            <el-button @click="cancelForm"> 取 消 </el-button>
             <el-button
               :loading="requestLoading"
               type="primary"
               @click="$refs.drawer.closeDrawer()"
-            >{{ requestLoading ? "提交中 ..." : "确 定" }}</el-button>
+            >
+              {{ requestLoading ? "提交中 ..." : "确 定" }}
+            </el-button>
           </el-row>
         </div>
       </div>
@@ -355,7 +359,6 @@ export default {
       dialogFormVisible: false,
       dialogStatus: '',
       requestLoading: false,
-      timer: null,
       list: null,
       total: 0,
       listLoading: true,
@@ -425,9 +428,7 @@ export default {
     if (!window.sessionStorage.getItem('store')) {
       this.setShowSettings()
     } else {
-      this.showSettings = JSON.parse(
-        window.sessionStorage.getItem('store')
-      )
+      this.showSettings = JSON.parse(window.sessionStorage.getItem('store'))
     }
   },
   mounted() {
@@ -435,10 +436,7 @@ export default {
   },
   methods: {
     setShowSettings() {
-      window.sessionStorage.setItem(
-        'store',
-        JSON.stringify(this.showSettings)
-      )
+      window.sessionStorage.setItem('store', JSON.stringify(this.showSettings))
     },
     getList() {
       this.listLoading = true
@@ -591,7 +589,6 @@ export default {
       this.requestLoading = false
       this.dialogFormVisible = false
       this.formDrawerVisible = false
-      clearTimeout(this.timer)
     },
     formDrawerOpen() {
       this.$nextTick(() => {

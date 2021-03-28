@@ -20,7 +20,7 @@ module.exports = {
   outputDir: 'dist',
   assetsDir: 'static',
   lintOnSave: true,
-  productionSourceMap: false,
+  productionSourceMap: false, // 打包时不会生成 .map 文件，加快打包速度
   devServer: {
     port: port,
     open: false,
@@ -31,13 +31,14 @@ module.exports = {
     proxy: { // 开发环境下：通过代理服务器跨域
       '/api': {
         target: 'http://121.199.76.157',
-        changOrigin: true, // 跨域
+        changOrigin: true,
         pathRewrite: {
           '^/api': ''
         }
       }
     }
   },
+  // 调整 webpack
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.
@@ -49,7 +50,7 @@ module.exports = {
     }
   },
   chainWebpack(config) {
-    // it can improve the speed of the first screen, it is recommended to turn on preload
+    // 提高首屏速度
     config.plugin('preload').tap(() => [{
       rel: 'preload',
       // to ignore runtime.js

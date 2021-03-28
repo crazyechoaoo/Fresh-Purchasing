@@ -1,7 +1,14 @@
 <template>
   <div class="app-container">
-    <div v-if="device === 'mobile'" class="filter-container">
-      <el-row class="search" type="flex" justify="center">
+    <div
+      v-if="device === 'mobile'"
+      class="filter-container"
+    >
+      <el-row
+        class="search"
+        type="flex"
+        justify="center"
+      >
         <el-select
           v-model="listQuery.sort"
           class="filter-item"
@@ -31,7 +38,11 @@
           设置
         </el-button>
       </el-row>
-      <el-row class="search" type="flex" justify="center">
+      <el-row
+        class="search"
+        type="flex"
+        justify="center"
+      >
         <el-input
           v-model.trim="listQuery.search"
           placeholder="搜索..."
@@ -48,8 +59,15 @@
         </el-button>
       </el-row>
     </div>
-    <div v-else class="filter-container">
-      <el-row class="search" type="flex" justify="center">
+    <div
+      v-else
+      class="filter-container"
+    >
+      <el-row
+        class="search"
+        type="flex"
+        justify="center"
+      >
         <el-select
           v-model="listQuery.sort"
           class="filter-item"
@@ -121,7 +139,10 @@
         align="center"
       >
         <template slot-scope="{ row }">
-          <span class="link-type" @click="handleUpdate(row)">{{
+          <span
+            class="link-type"
+            @click="handleUpdate(row)"
+          >{{
             row.supplier_name
           }}</span>
         </template>
@@ -166,7 +187,9 @@
             size="mini"
             type="danger"
             @click="openConfirmMsgBox('delete', row, $index)"
-          >删除</el-button>
+          >
+            删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -207,29 +230,45 @@
             hide-required-asterisk
             class="pageForm"
           >
-            <el-form-item label="名称" prop="supplier_name">
+            <el-form-item
+              label="名称"
+              prop="supplier_name"
+            >
               <el-input v-model.trim="temp.supplier_name" />
             </el-form-item>
-            <el-form-item label="电话" prop="supplier_phone">
+            <el-form-item
+              label="电话"
+              prop="supplier_phone"
+            >
               <el-input
                 v-model.trim="temp.supplier_phone"
                 type="number"
                 pattern="[0-9]*"
               />
             </el-form-item>
-            <el-form-item label="说明" prop="desc">
+            <el-form-item
+              label="说明"
+              prop="desc"
+            >
               <el-input v-model="temp.note" />
             </el-form-item>
           </el-form>
         </div>
         <div class="formDrawer-footer">
-          <el-row type="flex" justify="center">
-            <el-button @click="cancelForm">取 消</el-button>
+          <el-row
+            type="flex"
+            justify="center"
+          >
+            <el-button @click="cancelForm">
+              取 消
+            </el-button>
             <el-button
               :loading="requestLoading"
               type="primary"
               @click="$refs.drawer.closeDrawer()"
-            >{{ requestLoading ? "提交中 ..." : "确 定" }}</el-button>
+            >
+              {{ requestLoading ? "提交中 ..." : "确 定" }}
+            </el-button>
           </el-row>
         </div>
       </div>
@@ -249,22 +288,36 @@
         hide-required-asterisk
         class="pageForm"
       >
-        <el-form-item label="名称" prop="supplier_name">
+        <el-form-item
+          label="名称"
+          prop="supplier_name"
+        >
           <el-input v-model.trim="temp.supplier_name" />
         </el-form-item>
-        <el-form-item label="电话" prop="supplier_phone">
+        <el-form-item
+          label="电话"
+          prop="supplier_phone"
+        >
           <el-input
             v-model.trim="temp.supplier_phone"
             type="number"
             pattern="[0-9]*"
           />
         </el-form-item>
-        <el-form-item label="说明" prop="desc">
+        <el-form-item
+          label="说明"
+          prop="desc"
+        >
           <el-input v-model="temp.note" />
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="cancelForm"> 取消 </el-button>
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button @click="cancelForm">
+          取消
+        </el-button>
         <el-button
           :loading="requestLoading"
           type="primary"

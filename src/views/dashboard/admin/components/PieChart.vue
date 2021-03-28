@@ -25,7 +25,12 @@ export default {
       type: String,
       default: '300px'
     },
-    clerkData: Array
+    clerkData: {
+      type: Array,
+      default: function() {
+        return []
+      }
+    }
   },
   data() {
     return {

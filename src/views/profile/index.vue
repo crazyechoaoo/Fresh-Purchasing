@@ -40,7 +40,7 @@
                     </el-select>
                   </el-form-item>
                   <el-form-item
-                    v-if="userInfo.role === 'shop'"
+                    v-if="user.role === 'shop'"
                     label="所属分店"
                     prop="shop_name"
                   >
@@ -51,23 +51,34 @@
                               :disabled="true" /> -->
                     <span>{{ user.account }}</span>
                   </el-form-item>
-                  <el-form-item
-                    label="密码"
-                    prop="password"
-                  >
+                  <el-form-item label="密码" prop="password">
                     <el-input v-model.trim="user.password" show-password />
                   </el-form-item>
                   <el-form-item label="电话" prop="phone">
-                    <el-input v-model.trim="user.phone" type="number" pattern="[0-9]*" />
+                    <el-input
+                      v-model.trim="user.phone"
+                      type="number"
+                      pattern="[0-9]*"
+                    />
                   </el-form-item>
                   <el-form-item label="地址" prop="address">
                     <el-input v-model="user.address" />
                   </el-form-item>
                   <el-form-item label="身份证" prop="identity">
-                    <el-input v-model.trim="user.identity" type="number" pattern="[0-9]*" />
+                    <el-input
+                      v-model.trim="user.identity"
+                      type="number"
+                      pattern="[0-9]*"
+                    />
                   </el-form-item>
                   <el-form-item>
-                    <el-button type="primary" style="width:100%" @click="submit">更新</el-button>
+                    <el-button
+                      type="primary"
+                      style="width:100%"
+                      @click="submit"
+                    >
+                      更新
+                    </el-button>
                   </el-form-item>
                 </el-form>
               </el-tab-pane>
@@ -154,14 +165,7 @@ export default {
       'account',
       'shop_id',
       'shop_name'
-    ]),
-    userInfo() {
-      return {
-        name: this.$store.getters.name,
-        shop_name: this.$store.getters.shop_name, // 所属分店
-        role: this.$store.getters.roles[0]
-      }
-    }
+    ])
   },
   created() {
     this.getUser()

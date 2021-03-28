@@ -1,13 +1,9 @@
 import router from './router'
 import store from './store'
-import {
-  Message
-} from 'element-ui'
+import { Message } from 'element-ui'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-import {
-  getToken
-} from '@/utils/auth' // 获取token
+import { getToken } from '@/utils/auth' // 获取token
 import getPageTitle from '@/utils/get-page-title'
 
 NProgress.configure({
@@ -17,7 +13,7 @@ NProgress.configure({
 const whiteList = ['/login'] // 登陆页面不用拦截
 
 // 全局前置守卫：实现登陆拦截
-router.beforeEach(async(to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   // to: Route: 即将要进入的目标路由对象
   // from: Route: 当前导航正要离开的路由
   // next: Function: 一定要调用该方法来 resolve 这个钩子
@@ -46,7 +42,10 @@ router.beforeEach(async(to, from, next) => {
           // 获取用户角色信息
           await store.dispatch('user/addRouter')
           // 根据角色获取动态路由
-          const accessRoutes = await store.dispatch('permission/generateRoutes', store.getters.roles)
+          const accessRoutes = await store.dispatch(
+            'permission/generateRoutes',
+            store.getters.roles
+          )
           router.addRoutes(accessRoutes)
           next({ ...to, replace: true }) // replace 导航后不会留下 history 记录
         } catch (error) {

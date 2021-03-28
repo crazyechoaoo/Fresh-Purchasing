@@ -248,9 +248,7 @@
           <bar-chart v-if="userInfo.role === 'manager'" :total="total" />
           <bar-chart
             v-if="userInfo.role === 'shop'"
-            :total="
-              shop_total.length === 0 ? [] : shop_total[userInfo.shop_id]
-            "
+            :total="shop_total.length === 0 ? [] : shop_total[userInfo.shop_id]"
           />
         </div>
       </el-col>
@@ -346,7 +344,12 @@
           style="width: 100%"
           stripe
         >
-          <el-table-column label="分店" prop="shop_name" align="center" min-width="100">
+          <el-table-column
+            label="分店"
+            prop="shop_name"
+            align="center"
+            min-width="100"
+          >
             <template slot-scope="{ row }">
               <span>{{ `[${row.shop_id}] ${row.shop_name}` }}</span>
             </template>

@@ -1,11 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-row
-        class="search"
-        type="flex"
-        justify="center"
-      >
+      <el-row class="search" type="flex" justify="center">
         <el-select
           v-model="listQuery.sort"
           class="filter-item typefilter"
@@ -44,13 +40,12 @@
     </div>
 
     <el-table
-      :key="tableKey"
       v-loading="listLoading"
       :data="list"
       border
       fit
       highlight-current-row
-      style="width: 100%;"
+      style="width: 100%"
     >
       <!-- <el-table-column label="编号"
                        prop="id"
@@ -62,79 +57,44 @@
           <span>{{ row.id }}</span>
         </template>
       </el-table-column> -->
-      <el-table-column
-        label="姓名"
-        min-width="120"
-        align="center"
-      >
+      <el-table-column label="姓名" min-width="120" align="center">
         <template slot-scope="{ row }">
-          <span
-            class="link-type"
-            @click="handleUpdate(row)"
-          >
+          <span class="link-type" @click="handleUpdate(row)">
             {{ row.name }}
           </span>
         </template>
       </el-table-column>
-      <el-table-column
-        label="性别"
-        min-width="70"
-        align="center"
-      >
+      <el-table-column label="性别" min-width="70" align="center">
         <template slot-scope="{ row }">
           <span>{{ row.gender }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        label="职务"
-        min-width="100"
-        align="center"
-      >
+      <el-table-column label="职务" min-width="100" align="center">
         <template slot-scope="{ row }">
           <span>{{ row.role | roleFilter }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        label="所属分店"
-        min-width="130"
-        align="center"
-      >
+      <el-table-column label="所属分店" min-width="130" align="center">
         <template slot-scope="{ row }">
           <span>{{ row.shop_name }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        label="账号"
-        align="center"
-        min-width="100"
-      >
+      <el-table-column label="账号" align="center" min-width="100">
         <template slot-scope="{ row }">
           <span>{{ row.username }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        label="手机"
-        align="center"
-        min-width="120"
-      >
+      <el-table-column label="手机" align="center" min-width="120">
         <template slot-scope="{ row }">
           <span>{{ row.phone }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        label="地址"
-        align="center"
-        min-width="150"
-      >
+      <el-table-column label="地址" align="center" min-width="150">
         <template slot-scope="{ row }">
           <span>{{ row.addr }}</span>
         </template>
       </el-table-column>
-      <el-table-column
-        label="身份证号"
-        align="center"
-        min-width="150"
-      >
+      <el-table-column label="身份证号" align="center" min-width="150">
         <template slot-scope="{ row }">
           <span>{{ row.id_card }}</span>
         </template>
@@ -159,7 +119,8 @@
             size="mini"
             type="danger"
             @click="openConfirmMsgBox('delete', row, $index)"
-          >删除
+          >
+            删除
           </el-button>
         </template>
       </el-table-column>
@@ -190,16 +151,10 @@
         hide-required-asterisk
         class="pageForm"
       >
-        <el-form-item
-          label="姓名"
-          prop="name"
-        >
+        <el-form-item label="姓名" prop="name">
           <el-input v-model.trim="temp.name" />
         </el-form-item>
-        <el-form-item
-          label="性别"
-          prop="gender"
-        >
+        <el-form-item label="性别" prop="gender">
           <el-select
             v-model="temp.gender"
             class="filter-item"
@@ -213,10 +168,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item
-          label="职务"
-          prop="role"
-        >
+        <el-form-item label="职务" prop="role">
           <el-select
             v-model="temp.role"
             class="filter-item"
@@ -250,10 +202,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item
-          label="账号"
-          prop="username"
-        >
+        <el-form-item label="账号" prop="username">
           <el-input
             v-if="dialogStatus === 'create'"
             v-model.trim="temp.username"
@@ -265,31 +214,15 @@
           :label="dialogStatus === 'create' ? '密码' : '修改密码'"
           prop="password"
         >
-          <el-input
-            v-model.trim="temp.password"
-            show-password
-          />
+          <el-input v-model.trim="temp.password" show-password />
         </el-form-item>
-        <el-form-item
-          label="手机"
-          prop="phone"
-        >
-          <el-input
-            v-model.trim="temp.phone"
-            type="number"
-            pattern="[0-9]*"
-          />
+        <el-form-item label="手机" prop="phone">
+          <el-input v-model.trim="temp.phone" type="number" pattern="[0-9]*" />
         </el-form-item>
-        <el-form-item
-          label="地址"
-          prop="addr"
-        >
+        <el-form-item label="地址" prop="addr">
           <el-input v-model="temp.addr" />
         </el-form-item>
-        <el-form-item
-          label="身份证号"
-          prop="id_card"
-        >
+        <el-form-item label="身份证号" prop="id_card">
           <el-input
             v-model.trim="temp.id_card"
             type="number"
@@ -297,23 +230,17 @@
           />
         </el-form-item>
       </el-form>
-      <div
-        slot="footer"
-        class="dialog-footer"
-      >
-        <el-row
-          type="flex"
-          justify="end"
-        >
+      <div slot="footer" class="dialog-footer">
+        <el-row type="flex" justify="end">
           <el-button
-            :style="device === 'mobile'?'width:100%':''"
+            :style="device === 'mobile' ? 'width:100%' : ''"
             @click="cancelForm"
           >
             取消
           </el-button>
           <el-button
             :loading="requestLoading"
-            :style="device === 'mobile'?'width:100%':''"
+            :style="device === 'mobile' ? 'width:100%' : ''"
             type="primary"
             @click="dialogStatus === 'create' ? createData() : updateData()"
           >
@@ -357,8 +284,6 @@ export default {
       shopList: null,
       dialogStatus: '',
       requestLoading: false,
-      timer: null,
-      tableKey: 0,
       list: null,
       total: 0,
       listLoading: true,
@@ -427,10 +352,8 @@ export default {
         id_card: [
           {
             validator: (rule, value, callback) => {
-              if (value) {
-                if (value.length !== 18 || !/^[0-9]*$/g.test(value)) {
-                  callback(new Error('身份证号由18位数字组成'))
-                }
+              if (value && (value.length !== 18 || !/^[0-9]*$/g.test(value))) {
+                callback(new Error('身份证号由18位数字组成'))
               }
               callback()
             },
@@ -480,14 +403,13 @@ export default {
     }
   },
   created() {
-    // 钩子函数
     this.getList()
     this.getShopList()
   },
   methods: {
     getList() {
       this.listLoading = true
-      fetchAccount(this.listQuery).then(res => {
+      fetchAccount(this.listQuery).then((res) => {
         this.list = res.data
         this.total = res.total
         this.listLoading = false
@@ -497,7 +419,7 @@ export default {
       if (!this.shopList) {
         fetchStore({
           limit: 99999
-        }).then(res => {
+        }).then((res) => {
           this.shopList = res.data
         })
       }
@@ -530,14 +452,13 @@ export default {
       })
     },
     createData() {
-      this.$refs['dataForm'].validate(valid => {
+      this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           if (this.requestLoading) {
             return
           }
           this.requestLoading = true
-          // this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-          createAccount(this.temp).then(res => {
+          createAccount(this.temp).then((res) => {
             if (res.status === 'success') {
               setTimeout(() => {
                 // 动画关闭需要一定的时间
@@ -573,17 +494,17 @@ export default {
       })
     },
     updateData() {
-      this.$refs['dataForm'].validate(valid => {
+      this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           if (this.requestLoading) {
             return
           }
           this.requestLoading = true
           const tempData = Object.assign({}, this.temp)
-          updateAccount(tempData).then(res => {
+          updateAccount(tempData).then((res) => {
             if (res.status === 'success') {
               const index = this.list.findIndex(
-                v => v.username === this.temp.username
+                (v) => v.username === this.temp.username
               )
               this.list.splice(index, 1, this.temp)
               this.dialogFormVisible = false
@@ -612,7 +533,7 @@ export default {
     },
     handleDelete(row, index) {
       const params = { username: row.username }
-      delAccount(params).then(res => {
+      delAccount(params).then((res) => {
         if (res.status === 'success') {
           this.$notify({
             title: '成功',
@@ -634,7 +555,6 @@ export default {
     cancelForm() {
       this.requestLoading = false
       this.dialogFormVisible = false
-      clearTimeout(this.timer)
     },
     openConfirmMsgBox(msg, row, index) {
       let boxMsg = ''
@@ -660,7 +580,9 @@ export default {
         })
     },
     shopSelect(shop_id) {
-      this.temp.shop_name = this.shopList.find(v => v.shop_id === shop_id).shop_name
+      this.temp.shop_name = this.shopList.find(
+        (v) => v.shop_id === shop_id
+      ).shop_name
     }
   }
 }

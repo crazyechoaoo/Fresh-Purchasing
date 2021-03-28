@@ -1,5 +1,8 @@
 <template>
-  <el-row :gutter="40" class="panel-group">
+  <el-row
+    :gutter="40"
+    class="panel-group"
+  >
     <!-- <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
         <div class="card-panel-icon-wrapper icon-people">
@@ -13,10 +16,18 @@
         </div>
       </div>
     </el-col> -->
-    <el-col :xs="24" :sm="24" :lg="12" class="card-panel-col">
+    <el-col
+      :xs="24"
+      :sm="24"
+      :lg="12"
+      class="card-panel-col"
+    >
       <div class="card-panel">
         <div class="card-panel-icon-wrapper">
-          <svg-icon icon-class="order_blue" class-name="card-panel-icon" />
+          <svg-icon
+            icon-class="order_blue"
+            class-name="card-panel-icon"
+          />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
@@ -31,10 +42,18 @@
         </div>
       </div>
     </el-col>
-    <el-col :xs="24" :sm="24" :lg="12" class="card-panel-col">
+    <el-col
+      :xs="24"
+      :sm="24"
+      :lg="12"
+      class="card-panel-col"
+    >
       <div class="card-panel">
         <div class="card-panel-icon-wrapper">
-          <svg-icon icon-class="money_red" class-name="card-panel-icon" />
+          <svg-icon
+            icon-class="money_red"
+            class-name="card-panel-icon"
+          />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">

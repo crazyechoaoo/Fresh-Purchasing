@@ -1,7 +1,14 @@
 <template>
   <div class="app-container">
-    <div v-if="device === 'mobile'" class="filter-container">
-      <el-row class="search" type="flex" justify="end">
+    <div
+      v-if="device === 'mobile'"
+      class="filter-container"
+    >
+      <el-row
+        class="search"
+        type="flex"
+        justify="end"
+      >
         <el-button
           class="filter-item"
           style="width: 100%"
@@ -22,8 +29,15 @@
         </el-button>
       </el-row>
     </div>
-    <div v-else class="filter-container">
-      <el-row class="search" type="flex" justify="end">
+    <div
+      v-else
+      class="filter-container"
+    >
+      <el-row
+        class="search"
+        type="flex"
+        justify="end"
+      >
         <el-button
           class="filter-item margin-l-10"
           type="primary"
@@ -68,7 +82,10 @@
         align="center"
       >
         <template slot-scope="{ row }">
-          <span class="link-type" @click="handleUpdate(row)">{{
+          <span
+            class="link-type"
+            @click="handleUpdate(row)"
+          >{{
             row.plan_name
           }}</span>
         </template>
@@ -102,7 +119,9 @@
             size="mini"
             type="danger"
             @click="openConfirmMsgBox('delete', row, $index)"
-          >删除</el-button>
+          >
+            删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -154,13 +173,22 @@
             >
               <span> {{ temp.id || "无" }} </span>
             </el-form-item>
-            <el-form-item label="方案名称" prop="plan_name">
+            <el-form-item
+              label="方案名称"
+              prop="plan_name"
+            >
               <el-input v-model="temp.plan_name" />
             </el-form-item>
-            <el-form-item label="描述" prop="description">
+            <el-form-item
+              label="描述"
+              prop="description"
+            >
               <el-input v-model="temp.description" />
             </el-form-item>
-            <el-form-item label="方案详情" prop="buy_plan_buyer">
+            <el-form-item
+              label="方案详情"
+              prop="buy_plan_buyer"
+            >
               <el-table
                 :header-cell-style="TableHeaderStyle"
                 :cell-style="TableCellStyle"
@@ -169,12 +197,20 @@
                 fit
                 highlight-current-row
               >
-                <el-table-column align="center" label="标志位" width="65">
+                <el-table-column
+                  align="center"
+                  label="标志位"
+                  width="65"
+                >
                   <template slot-scope="{ row }">
                     <span>{{ row.goods_sort }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column align="center" label="编号" min-width="70">
+                <el-table-column
+                  align="center"
+                  label="编号"
+                  min-width="70"
+                >
                   <template slot-scope="{ row }">
                     <span>{{ row.goods_id }}</span>
                   </template>
@@ -185,7 +221,10 @@
                   :min-width="dialogStatus === 'create' ? 130 : 100"
                 >
                   <template slot-scope="{ row, $index }">
-                    <el-row type="flex" justify="center">
+                    <el-row
+                      type="flex"
+                      justify="center"
+                    >
                       <el-tag
                         v-if="row.goods_id"
                         :type="row.goods_type_id | typeCssFilter"
@@ -210,7 +249,11 @@
                     </el-row>
                   </template>
                 </el-table-column>
-                <el-table-column align="center" label="采购员" min-width="110">
+                <el-table-column
+                  align="center"
+                  label="采购员"
+                  min-width="110"
+                >
                   <template slot-scope="{ row }">
                     <el-select
                       v-model="row.buyer_username"
@@ -226,7 +269,10 @@
                   </template>
                 </el-table-column>
               </el-table>
-              <el-row type="flex" justify="end">
+              <el-row
+                type="flex"
+                justify="end"
+              >
                 <el-button
                   class="margin-top-6"
                   style="width: 100%"
@@ -248,13 +294,20 @@
           </el-form>
         </div>
         <div class="formDrawer-footer">
-          <el-row type="flex" justify="center">
-            <el-button @click="cancelForm">取 消</el-button>
+          <el-row
+            type="flex"
+            justify="center"
+          >
+            <el-button @click="cancelForm">
+              取 消
+            </el-button>
             <el-button
               :loading="requestLoading"
               type="primary"
               @click="$refs.drawer.closeDrawer()"
-            >{{ requestLoading ? "提交中 ..." : "确 定" }}</el-button>
+            >
+              {{ requestLoading ? "提交中 ..." : "确 定" }}
+            </el-button>
           </el-row>
         </div>
       </div>
@@ -275,16 +328,29 @@
         hide-required-asterisk
         class="pageForm"
       >
-        <el-form-item v-if="dialogStatus === 'update'" label="编号" prop="id">
+        <el-form-item
+          v-if="dialogStatus === 'update'"
+          label="编号"
+          prop="id"
+        >
           <span> {{ temp.id || "无" }} </span>
         </el-form-item>
-        <el-form-item label="方案名称" prop="plan_name">
+        <el-form-item
+          label="方案名称"
+          prop="plan_name"
+        >
           <el-input v-model="temp.plan_name" />
         </el-form-item>
-        <el-form-item label="描述" prop="description">
+        <el-form-item
+          label="描述"
+          prop="description"
+        >
           <el-input v-model="temp.description" />
         </el-form-item>
-        <el-form-item label="方案详情" prop="buy_plan_buyer">
+        <el-form-item
+          label="方案详情"
+          prop="buy_plan_buyer"
+        >
           <el-table
             :header-cell-style="TableHeaderStyle"
             :cell-style="TableCellStyle"
@@ -293,12 +359,20 @@
             fit
             highlight-current-row
           >
-            <el-table-column align="center" label="标志位" width="65">
+            <el-table-column
+              align="center"
+              label="标志位"
+              width="65"
+            >
               <template slot-scope="{ row }">
                 <span>{{ row.goods_sort }}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="编号" min-width="70">
+            <el-table-column
+              align="center"
+              label="编号"
+              min-width="70"
+            >
               <template slot-scope="{ row }">
                 <span>{{ row.goods_id }}</span>
               </template>
@@ -309,7 +383,10 @@
               :min-width="dialogStatus === 'create' ? 130 : 100"
             >
               <template slot-scope="{ row, $index }">
-                <el-row type="flex" justify="center">
+                <el-row
+                  type="flex"
+                  justify="center"
+                >
                   <el-tag
                     v-if="row.goods_id"
                     :type="row.goods_type_id | typeCssFilter"
@@ -334,7 +411,11 @@
                 </el-row>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="采购员" min-width="110">
+            <el-table-column
+              align="center"
+              label="采购员"
+              min-width="110"
+            >
               <template slot-scope="{ row }">
                 <el-select
                   v-model="row.buyer_username"
@@ -350,7 +431,10 @@
               </template>
             </el-table-column>
           </el-table>
-          <el-row type="flex" justify="end">
+          <el-row
+            type="flex"
+            justify="end"
+          >
             <el-button
               class="margin-top-6"
               style="width: 100%"
@@ -370,8 +454,13 @@
           </el-row>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="cancelForm"> 取消 </el-button>
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button @click="cancelForm">
+          取消
+        </el-button>
         <el-button
           :loading="requestLoading"
           type="primary"
@@ -409,21 +498,35 @@
             fit
             highlight-current-row
           >
-            <el-table-column align="center" label="编号">
+            <el-table-column
+              align="center"
+              label="编号"
+            >
               <template slot-scope="{ row }">
                 <span>{{ row.goods_id }}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="品名" min-width="120">
+            <el-table-column
+              align="center"
+              label="品名"
+              min-width="120"
+            >
               <template slot-scope="{ row }">
-                <el-row type="flex" justify="center">
+                <el-row
+                  type="flex"
+                  justify="center"
+                >
                   <el-tag :type="row.goods_type_id | typeCssFilter">
                     <span>{{ row.goods_name }}</span>
                   </el-tag>
                 </el-row>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="订购量" min-width="120">
+            <el-table-column
+              align="center"
+              label="订购量"
+              min-width="120"
+            >
               <template slot-scope="{ row }">
                 <el-select
                   v-model="row.buyer_username"
@@ -442,7 +545,10 @@
           </el-table>
         </div>
         <div class="commodityDetailDrawer-footer">
-          <el-row type="flex" justify="center">
+          <el-row
+            type="flex"
+            justify="center"
+          >
             <el-pagination
               background
               layout="prev, pager, next"

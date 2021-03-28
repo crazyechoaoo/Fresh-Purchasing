@@ -1,7 +1,10 @@
 <template>
   <div class="login-container">
-    <el-row type="flex" class="row-bg" justify="center">
-
+    <el-row
+      type="flex"
+      class="row-bg"
+      justify="center"
+    >
       <el-form
         ref="loginForm"
         :model="loginForm"
@@ -10,12 +13,20 @@
         auto-complete="on"
         label-position="left"
       >
-        <el-row type="flex" justify="center">
-          <img src="@/assets/logo/logo.png" alt>
+        <el-row
+          type="flex"
+          justify="center"
+        >
+          <img
+            src="@/assets/logo/logo.png"
+            alt
+          >
         </el-row>
 
         <div class="title-container">
-          <h3 class="title">欢迎回到生鲜外采系统</h3>
+          <h3 class="title">
+            欢迎回到生鲜外采系统
+          </h3>
         </div>
 
         <el-form-item prop="username">
@@ -47,7 +58,10 @@
             @keyup.enter.native="handleLogin"
           />
           <!-- .native修饰符 会把事件绑定到el-input的根元素上 -->
-          <span class="show-pwd" @click="showPwd">
+          <span
+            class="show-pwd"
+            @click="showPwd"
+          >
             <svg-icon
               :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
             />
@@ -59,7 +73,9 @@
           type="primary"
           style="width:100%;background-color:#4e73df;border-color: #4e73df;"
           @click.native.prevent="handleLogin"
-        >登录</el-button>
+        >
+          登录
+        </el-button>
         <!-- .native修饰符 会把事件绑定到el-button的根元素上 -->
       </el-form>
     </el-row>

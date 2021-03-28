@@ -1,7 +1,14 @@
 <template>
   <div class="app-container">
-    <div v-if="device === 'mobile'" class="filter-container">
-      <el-row class="search" type="flex" justify="center">
+    <div
+      v-if="device === 'mobile'"
+      class="filter-container"
+    >
+      <el-row
+        class="search"
+        type="flex"
+        justify="center"
+      >
         <el-select
           v-model="listQuery.sort"
           class="filter-item"
@@ -42,8 +49,15 @@
           />
         </el-select>
       </el-row>
-      <el-row class="search" type="flex" justify="center">
-        <div class="filter-item" style="min-width: 115px; width: 100%">
+      <el-row
+        class="search"
+        type="flex"
+        justify="center"
+      >
+        <div
+          class="filter-item"
+          style="min-width: 115px; width: 100%"
+        >
           <el-date-picker
             v-model="listQuery.timeBegin"
             align="right"
@@ -91,7 +105,11 @@
           采购单任务分配
         </el-button>
       </el-row>
-      <el-row class="search" type="flex" justify="center">
+      <el-row
+        class="search"
+        type="flex"
+        justify="center"
+      >
         <el-input
           v-model.trim="listQuery.search"
           placeholder="搜索..."
@@ -108,8 +126,15 @@
         </el-button>
       </el-row>
     </div>
-    <div v-else class="filter-container">
-      <el-row class="search" type="flex" justify="center">
+    <div
+      v-else
+      class="filter-container"
+    >
+      <el-row
+        class="search"
+        type="flex"
+        justify="center"
+      >
         <el-select
           v-model="listQuery.sort"
           class="filter-item"
@@ -152,7 +177,10 @@
             :value="item.supplier_name"
           />
         </el-select>
-        <div class="filter-item margin-l-10" style="min-width: 115px">
+        <div
+          class="filter-item margin-l-10"
+          style="min-width: 115px"
+        >
           <el-date-picker
             v-model="listQuery.timeBegin"
             align="right"
@@ -162,7 +190,10 @@
             @change="handleFilter"
           />
         </div>
-        <div class="filter-item margin-l-10" style="min-width: 115px">
+        <div
+          class="filter-item margin-l-10"
+          style="min-width: 115px"
+        >
           <el-date-picker
             v-model="listQuery.timeEnd"
             align="right"
@@ -222,7 +253,10 @@
         label-position="top"
         hide-required-asterisk
       >
-        <el-form-item label="" prop="buy_plan_buyer">
+        <el-form-item
+          label=""
+          prop="buy_plan_buyer"
+        >
           <el-select
             value="方案选择"
             style="width: 100%"
@@ -244,17 +278,26 @@
             fit
             highlight-current-row
           >
-            <el-table-column align="center" label="单号">
+            <el-table-column
+              align="center"
+              label="单号"
+            >
               <template slot-scope="{ row }">
                 <span>{{ row.single_order_id }}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="采购货品">
+            <el-table-column
+              align="center"
+              label="采购货品"
+            >
               <template slot-scope="{ row }">
                 <span>{{ row.goods_name }}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="采购员">
+            <el-table-column
+              align="center"
+              label="采购员"
+            >
               <template slot-scope="{ row }">
                 <el-select
                   v-model="row.buyer_username"
@@ -272,7 +315,10 @@
           </el-table>
         </el-form-item>
       </el-form>
-      <span slot="footer" class="dialog-footer">
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
         <el-button @click="assignmentDialogVisible = false">取 消</el-button>
         <el-button
           type="primary"
@@ -309,7 +355,10 @@
         align="center"
       >
         <template slot-scope="{ row }">
-          <span class="link-type" @click="handleUpdate(row)">{{
+          <span
+            class="link-type"
+            @click="handleUpdate(row)"
+          >{{
             row.goods_name
           }}</span>
         </template>
@@ -392,7 +441,9 @@
             class="margin-l-10 margin-top-6"
             size="mini"
             @click="openConfirmMsgBox('invalid', row, $index)"
-          >作废</el-button>
+          >
+            作废
+          </el-button>
           <el-button
             v-if="
               userInfo.role === 'buyer' && row.buy_status === '已发配，等待采购'
@@ -401,7 +452,9 @@
             size="mini"
             type="danger"
             @click="openConfirmMsgBox('finish', row, $index)"
-          >完成</el-button>
+          >
+            完成
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -445,26 +498,44 @@
             hide-required-asterisk
             class="pageForm"
           >
-            <el-form-item label="采购单号" prop="single_order_id">
+            <el-form-item
+              label="采购单号"
+              prop="single_order_id"
+            >
               <span> {{ temp.single_order_id || "暂无" }} </span>
             </el-form-item>
-            <el-form-item label="采购日期" prop="start_time">
+            <el-form-item
+              label="采购日期"
+              prop="start_time"
+            >
               <span> {{ temp.start_time }} </span>
             </el-form-item>
-            <el-form-item label="采购货品" prop="goods_name">
+            <el-form-item
+              label="采购货品"
+              prop="goods_name"
+            >
               <span>{{ temp.goods_name }}</span>
             </el-form-item>
-            <el-form-item label="订购总数" prop="order_goods_num">
+            <el-form-item
+              label="订购总数"
+              prop="order_goods_num"
+            >
               <span>{{
                 temp.order_goods_num +
                   " " +
                   (temp.goods_order ? temp.goods_order[0].order_unit : "")
               }}</span>
             </el-form-item>
-            <el-form-item label="当前进度" prop="buy_status">
+            <el-form-item
+              label="当前进度"
+              prop="buy_status"
+            >
               <span> {{ temp.buy_status || "暂无" }} </span>
             </el-form-item>
-            <el-form-item label="采购商" prop="provider">
+            <el-form-item
+              label="采购商"
+              prop="provider"
+            >
               <el-select
                 v-if="
                   userInfo.role === 'buyer' && temp.buy_status !== '采购完成'
@@ -482,9 +553,16 @@
               </el-select>
               <span v-else> {{ temp.supplier_name || "暂无" }} </span>
             </el-form-item>
-            <el-row :gutter="12" type="flex" justify="space-between">
+            <el-row
+              :gutter="12"
+              type="flex"
+              justify="space-between"
+            >
               <el-col :span="12">
-                <el-form-item label="采购总数" prop="buy_goods_num">
+                <el-form-item
+                  label="采购总数"
+                  prop="buy_goods_num"
+                >
                   <el-input
                     v-if="
                       userInfo.role === 'buyer' &&
@@ -499,7 +577,10 @@
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="采购单位" prop="rec_unit">
+                <el-form-item
+                  label="采购单位"
+                  prop="rec_unit"
+                >
                   <el-select
                     v-if="
                       userInfo.role === 'buyer' &&
@@ -520,9 +601,16 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-row :gutter="12" type="flex" justify="space-between">
+            <el-row
+              :gutter="12"
+              type="flex"
+              justify="space-between"
+            >
               <el-col :span="12">
-                <el-form-item label="总金额" prop="total_money">
+                <el-form-item
+                  label="总金额"
+                  prop="total_money"
+                >
                   <el-input
                     v-if="
                       userInfo.role === 'buyer' &&
@@ -533,13 +621,18 @@
                     type="number"
                     @change="computePrice"
                   >
-                    <template slot="append">{{ "元" }}</template>
+                    <template slot="append">
+                      {{ "元" }}
+                    </template>
                   </el-input>
                   <span v-else> {{ temp.total_money + " 元" }} </span>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="成交单价" prop="buy_goods_price">
+                <el-form-item
+                  label="成交单价"
+                  prop="buy_goods_price"
+                >
                   <span>
                     {{
                       temp.buy_goods_price
@@ -550,7 +643,10 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-form-item label="采购详情" prop="goods_order">
+            <el-form-item
+              label="采购详情"
+              prop="goods_order"
+            >
               <el-table
                 id="single-table"
                 :header-cell-style="TableHeaderStyle"
@@ -560,17 +656,29 @@
                 fit
                 highlight-current-row
               >
-                <el-table-column align="center" label="分店" min-width="120">
+                <el-table-column
+                  align="center"
+                  label="分店"
+                  min-width="120"
+                >
                   <template slot-scope="{ row }">
                     <span>{{ row.shop_name }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column align="center" label="订购量" min-width="80">
+                <el-table-column
+                  align="center"
+                  label="订购量"
+                  min-width="80"
+                >
                   <template slot-scope="{ row }">
                     <span>{{ row.order_num + " " + row.order_unit }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column align="center" label="采购量" min-width="120">
+                <el-table-column
+                  align="center"
+                  label="采购量"
+                  min-width="120"
+                >
                   <template slot-scope="{ row }">
                     <el-input
                       v-if="
@@ -583,7 +691,9 @@
                       placeholder="0"
                       :disabled="temp.buy_goods_num <= 0"
                     >
-                      <template slot="append">{{ row.buy_unit }}</template>
+                      <template slot="append">
+                        {{ row.buy_unit }}
+                      </template>
                     </el-input>
                     <span v-else>{{
                       row.buy_num + " " + (row.buy_unit || "")
@@ -602,7 +712,10 @@
                 </el-button>
               </div>
             </el-form-item>
-            <el-form-item label="工作人员" prop="buyer">
+            <el-form-item
+              label="工作人员"
+              prop="buyer"
+            >
               <span>{{
                 temp.manager +
                   "（下发人）、" +
@@ -644,7 +757,10 @@
           </el-form>
         </div>
         <div class="formDrawer-footer">
-          <el-row type="flex" justify="center">
+          <el-row
+            type="flex"
+            justify="center"
+          >
             <el-button @click="cancelForm">
               {{ temp.buy_status === "采购完成" ? "关 闭" : "取 消" }}
             </el-button>
@@ -653,7 +769,9 @@
               :loading="requestLoading"
               type="primary"
               @click="$refs.drawer.closeDrawer()"
-            >{{ requestLoading ? "提交中 ..." : "确 定" }}</el-button>
+            >
+              {{ requestLoading ? "提交中 ..." : "确 定" }}
+            </el-button>
           </el-row>
         </div>
       </div>
@@ -674,26 +792,44 @@
         hide-required-asterisk
         class="pageForm"
       >
-        <el-form-item label="采购单号" prop="single_order_id">
+        <el-form-item
+          label="采购单号"
+          prop="single_order_id"
+        >
           <span> {{ temp.single_order_id || "暂无" }} </span>
         </el-form-item>
-        <el-form-item label="采购日期" prop="start_time">
+        <el-form-item
+          label="采购日期"
+          prop="start_time"
+        >
           <span> {{ temp.start_time }} </span>
         </el-form-item>
-        <el-form-item label="采购货品" prop="goods_name">
+        <el-form-item
+          label="采购货品"
+          prop="goods_name"
+        >
           <span>{{ temp.goods_name }}</span>
         </el-form-item>
-        <el-form-item label="订购总数" prop="order_goods_num">
+        <el-form-item
+          label="订购总数"
+          prop="order_goods_num"
+        >
           <span>{{
             temp.order_goods_num +
               " " +
               (temp.goods_order ? temp.goods_order[0].order_unit : "")
           }}</span>
         </el-form-item>
-        <el-form-item label="当前进度" prop="buy_status">
+        <el-form-item
+          label="当前进度"
+          prop="buy_status"
+        >
           <span> {{ temp.buy_status || "暂无" }} </span>
         </el-form-item>
-        <el-form-item label="采购商" prop="provider">
+        <el-form-item
+          label="采购商"
+          prop="provider"
+        >
           <el-select
             v-if="userInfo.role === 'buyer' && temp.buy_status !== '采购完成'"
             v-model="temp.supplier_id"
@@ -709,9 +845,16 @@
           </el-select>
           <span v-else> {{ temp.supplier_name || "暂无" }} </span>
         </el-form-item>
-        <el-row :gutter="12" type="flex" justify="space-between">
+        <el-row
+          :gutter="12"
+          type="flex"
+          justify="space-between"
+        >
           <el-col :span="12">
-            <el-form-item label="采购总数" prop="buy_goods_num">
+            <el-form-item
+              label="采购总数"
+              prop="buy_goods_num"
+            >
               <el-input
                 v-if="
                   userInfo.role === 'buyer' && temp.buy_status !== '采购完成'
@@ -727,7 +870,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="采购单位" prop="rec_unit">
+            <el-form-item
+              label="采购单位"
+              prop="rec_unit"
+            >
               <el-select
                 v-if="
                   userInfo.role === 'buyer' && temp.buy_status !== '采购完成'
@@ -747,9 +893,16 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="12" type="flex" justify="space-between">
+        <el-row
+          :gutter="12"
+          type="flex"
+          justify="space-between"
+        >
           <el-col :span="12">
-            <el-form-item label="总金额" prop="total_money">
+            <el-form-item
+              label="总金额"
+              prop="total_money"
+            >
               <el-input
                 v-if="
                   userInfo.role === 'buyer' && temp.buy_status !== '采购完成'
@@ -759,13 +912,18 @@
                 type="number"
                 @change="computePrice"
               >
-                <template slot="append">{{ "元" }}</template>
+                <template slot="append">
+                  {{ "元" }}
+                </template>
               </el-input>
               <span v-else> {{ temp.total_money + " 元" }} </span>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="成交单价" prop="buy_goods_price">
+            <el-form-item
+              label="成交单价"
+              prop="buy_goods_price"
+            >
               <span>
                 {{
                   temp.buy_goods_price
@@ -776,7 +934,10 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="采购详情" prop="goods_order">
+        <el-form-item
+          label="采购详情"
+          prop="goods_order"
+        >
           <el-table
             :header-cell-style="TableHeaderStyle"
             :cell-style="TableCellStyle"
@@ -785,17 +946,26 @@
             fit
             highlight-current-row
           >
-            <el-table-column align="center" label="分店">
+            <el-table-column
+              align="center"
+              label="分店"
+            >
               <template slot-scope="{ row }">
                 <span>{{ row.shop_name }}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="订购量">
+            <el-table-column
+              align="center"
+              label="订购量"
+            >
               <template slot-scope="{ row }">
                 <span>{{ row.order_num + " " + row.order_unit }}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="采购量">
+            <el-table-column
+              align="center"
+              label="采购量"
+            >
               <template slot-scope="{ row }">
                 <el-input
                   v-if="
@@ -809,7 +979,9 @@
                   placeholder="0"
                   :disabled="temp.buy_goods_num <= 0"
                 >
-                  <template slot="append">{{ row.buy_unit }}</template>
+                  <template slot="append">
+                    {{ row.buy_unit }}
+                  </template>
                 </el-input>
                 <span v-else>{{
                   row.buy_num + " " + (row.buy_unit || "")
@@ -828,7 +1000,10 @@
             </el-button>
           </div>
         </el-form-item>
-        <el-form-item label="工作人员" prop="buyer">
+        <el-form-item
+          label="工作人员"
+          prop="buyer"
+        >
           <span>{{
             temp.manager +
               "（下发人）、" +
@@ -864,7 +1039,10 @@
           <span v-else> {{ temp.buyer_note || "无" }} </span>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
         <el-button @click="cancelForm">
           {{ temp.buy_status === "采购完成" ? "关 闭" : "取 消" }}
         </el-button>
@@ -981,8 +1159,13 @@
           margin: 0 auto;
         "
       >
-        <el-row type="flex" justify="center">
-          <h3 style="padding: 10px 0; margin: 0">新鲜蔬菜采购单</h3>
+        <el-row
+          type="flex"
+          justify="center"
+        >
+          <h3 style="padding: 10px 0; margin: 0">
+            新鲜蔬菜采购单
+          </h3>
         </el-row>
         <el-row>
           <el-col :span="12">
@@ -998,12 +1181,19 @@
               fit
               highlight-current-row
             >
-              <el-table-column align="center" label="分店">
+              <el-table-column
+                align="center"
+                label="分店"
+              >
                 <template slot-scope="{ row }">
                   <span>{{ row.shop_id + " " + row.shop_name }}</span>
                 </template>
               </el-table-column>
-              <el-table-column align="center" label="订购量" min-width="50">
+              <el-table-column
+                align="center"
+                label="订购量"
+                min-width="50"
+              >
                 <template slot-scope="{ row }">
                   <span>{{
                     (row.order_num || "") + " " + (row.order_unit || "")
@@ -1025,12 +1215,19 @@
               fit
               highlight-current-row
             >
-              <el-table-column align="center" label="分店">
+              <el-table-column
+                align="center"
+                label="分店"
+              >
                 <template slot-scope="{ row }">
                   <span>{{ row.shop_id + " " + row.shop_name }}</span>
                 </template>
               </el-table-column>
-              <el-table-column align="center" label="订购量" min-width="50">
+              <el-table-column
+                align="center"
+                label="订购量"
+                min-width="50"
+              >
                 <template slot-scope="{ row }">
                   <span>{{
                     (row.order_num || "") + " " + (row.order_unit || "")
@@ -1040,7 +1237,10 @@
             </el-table>
           </el-col>
         </el-row>
-        <el-row :gutter="20" style="padding: 8px 20px">
+        <el-row
+          :gutter="20"
+          style="padding: 8px 20px"
+        >
           <el-col :span="12">
             <span>{{ "货 品：" + temp.goods_name }}</span>
           </el-col>

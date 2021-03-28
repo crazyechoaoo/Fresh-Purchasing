@@ -24,7 +24,12 @@ export default {
       type: String,
       default: '300px'
     },
-    total: Array
+    total: {
+      type: Array,
+      default: function() {
+        return []
+      }
+    }
   },
   data() {
     return {

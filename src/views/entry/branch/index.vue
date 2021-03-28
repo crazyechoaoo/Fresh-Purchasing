@@ -1,7 +1,14 @@
 <template>
   <div class="app-container">
-    <div v-if="device === 'mobile'" class="filter-container">
-      <el-row class="search" type="flex" justify="center">
+    <div
+      v-if="device === 'mobile'"
+      class="filter-container"
+    >
+      <el-row
+        class="search"
+        type="flex"
+        justify="center"
+      >
         <el-select
           v-model="listQuery.sort"
           class="filter-item"
@@ -40,8 +47,15 @@
           />
         </el-select>
       </el-row>
-      <el-row class="search" type="flex" justify="center">
-        <div class="filter-item" style="min-width: 115px; width: 100%">
+      <el-row
+        class="search"
+        type="flex"
+        justify="center"
+      >
+        <div
+          class="filter-item"
+          style="min-width: 115px; width: 100%"
+        >
           <el-date-picker
             v-model="listQuery.timeBegin"
             align="right"
@@ -92,7 +106,11 @@
           生成单品采购单
         </el-button>
       </el-row>
-      <el-row class="search" type="flex" justify="center">
+      <el-row
+        class="search"
+        type="flex"
+        justify="center"
+      >
         <el-input
           v-model.trim="listQuery.search"
           placeholder="搜索..."
@@ -119,8 +137,15 @@
         </el-button>
       </el-row>
     </div>
-    <div v-else class="filter-container">
-      <el-row class="search" type="flex" justify="center">
+    <div
+      v-else
+      class="filter-container"
+    >
+      <el-row
+        class="search"
+        type="flex"
+        justify="center"
+      >
         <el-select
           v-model="listQuery.sort"
           class="filter-item"
@@ -159,7 +184,10 @@
             :value="item.key"
           />
         </el-select>
-        <div class="filter-item margin-l-10" style="min-width: 120px">
+        <div
+          class="filter-item margin-l-10"
+          style="min-width: 120px"
+        >
           <el-date-picker
             v-model="listQuery.timeBegin"
             align="right"
@@ -169,7 +197,10 @@
             @change="handleFilter"
           />
         </div>
-        <div class="filter-item margin-l-10" style="min-width: 120px">
+        <div
+          class="filter-item margin-l-10"
+          style="min-width: 120px"
+        >
           <el-date-picker
             v-model="listQuery.timeEnd"
             align="right"
@@ -232,9 +263,15 @@
       center
     >
       <span>是否将当前已通过审批的订购单生成单品采购单？</span>
-      <span slot="footer" class="dialog-footer">
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
         <el-button @click="makeSingleDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="toMakeSingle">确 定</el-button>
+        <el-button
+          type="primary"
+          @click="toMakeSingle"
+        >确 定</el-button>
       </span>
     </el-dialog>
 
@@ -263,7 +300,10 @@
         align="center"
       >
         <template slot-scope="{ row }">
-          <span class="link-type" @click="handleUpdate(row)">{{
+          <span
+            class="link-type"
+            @click="handleUpdate(row)"
+          >{{
             row.shop_name
           }}</span>
         </template>
@@ -321,35 +361,45 @@
             size="mini"
             type="danger"
             @click="openConfirmMsgBox('approve', row, $index)"
-          >批准</el-button>
+          >
+            批准
+          </el-button>
           <el-button
             v-if="userInfo.role === 'shop' && row.order_status === '采购中'"
             class="margin-l-10 margin-top-6"
             size="mini"
             type="danger"
             @click="openConfirmMsgBox('finish', row, $index)"
-          >完成</el-button>
+          >
+            完成
+          </el-button>
           <el-button
             class="margin-l-10 margin-top-6"
             type="primary"
             size="mini"
             @click="handleUpdate(row)"
-          >{{
-            row.order_status === "货品送达，订单完成" ? "查看" : "编辑"
-          }}</el-button>
+          >
+            {{
+              row.order_status === "货品送达，订单完成" ? "查看" : "编辑"
+            }}
+          </el-button>
           <el-button
             class="margin-l-10 margin-top-6"
             type="success"
             size="mini"
             @click="handlePrint(row)"
-          >打印</el-button>
+          >
+            打印
+          </el-button>
           <el-button
             v-if="row.order_status === '等待审批'"
             class="margin-l-10 margin-top-6"
             size="mini"
             type="danger"
             @click="openConfirmMsgBox('delete', row, $index)"
-          >删除</el-button>
+          >
+            删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -427,7 +477,10 @@
             >
               <span> {{ temp.order_status || "暂无" }} </span>
             </el-form-item>
-            <el-form-item label="采购详情" prop="goods_order">
+            <el-form-item
+              label="采购详情"
+              prop="goods_order"
+            >
               <el-select
                 v-if="dialogStatus === 'create'"
                 value="方案选择"
@@ -450,12 +503,20 @@
                 fit
                 highlight-current-row
               >
-                <el-table-column align="center" label="标志位" width="65">
+                <el-table-column
+                  align="center"
+                  label="标志位"
+                  width="65"
+                >
                   <template slot-scope="{ row }">
                     <span>{{ row.goods_sort }}</span>
                   </template>
                 </el-table-column>
-                <el-table-column align="center" label="编号" width="70">
+                <el-table-column
+                  align="center"
+                  label="编号"
+                  width="70"
+                >
                   <template slot-scope="{ row }">
                     <span>{{ row.goods_id }}</span>
                   </template>
@@ -466,7 +527,10 @@
                   :min-width="dialogStatus === 'create' ? 130 : 100"
                 >
                   <template slot-scope="{ row, $index }">
-                    <el-row type="flex" justify="center">
+                    <el-row
+                      type="flex"
+                      justify="center"
+                    >
                       <el-tag
                         v-if="row.goods_id"
                         :type="row.goods_type_id | typeCssFilter"
@@ -513,7 +577,9 @@
                       onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
                       :disabled="row.approved === 0 || row.approved === 1"
                     >
-                      <template slot="append">{{ row.order_unit }}</template>
+                      <template slot="append">
+                        {{ row.order_unit }}
+                      </template>
                     </el-input>
                   </template>
                 </el-table-column>
@@ -554,7 +620,10 @@
                   </template>
                 </el-table-column>
               </el-table>
-              <div v-if="dialogStatus === 'create'" style="text-align: right">
+              <div
+                v-if="dialogStatus === 'create'"
+                style="text-align: right"
+              >
                 <el-button
                   class="margin-top-6"
                   type="primary"
@@ -595,16 +664,23 @@
           </el-form>
         </div>
         <div class="formDrawer-footer">
-          <el-row type="flex" justify="center">
-            <el-button @click="cancelForm">{{
-              temp.order_status === "货品送达，订单完成" ? "关 闭" : "取 消"
-            }}</el-button>
+          <el-row
+            type="flex"
+            justify="center"
+          >
+            <el-button @click="cancelForm">
+              {{
+                temp.order_status === "货品送达，订单完成" ? "关 闭" : "取 消"
+              }}
+            </el-button>
             <el-button
               v-if="temp.order_status !== '货品送达，订单完成'"
               :loading="requestLoading"
               type="primary"
               @click="$refs.drawer.closeDrawer()"
-            >{{ requestLoading ? "提交中 ..." : "确 定" }}</el-button>
+            >
+              {{ requestLoading ? "提交中 ..." : "确 定" }}
+            </el-button>
           </el-row>
         </div>
       </div>
@@ -659,7 +735,10 @@
         >
           <span> {{ temp.order_status || "暂无" }} </span>
         </el-form-item>
-        <el-form-item label="采购详情" prop="goods_order">
+        <el-form-item
+          label="采购详情"
+          prop="goods_order"
+        >
           <el-select
             v-if="dialogStatus === 'create'"
             value="方案选择"
@@ -682,12 +761,20 @@
             fit
             highlight-current-row
           >
-            <el-table-column align="center" label="标志位" width="65">
+            <el-table-column
+              align="center"
+              label="标志位"
+              width="65"
+            >
               <template slot-scope="{ row }">
                 <span>{{ row.goods_sort }}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="编号" width="70">
+            <el-table-column
+              align="center"
+              label="编号"
+              width="70"
+            >
               <template slot-scope="{ row }">
                 <span>{{ row.goods_id }}</span>
               </template>
@@ -698,7 +785,10 @@
               :min-width="dialogStatus === 'create' ? 130 : 100"
             >
               <template slot-scope="{ row, $index }">
-                <el-row type="flex" justify="center">
+                <el-row
+                  type="flex"
+                  justify="center"
+                >
                   <el-tag
                     v-if="row.goods_id"
                     :type="row.goods_type_id | typeCssFilter"
@@ -745,7 +835,9 @@
                   onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
                   :disabled="row.approved === 0 || row.approved === 1"
                 >
-                  <template slot="append">{{ row.order_unit }}</template>
+                  <template slot="append">
+                    {{ row.order_unit }}
+                  </template>
                 </el-input>
               </template>
             </el-table-column>
@@ -786,7 +878,10 @@
               </template>
             </el-table-column>
           </el-table>
-          <div v-if="dialogStatus === 'create'" style="text-align: right">
+          <div
+            v-if="dialogStatus === 'create'"
+            style="text-align: right"
+          >
             <el-button
               class="margin-top-6"
               type="primary"
@@ -825,16 +920,23 @@
           <span v-else> {{ temp.shop_note || "无" }} </span>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="cancelForm">{{
-          temp.order_status === "货品送达，订单完成" ? "关 闭" : "取 消"
-        }}</el-button>
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button @click="cancelForm">
+          {{
+            temp.order_status === "货品送达，订单完成" ? "关 闭" : "取 消"
+          }}
+        </el-button>
         <el-button
           v-if="temp.order_status !== '货品送达，订单完成'"
           :loading="requestLoading"
           type="primary"
           @click="dialogStatus === 'create' ? createData() : updateData()"
-        >{{ requestLoading ? "提交中 ..." : "确 定" }}</el-button>
+        >
+          {{ requestLoading ? "提交中 ..." : "确 定" }}
+        </el-button>
       </div>
     </el-dialog>
 

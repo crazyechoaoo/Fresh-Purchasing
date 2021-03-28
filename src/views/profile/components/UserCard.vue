@@ -19,8 +19,12 @@
         </pan-thumb>
       </div>
       <div class="box-center">
-        <div class="user-name text-center">{{ user.name }}</div>
-        <div class="user-role text-center text-muted">{{ user.role | roleFilter }}</div>
+        <div class="user-name text-center">
+          {{ user.name }}
+        </div>
+        <div class="user-role text-center text-muted">
+          {{ user.role | roleFilter }}
+        </div>
       </div>
     </div>
   </el-card>
