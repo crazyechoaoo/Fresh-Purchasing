@@ -1,14 +1,7 @@
 <template>
   <div class="app-container">
-    <div
-      v-if="device === 'mobile'"
-      class="filter-container"
-    >
-      <el-row
-        class="search"
-        type="flex"
-        justify="center"
-      >
+    <div v-if="device === 'mobile'" class="filter-container">
+      <el-row class="search" type="flex" justify="center">
         <el-select
           v-model="listQuery.sort"
           class="filter-item"
@@ -32,11 +25,7 @@
           导出
         </el-button>
       </el-row>
-      <el-row
-        type="flex"
-        class="search"
-        justify="center"
-      >
+      <el-row type="flex" class="search" justify="center">
         <el-select
           v-model="listQuery.goods_type_id"
           placeholder="分类"
@@ -69,11 +58,7 @@
           添加
         </el-button>
       </el-row>
-      <el-row
-        type="flex"
-        class="search"
-        justify="center"
-      >
+      <el-row type="flex" class="search" justify="center">
         <el-input
           v-model.trim="listQuery.search"
           placeholder="搜索..."
@@ -90,15 +75,8 @@
         </el-button>
       </el-row>
     </div>
-    <div
-      v-else
-      class="filter-container"
-    >
-      <el-row
-        class="search"
-        type="flex"
-        justify="center"
-      >
+    <div v-else class="filter-container">
+      <el-row class="search" type="flex" justify="center">
         <el-select
           v-model="listQuery.sort"
           class="filter-item"
@@ -196,11 +174,7 @@
         align="center"
       >
         <template slot-scope="{ row }">
-          <span
-            v-if="isPermit"
-            class="link-type"
-            @click="handleUpdate(row)"
-          >{{
+          <span v-if="isPermit" class="link-type" @click="handleUpdate(row)">{{
             row.goods_name
           }}</span>
           <span v-else>{{ row.goods_name }}</span>
@@ -345,10 +319,7 @@
             hide-required-asterisk
             class="pageForm"
           >
-            <el-form-item
-              label="编号"
-              prop="id"
-            >
+            <el-form-item label="编号" prop="id">
               <!-- <span> {{ temp.goods_id || '暂无' }} </span> -->
               <el-input
                 v-if="dialogStatus === 'create'"
@@ -358,10 +329,7 @@
               />
               <span v-else> {{ temp.goods_id || "暂无" }} </span>
             </el-form-item>
-            <el-form-item
-              label="分类"
-              prop="type_name"
-            >
+            <el-form-item label="分类" prop="type_name">
               <el-select
                 v-model="temp.type_name"
                 class="filter-item"
@@ -376,16 +344,10 @@
                 />
               </el-select>
             </el-form-item>
-            <el-form-item
-              label="品名"
-              prop="goods_name"
-            >
+            <el-form-item label="品名" prop="goods_name">
               <el-input v-model.trim="temp.goods_name" />
             </el-form-item>
-            <el-form-item
-              label="标志位"
-              prop="key"
-            >
+            <el-form-item label="标志位" prop="key">
               <el-input
                 v-model.trim="temp.goods_sort"
                 type="number"
@@ -449,21 +411,13 @@
               </el-select>
             </el-form-item>
             <el-form-item label="备注">
-              <el-input
-                v-model.trim="temp.desc"
-                placeholder="备注内容..."
-              />
+              <el-input v-model.trim="temp.desc" placeholder="备注内容..." />
             </el-form-item>
           </el-form>
         </div>
         <div class="formDrawer-footer">
-          <el-row
-            type="flex"
-            justify="center"
-          >
-            <el-button @click="cancelForm">
-              取 消
-            </el-button>
+          <el-row type="flex" justify="center">
+            <el-button @click="cancelForm"> 取 消 </el-button>
             <el-button
               :loading="requestLoading"
               type="primary"
@@ -489,10 +443,7 @@
         hide-required-asterisk
         class="pageForm"
       >
-        <el-form-item
-          label="编号"
-          prop="id"
-        >
+        <el-form-item label="编号" prop="id">
           <!-- <span> {{ temp.goods_id || '暂无' }} </span> -->
           <el-input
             v-if="dialogStatus === 'create'"
@@ -501,10 +452,7 @@
           />
           <span v-else> {{ temp.goods_id || "暂无" }} </span>
         </el-form-item>
-        <el-form-item
-          label="分类"
-          prop="type_name"
-        >
+        <el-form-item label="分类" prop="type_name">
           <el-select
             v-model="temp.type_name"
             class="filter-item"
@@ -519,16 +467,10 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item
-          label="品名"
-          prop="goods_name"
-        >
+        <el-form-item label="品名" prop="goods_name">
           <el-input v-model.trim="temp.goods_name" />
         </el-form-item>
-        <el-form-item
-          label="标志位"
-          prop="key"
-        >
+        <el-form-item label="标志位" prop="key">
           <el-input
             v-model.trim="temp.goods_sort"
             type="number"
@@ -592,19 +534,11 @@
           </el-select>
         </el-form-item>
         <el-form-item label="备注">
-          <el-input
-            v-model.trim="temp.desc"
-            placeholder="备注内容..."
-          />
+          <el-input v-model.trim="temp.desc" placeholder="备注内容..." />
         </el-form-item>
       </el-form>
-      <div
-        slot="footer"
-        class="dialog-footer"
-      >
-        <el-button @click="cancelForm">
-          取消
-        </el-button>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancelForm"> 取消 </el-button>
         <el-button
           :loading="requestLoading"
           type="primary"
