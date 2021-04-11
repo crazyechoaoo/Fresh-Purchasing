@@ -6,6 +6,10 @@ typora-copy-images-to: ./assets
 
 ![生鲜采购系统](assets/%E7%94%9F%E9%B2%9C%E9%87%87%E8%B4%AD%E7%B3%BB%E7%BB%9F.png)
 
+http://104.168.155.94/
+user:ma2
+pwd:123456
+
 # 使用手册
 
 # **1.** ***\*登录、注销以及个人信息\****

@@ -30,7 +30,7 @@ module.exports = {
     },
     proxy: { // 开发环境下：通过代理服务器跨域
       '/api': {
-        target: 'http://121.199.76.157',
+        target: 'http://104.168.155.94',
         changOrigin: true,
         pathRewrite: {
           '^/api': ''
